@@ -1,0 +1,14 @@
+# node modules
+/node_modules
+
+# private keys
+/pk
+
+# log
+/logs
+
+# dist folder
+/dist
+
+# env
+.env

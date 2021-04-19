@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+      "module": "CommonJS",
+      "esModuleInterop": true,
+      "target": "ES2020",
+      "lib": ["esnext", "dom"],
+      "moduleResolution": "node",
+      "sourceMap": false,
+      "rootDir": "./src",
+      "outDir": "dist",
+      "resolveJsonModule": true,
+      "typeRoots": ["node_modules/@types"],
+      "baseUrl": "."
+  },
+  "include": [
+      "src/**/*"
+  ]
+}
