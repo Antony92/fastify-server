@@ -12,3 +12,6 @@
 
 # env
 .env
+
+# api test
+api.http

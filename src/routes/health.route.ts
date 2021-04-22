@@ -1,7 +1,8 @@
-import { FastifyPluginAsync } from 'fastify'
+import { FastifyInstance } from 'fastify'
+import { checkHealthHandler } from '../handlers/health.handler'
 
-const healthRoute: FastifyPluginAsync = async (fastify, options) => {
-    fastify.get('/health', async (request, reply) => ({ message: 'Online' }))
+const healthRoute = async (fastify: FastifyInstance) => {
+    fastify.get('/health', checkHealthHandler)
 }
 
 export default healthRoute

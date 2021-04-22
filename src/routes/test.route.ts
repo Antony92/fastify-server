@@ -1,18 +1,14 @@
-import { FastifyPluginAsync, RouteHandlerMethod } from 'fastify'
+import { FastifyInstance } from 'fastify'
+import { testGetHandler, testPostHandler, testSecuredHandler, testEventHandler } from '../handlers/test.handler'
 import { secured } from '../auth/auth.guard'
+import { testSchemaBody } from '../schema/test.schema'
 
-type RequestAny = { Querystring: any, Params: any, Headers: any, Body: any }
-
-const testRoute: FastifyPluginAsync = async (fastify, options) => {
-    fastify.get<RequestAny>('/get/:id', { onRequest: secured(['test']) }, async (request, reply) => {
-        console.log(request.query)
-        console.log(request.params)
-        return { message: 'ok' }
-    })
-    fastify.post<RequestAny>('/post', { onRequest: secured() }, async (request, reply) => {
-        console.log(request.body.username)
-        return { message: 'ok' }
-    })
+const testRoute = async (fastify: FastifyInstance) => {
+    fastify.get('/test/get/:id', testGetHandler)
+    fastify.post('/test/post', { schema: testSchemaBody }, testPostHandler)
+    fastify.get('/test/secured', { onRequest: secured()}, testSecuredHandler)
+    fastify.get('/test/admin', { onRequest: secured(['admin'])}, testSecuredHandler)
+    fastify.get('/test/event', testEventHandler)
 }
 
 export default testRoute
