@@ -6,20 +6,34 @@ import fastifyStatic from 'fastify-static'
 import fastifyRateLimit from 'fastify-rate-limit'
 import fastifyCookie from 'fastify-cookie'
 import path from 'path'
-import { notFoundHandler } from './handlers/notfound.handler'
+import fs from 'fs'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
+import config from './config'
+import { notFoundHandler } from './handlers/notfound.handler'
 
-process.env.NODE_ENV = 'dev' //production
+process.env.NODE_ENV = config.environment
+
+const privateKeyPath = `${__dirname}/pk/ssl.key`
+const publicKeyPath = `${__dirname}/pk/ssl.cer`
+
+const httpsConfig = {
+	http2: true,
+	https: {
+		key: fs.existsSync(privateKeyPath) ? fs.readFileSync(privateKeyPath, 'utf8') : null,
+    	cert: fs.existsSync(publicKeyPath) ? fs.readFileSync(publicKeyPath, 'utf8') : null
+	}
+}
 
 const server = fastify({
+	...config.server.https ? httpsConfig : null,
 	logger: true,
 })
 
 server.register(fastifyCompress)
 server.register(fastifyCors, { origin: '*', exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
-server.register(fastifyRateLimit, { max: 1000, timeWindow: '15 minutes' })
+server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyCookie, { secret: 'test' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
 server.setNotFoundHandler(notFoundHandler)
@@ -30,7 +44,7 @@ server.register(testRoute, { prefix: '/api/v1' })
 
 const start = async () => {
 	try {
-		await server.listen(8080)
+		await server.listen(config.server.port)
 	} catch (err) {
 		server.log.error(err)
 		process.exit(1)
