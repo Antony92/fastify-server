@@ -6,7 +6,7 @@ export const hasRole = (request: FastifyRequest, roles: string[]) => {
 	try {
 		const jwt = getJWTFromRequest(request)
 		const user = getJWTPayload(jwt) as User
-		return user?.roles.some((role) => roles.includes(role))
+		return user?.roles.some((role) => roles?.includes(role))
 	} catch (error) {
 		// log error
 		return false

@@ -2,12 +2,12 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { hasRole } from '../helpers/user.helper'
 import { getJWTFromRequest, isJWTValid } from './jwt.auth'
 
-export const secured = (roles?: string[], allowRoles = true) => {
+export const secured = (roles?: string[]) => {
     return async (request: FastifyRequest, reply: FastifyReply) => {
         const jwt = getJWTFromRequest(request)
-        const valid = await isJWTValid(jwt)
-        const inRole = valid && roles?.length > 0 && allowRoles ? hasRole(request, roles) : !hasRole(request, roles)
-        if (!valid) {
+        const jwtValid = await isJWTValid(jwt)
+        const inRole = jwtValid && hasRole(request, roles)
+        if (!jwtValid) {
             reply.status(401).send({
                 message: `Token not valid`,
                 error: 'Token error',
