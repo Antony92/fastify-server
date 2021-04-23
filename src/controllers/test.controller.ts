@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { RequestAny } from '../types/request.types'
+import { RequestAny } from '../types/request.type'
 
 export const testGetHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
 	console.log(request.params.id)

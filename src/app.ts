@@ -10,7 +10,7 @@ import fs from 'fs'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
 import config from './config'
-import { notFoundHandler } from './handlers/notfound.handler'
+import { notFoundHandler } from './controllers/notfound.controller'
 
 process.env.NODE_ENV = config.environment
 

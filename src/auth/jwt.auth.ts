@@ -1,7 +1,7 @@
 import { FastifyRequest } from 'fastify'
 import fs from 'fs'
 import { sign, decode, verify } from 'jsonwebtoken'
-import { User } from '../interfaces/user.interface'
+import { User } from '../model/user.model'
 
 const algorithm = 'HS256' //'RS256'
 const issuer = 'default'

@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { testGetHandler, testPostHandler, testSecuredHandler, testEventHandler } from '../handlers/test.handler'
+import { testGetHandler, testPostHandler, testSecuredHandler, testEventHandler } from '../controllers/test.controller'
 import { secured } from '../auth/auth.guard'
 import { testSchemaBody } from '../schema/test.schema'
 
