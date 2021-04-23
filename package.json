@@ -9,6 +9,7 @@
   "author": "aasenov",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "fastify": "^3.15.0",
     "fastify-compress": "^3.4.2",
     "fastify-cookie": "^5.3.0",

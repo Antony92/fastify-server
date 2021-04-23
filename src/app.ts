@@ -20,6 +20,7 @@ const cert = `${__dirname}/pk/ssl.cer`
 const server = fastify({
 	http2: true,
 	https: {
+		allowHTTP1: true,
 		key: fs.existsSync(certKey) ? fs.readFileSync(certKey, 'utf8') : null,
         cert: fs.existsSync(cert) ? fs.readFileSync(cert, 'utf8') : null
 	},

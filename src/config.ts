@@ -1,3 +1,7 @@
+import dotenv from 'dotenv'
+
+dotenv.config({ path: `${__dirname}/.env` })
+
 const config = {
     environment: process.env.ENVIRONMENT || 'development',
     server: {

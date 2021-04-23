@@ -2,7 +2,7 @@
 /node_modules
 
 # private keys
-/pk
+/src/pk
 
 # log
 /logs
