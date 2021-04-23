@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "test": "mocha -r ts-node/register src/tests/*.spec.ts",
-    "test-main": "ts-node ./src/tests/main.test.ts"
+    "test:main": "ts-node ./src/tests/main.test.ts"
   },
   "author": "aasenov",
   "license": "MIT",
