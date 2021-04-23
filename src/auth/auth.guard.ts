@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { getJWTFromRequest, hasRole, isJWTValid } from './jwt.auth'
+import { hasRole } from '../helpers/user.helper'
+import { getJWTFromRequest, isJWTValid } from './jwt.auth'
 
 export const secured = (roles?: string[], allowRoles = true) => {
     return async (request: FastifyRequest, reply: FastifyReply) => {
