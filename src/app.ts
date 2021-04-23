@@ -17,6 +17,7 @@ process.env.NODE_ENV = config.environment
 const privateKeyPath = `${__dirname}/pk/ssl.key`
 const publicKeyPath = `${__dirname}/pk/ssl.cer`
 
+// Https config
 const httpsConfig = {
 	http2: true,
 	https: {
@@ -25,11 +26,13 @@ const httpsConfig = {
 	}
 }
 
+// Init fastify server with config
 const server = fastify({
 	...config.server.https ? httpsConfig : null,
 	logger: true,
 })
 
+// Plugins
 server.register(fastifyCompress)
 server.register(fastifyCors, { origin: '*', exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
@@ -42,6 +45,7 @@ server.setNotFoundHandler(notFoundHandler)
 server.register(healthRoute, { prefix: '/api/v1' })
 server.register(testRoute, { prefix: '/api/v1' })
 
+// Start server
 const start = async () => {
 	try {
 		await server.listen(config.server.port)
