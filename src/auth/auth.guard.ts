@@ -1,8 +1,8 @@
-import { onRequestAsyncHookHandler } from 'fastify'
+import { FastifyRequest, FastifyReply } from 'fastify'
 import { getJWTFromRequest, hasRole, isJWTValid } from './jwt.auth'
 
-export const secured = (roles?: string[], allowRoles = true): onRequestAsyncHookHandler => {
-    return async (request, reply) => {
+export const secured = (roles?: string[], allowRoles = true) => {
+    return async (request: FastifyRequest, reply: FastifyReply) => {
         const jwt = getJWTFromRequest(request)
         const valid = await isJWTValid(jwt)
         const inRole = valid && roles?.length > 0 && allowRoles ? hasRole(request, roles) : !hasRole(request, roles)
