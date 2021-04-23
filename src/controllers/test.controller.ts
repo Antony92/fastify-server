@@ -14,7 +14,7 @@ export const testSecuredHandler = async (request: FastifyRequest<RequestAny>, re
 	return { message: 'Secured' }
 }
 
-export const testEventHandler = (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
+export const testEventHandler = (request: FastifyRequest, reply: FastifyReply) => {
 	reply.raw.setHeader('Content-Type', 'text/event-stream')
 	reply.raw.setHeader('Cache-Control', 'no-cache')
 	reply.raw.setHeader('Connection', 'keep-alive')
