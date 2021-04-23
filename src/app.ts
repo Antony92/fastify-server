@@ -10,25 +10,19 @@ import fs from 'fs'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
 import config from './config'
-import { notFoundHandler } from './controllers/notfound.controller'
 
 process.env.NODE_ENV = config.environment
 
-const privateKeyPath = `${__dirname}/pk/ssl.key`
-const publicKeyPath = `${__dirname}/pk/ssl.cer`
-
-// Https config
-const httpsConfig = {
-	http2: true,
-	https: {
-		key: fs.existsSync(privateKeyPath) ? fs.readFileSync(privateKeyPath, 'utf8') : null,
-    	cert: fs.existsSync(publicKeyPath) ? fs.readFileSync(publicKeyPath, 'utf8') : null
-	}
-}
+const certKey = `${__dirname}/pk/ssl.key`
+const cert = `${__dirname}/pk/ssl.cer`
 
 // Init fastify server with config
 const server = fastify({
-	...config.server.https ? httpsConfig : null,
+	http2: true,
+	https: {
+		key: fs.existsSync(certKey) ? fs.readFileSync(certKey, 'utf8') : null,
+        cert: fs.existsSync(cert) ? fs.readFileSync(cert, 'utf8') : null
+	},
 	logger: true,
 })
 
@@ -39,7 +33,18 @@ server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyCookie, { secret: 'test' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
-server.setNotFoundHandler(notFoundHandler)
+server.setNotFoundHandler(async (request, reply) => {
+	if (request.url.includes('/api')) {
+		reply.status(404).send({
+			message: `Route ${request.method}:${request.url} not found`,
+			error: 'Not Found',
+			statusCode: 404,
+		})
+	} else {
+		reply.sendFile('index.html')
+	}
+	return reply
+})
 
 // Routes
 server.register(healthRoute, { prefix: '/api/v1' })
