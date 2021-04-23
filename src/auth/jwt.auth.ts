@@ -31,15 +31,6 @@ export const createJWT = async (payload: any) => {
 	})
 }
 
-export const getJWTPayload = (jwt: string) => {
-	return decode(jwt)
-}
-
-export const getJWTFromRequest = (request: FastifyRequest) => {
-	if (request.headers.authorization && request.headers.authorization.includes('Bearer')) return request.headers.authorization.split(' ')[1]
-	if (request.headers['X-Api-Key']) return request.headers['X-Api-Key'].toString()
-}
-
 export const isJWTValid = async (jwt: string) => {
 	return new Promise<boolean>((resolve, reject) => {
 		try {
@@ -53,4 +44,13 @@ export const isJWTValid = async (jwt: string) => {
 			reject(false)
 		}
 	})
+}
+
+export const getJWTPayload = (jwt: string) => {
+	return decode(jwt)
+}
+
+export const getJWTFromRequest = (request: FastifyRequest) => {
+	if (request.headers.authorization && request.headers.authorization.includes('Bearer')) return request.headers.authorization.split(' ')[1]
+	if (request.headers['X-Api-Key']) return request.headers['X-Api-Key'].toString()
 }
