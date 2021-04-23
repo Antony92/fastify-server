@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "test": "ts-node ./src/tests/main.spec.ts"
   },
   "author": "aasenov",
   "license": "MIT",
