@@ -1,5 +1,5 @@
 import { FastifyRequest } from 'fastify'
-import { User } from '../model/user.model'
+import { User } from '../models/user.model'
 import { getJWTFromRequest, getJWTPayload } from '../auth/jwt.auth'
 
 export const hasRole = (request: FastifyRequest, roles: string[]) => {
