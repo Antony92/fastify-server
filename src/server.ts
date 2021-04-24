@@ -13,16 +13,16 @@ import config from './config'
 
 process.env.NODE_ENV = config.environment
 
-const certKey = `${__dirname}/pk/ssl.key`
-const cert = `${__dirname}/pk/ssl.cer`
+const certKeyPath = path.resolve(__dirname, 'pk/ssl.key')
+const certPath = path.resolve(__dirname, 'pk/ssl.cer')
 
 // Init fastify server with config
 const server = fastify({
 	// http2: true,
 	// https: {
 	// 	allowHTTP1: true,
-	// 	key: fs.existsSync(certKey) ? fs.readFileSync(certKey, 'utf8') : null,
-    //     cert: fs.existsSync(cert) ? fs.readFileSync(cert, 'utf8') : null
+	// 	key: fs.existsSync(certKeyPath) ? fs.readFileSync(certKeyPath, 'utf8') : null,
+	// 	cert: fs.existsSync(certPath) ? fs.readFileSync(certPath, 'utf8') : null,
 	// },
 	logger: true,
 })
@@ -51,4 +51,5 @@ server.setNotFoundHandler(async (request, reply) => {
 server.register(healthRoute, { prefix: '/api/v1' })
 server.register(testRoute, { prefix: '/api/v1' })
 
+// testing
 export default server

@@ -2,14 +2,15 @@ import { FastifyRequest } from 'fastify'
 import fs from 'fs'
 import { sign, decode, verify } from 'jsonwebtoken'
 import config from '../config'
+import path from 'path'
 
 const algorithm = 'RS256'
 const issuer = config.jwt.issuer
 const audience = config.jwt.audience
 const expiresIn = config.jwt.expire
 
-const privateKeyPath = `${__dirname}/pk/jwt.priv`
-const publicKeyPath = `${__dirname}/pk/jwt.pub`
+const privateKeyPath = path.resolve(__dirname, 'pk/jwt.priv')
+const publicKeyPath = path.resolve(__dirname, 'pk/jwt.pub')
 
 const privateKey = fs.existsSync(privateKeyPath) ? fs.readFileSync(privateKeyPath, 'utf8') : null
 const publicKey = fs.existsSync(publicKeyPath) ? fs.readFileSync(publicKeyPath, 'utf8') : null
