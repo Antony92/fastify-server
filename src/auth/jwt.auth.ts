@@ -9,8 +9,8 @@ const issuer = config.jwt.issuer
 const audience = config.jwt.audience
 const expiresIn = config.jwt.expire
 
-const privateKeyPath = path.resolve(__dirname, 'pk/jwt.priv')
-const publicKeyPath = path.resolve(__dirname, 'pk/jwt.pub')
+const privateKeyPath = path.resolve(__dirname, '../pk/jwt.priv')
+const publicKeyPath = path.resolve(__dirname, '../pk/jwt.pub')
 
 const privateKey = fs.existsSync(privateKeyPath) ? fs.readFileSync(privateKeyPath, 'utf8') : null
 const publicKey = fs.existsSync(publicKeyPath) ? fs.readFileSync(publicKeyPath, 'utf8') : null
@@ -33,7 +33,7 @@ export const createJWT = async (payload: any) => {
 }
 
 export const isJWTValid = async (jwt: string) => {
-	return new Promise<boolean>((resolve, reject) => {
+	return new Promise<boolean>((resolve) => {
 		try {
 			verify(jwt, publicKey, {
 				algorithms: [algorithm],
@@ -42,7 +42,7 @@ export const isJWTValid = async (jwt: string) => {
 			})
 			resolve(true)
 		} catch (error) {
-			reject(false)
+			resolve(false)
 		}
 	})
 }
