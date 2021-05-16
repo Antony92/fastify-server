@@ -16,16 +16,18 @@ process.env.NODE_ENV = config.environment
 const certKeyPath = path.resolve(__dirname, 'pk/ssl.key')
 const certPath = path.resolve(__dirname, 'pk/ssl.cer')
 
+const options = {
+	http2: config.environment === 'production' ? true : false,
+	https: config.environment === 'production' ? {
+		allowHTTP1: false,
+		key: fs.existsSync(certKeyPath) ? fs.readFileSync(certKeyPath, 'utf8') : null,
+		cert: fs.existsSync(certPath) ? fs.readFileSync(certPath, 'utf8') : null,
+	} : null,
+	logger: false,
+}
+
 // Init fastify server with config
-const server = fastify({
-	// http2: true,
-	// https: {
-	// 	allowHTTP1: true,
-	// 	key: fs.existsSync(certKeyPath) ? fs.readFileSync(certKeyPath, 'utf8') : null,
-	// 	cert: fs.existsSync(certPath) ? fs.readFileSync(certPath, 'utf8') : null,
-	// },
-	logger: true,
-})
+const server = fastify(options)
 
 // Plugins
 server.register(fastifyCompress)
