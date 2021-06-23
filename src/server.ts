@@ -36,7 +36,7 @@ server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyCookie, { secret: 'test' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
-server.setNotFoundHandler(async (request, reply) => {
+server.setNotFoundHandler((request, reply) => {
 	if (request.url.includes('/api')) {
 		reply.status(404).send({
 			message: `Route ${request.method}:${request.url} not found`,
@@ -46,7 +46,6 @@ server.setNotFoundHandler(async (request, reply) => {
 	} else {
 		reply.sendFile('index.html')
 	}
-	return reply
 })
 
 // Routes
