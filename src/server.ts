@@ -38,7 +38,7 @@ server.register(fastifyCookie, { secret: 'test' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
 server.setNotFoundHandler((request, reply) => {
 	if (request.url.includes('/api')) {
-		reply.status(404).send({
+		reply.code(404).send({
 			message: `Route ${request.method}:${request.url} not found`,
 			error: 'Not Found',
 			statusCode: 404,
