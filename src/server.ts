@@ -4,7 +4,7 @@ import fastifyCors from 'fastify-cors'
 import fastifyHelmet from 'fastify-helmet'
 import fastifyStatic from 'fastify-static'
 import fastifyRateLimit from 'fastify-rate-limit'
-import fastifyCookie from 'fastify-cookie'
+import fastifyJwt from 'fastify-jwt'
 import path from 'path'
 import fs from 'fs'
 import healthRoute from './routes/health.route'
@@ -13,17 +13,16 @@ import config from './config'
 
 process.env.NODE_ENV = config.environment
 
-const certKeyPath = path.resolve(__dirname, 'pk/ssl.key')
-const certPath = path.resolve(__dirname, 'pk/ssl.cer')
+const production = config.environment === 'production'
 
 const options = {
-	http2: config.environment === 'production' ? true : false,
-	https: config.environment === 'production' ? {
-		allowHTTP1: false,
-		key: fs.existsSync(certKeyPath) ? fs.readFileSync(certKeyPath, 'utf8') : null,
-		cert: fs.existsSync(certPath) ? fs.readFileSync(certPath, 'utf8') : null,
+	http2: production,
+	https: production ? {
+		allowHTTP1: true,
+		key: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.key'), 'utf8'),
+		cert: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.cer'), 'utf8'),
 	} : null,
-	logger: false,
+	logger: true,
 }
 
 // Init fastify server with config
@@ -31,10 +30,17 @@ const server = fastify(options)
 
 // Plugins
 server.register(fastifyCompress)
+server.register(fastifyJwt, {
+	secret: config.jwt.secret,
+	sign: {
+		iss: config.jwt.issuer,
+		aud: config.jwt.audience,
+		expiresIn: config.jwt.expire
+	}
+})
 server.register(fastifyCors, { origin: '*', exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
-server.register(fastifyCookie, { secret: 'test' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
 server.setNotFoundHandler((request, reply) => {
 	if (request.url.includes('/api')) {

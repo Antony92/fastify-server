@@ -2,7 +2,6 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { RequestAny } from '../types/request.type'
 
 export const testGetHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	console.log(request.params.id)
 	return { message: `Get ${request.params.id} works` }
 }
 
@@ -12,6 +11,11 @@ export const testPostHandler = async (request: FastifyRequest<RequestAny>, reply
 
 export const testSecuredHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
 	return { message: 'Secured' }
+}
+
+export const testLoginHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
+	const token = await reply.jwtSign({ name: 'user', email: 'user@email.com', roles: ['admin'] })
+	return { token }
 }
 
 export const testEventHandler = (request: FastifyRequest, reply: FastifyReply) => {

@@ -1,14 +1,5 @@
-import { FastifyRequest } from 'fastify'
 import { User } from '../models/user.model'
-import { getJWTFromRequest, getJWTPayload } from '../auth/jwt.auth'
 
-export const hasRole = (request: FastifyRequest, roles: string[]) => {
-	try {
-		const jwt = getJWTFromRequest(request)
-		const user = getJWTPayload(jwt) as User
-		return user?.roles.some((role) => roles?.includes(role))
-	} catch (error) {
-		// log error
-		return false
-	}
+export const hasRole = (user: User, roles: string[]) => {
+	return user?.roles.some((role) => roles?.includes(role)) ?? false
 }

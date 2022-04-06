@@ -9,9 +9,10 @@ const config = {
 		rateLimit: process.env.SERVER_RATE_LIMIT ? parseInt(process.env.SERVER_RATE_LIMIT) : 1000,
 	},
 	jwt: {
-		issuer: process.env.JWT_ISSUER || 'default',
-		expire: process.env.JWT_EXPIRE ? parseInt(process.env.JWT_EXPIRE) : 3600,
-		audience: process.env.JWT_AUDIENCE || 'default',
+		issuer: process.env.JWT_ISSUER,
+		expire: process.env.JWT_EXPIRE,
+		audience: process.env.JWT_AUDIENCE,
+		secret: process.env.JWT_SECRET
 	},
 }
 

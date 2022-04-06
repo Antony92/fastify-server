@@ -3,7 +3,7 @@
       "module": "CommonJS",
       "esModuleInterop": true,
       "target": "ES2020",
-      "lib": ["esnext", "dom"],
+      "lib": ["esnext"],
       "moduleResolution": "node",
       "sourceMap": false,
       "rootDir": "./src",
