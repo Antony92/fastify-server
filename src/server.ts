@@ -36,6 +36,9 @@ server.register(fastifyJwt, {
 		iss: config.jwt.issuer,
 		aud: config.jwt.audience,
 		expiresIn: config.jwt.expire
+	},
+	verify: {
+		extractToken: (request) => request.headers['authorization']?.toString().split(' ')[1] || request.headers['x-api-key']?.toString()
 	}
 })
 server.register(fastifyCors, { origin: '*', exposedHeaders: ['*'] })
