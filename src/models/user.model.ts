@@ -1,4 +1,5 @@
 export interface User {
+	jti?: string
 	name: string
 	email: string
 	roles: string[]

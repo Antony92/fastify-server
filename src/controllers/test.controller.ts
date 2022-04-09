@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
+import crypto from 'crypto'
 import { RequestAny } from '../types/request.type'
 
 export const testGetHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
@@ -14,7 +15,7 @@ export const testSecuredHandler = async (request: FastifyRequest<RequestAny>, re
 }
 
 export const testLoginHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	const token = await reply.jwtSign({ name: 'user', email: 'user@email.com', roles: ['admin'] })
+	const token = await reply.jwtSign({ jti: crypto.randomBytes(30).toString('hex') ,name: 'user', email: 'user@email.com', roles: ['admin'] })
 	return { token }
 }
 

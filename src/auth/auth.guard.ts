@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
+import { User } from 'src/models/user.model'
 import { hasRole } from '../helpers/user.helper'
 
 export const secured = (roles?: string[]) => {
@@ -13,4 +14,12 @@ export const secured = (roles?: string[]) => {
 			})
 		}
 	}
+}
+
+export const trustedApiTokens = (request: FastifyRequest, decodedToken: User) => {
+	if (decodedToken.jti) {
+		const allowed = ['token1', 'token2']
+		return !allowed.includes(decodedToken.jti) ? false : decodedToken
+	}
+	return decodedToken
 }

@@ -10,6 +10,7 @@ import fs from 'fs'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
 import config from './config'
+import { trustedApiTokens } from './auth/auth.guard'
 
 process.env.NODE_ENV = config.environment
 
@@ -38,8 +39,10 @@ server.register(fastifyJwt, {
 		expiresIn: config.jwt.expire
 	},
 	verify: {
+		allowedIss: config.jwt.issuer,
 		extractToken: (request) => request.headers['authorization']?.toString().split(' ')[1] || request.headers['x-api-key']?.toString()
-	}
+	},
+	trusted: trustedApiTokens
 })
 server.register(fastifyCors, { origin: '*', exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
