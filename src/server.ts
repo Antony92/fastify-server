@@ -11,23 +11,24 @@ import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
 import config from './config'
 import { trustedApiTokens } from './auth/auth.guard'
+import log from './logger'
 
 process.env.NODE_ENV = config.environment
 
 const production = config.environment === 'production'
 
-const options = {
+const serverOptions = {
 	http2: production,
 	https: production ? {
 		allowHTTP1: true,
 		key: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.key'), 'utf8'),
 		cert: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.cer'), 'utf8'),
 	} : null,
-	logger: true,
+	logger: log
 }
 
 // Init fastify server with config
-const server = fastify(options)
+const server = fastify(serverOptions)
 
 // Plugins
 server.register(fastifyCompress)
@@ -36,13 +37,13 @@ server.register(fastifyJwt, {
 	sign: {
 		iss: config.jwt.issuer,
 		aud: config.jwt.audience,
-		expiresIn: config.jwt.expire
+		expiresIn: config.jwt.expire,
 	},
 	verify: {
 		allowedIss: config.jwt.issuer,
-		extractToken: (request) => request.headers['authorization']?.toString().split(' ')[1] || request.headers['x-api-key']?.toString()
+		extractToken: (request) => request.headers['authorization']?.toString().split(' ')[1] || request.headers['x-api-key']?.toString(),
 	},
-	trusted: trustedApiTokens
+	trusted: trustedApiTokens,
 })
 server.register(fastifyCors, { origin: '*', exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
