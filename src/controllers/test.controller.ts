@@ -3,20 +3,24 @@ import crypto from 'crypto'
 import { RequestAny } from '../types/request.type'
 
 export const testGetHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	return { message: `Get ${request.params.id} works` }
+	reply.send({ message: `Get ${request.params.id} works` })
+	return reply
 }
 
 export const testPostHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	return { message: 'Post works' }
+	reply.send({ message: 'Post works' })
+	return reply
 }
 
 export const testSecuredHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	return { message: 'Secured' }
+	reply.send({ message: 'Secured' })
+	return reply
 }
 
 export const testLoginHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
 	const token = await reply.jwtSign({ jti: crypto.randomBytes(30).toString('hex') ,name: 'user', email: 'user@email.com', roles: ['admin'] })
-	return { token }
+	reply.send({ token })
+	return reply
 }
 
 export const testEventHandler = (request: FastifyRequest, reply: FastifyReply) => {
