@@ -1,6 +1,6 @@
 import pino from 'pino'
 
-const logger = pino(
+const log = pino(
 	{
 		level: 'info',
 		formatters: {
@@ -10,8 +10,8 @@ const logger = pino(
 	pino.multistream(
 		[
 			{ stream: process.stdout },
-			{ level: 'info', stream: pino.destination(`logs/app.log`) },
-			{ level: 'error', stream: pino.destination(`logs/app-error.log`) },
+			{ level: 'info', stream: pino.destination(`./logs/app.log`) },
+			{ level: 'error', stream: pino.destination(`./logs/app-error.log`) },
 		],
 		{
 			dedupe: false
@@ -19,4 +19,4 @@ const logger = pino(
 	)
 )
 
-export default logger
+export default log
