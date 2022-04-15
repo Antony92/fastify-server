@@ -6,13 +6,15 @@ import fastifyStatic from 'fastify-static'
 import fastifyRateLimit from 'fastify-rate-limit'
 import fastifyJwt from 'fastify-jwt'
 import fastifyCookie from 'fastify-cookie'
+import fastifySwagger from 'fastify-swagger'
 import path from 'path'
 import fs from 'fs'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
 import config from './config'
 import { getToken, trustedApiTokens } from './auth/auth.guard'
-import log from './logger'
+import log from './utils/logger'
+import { swaggerOptions } from './utils/swagger'
 
 process.env.NODE_ENV = config.environment
 
@@ -51,6 +53,7 @@ server.register(fastifyCors, { origin: isProduction, exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
+server.register(fastifySwagger, swaggerOptions)
 server.setNotFoundHandler((request, reply) => {
 	if (request.url.includes('/api')) {
 		reply.code(404).send({
