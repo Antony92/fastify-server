@@ -14,7 +14,7 @@ import testRoute from './routes/test.route'
 import config from './config'
 import { getToken, trustedApiTokens } from './auth/auth.guard'
 import log from './utils/logger'
-import { swaggerOptions } from './utils/swagger'
+import { swaggerOptions } from './swagger'
 
 process.env.NODE_ENV = config.environment
 
