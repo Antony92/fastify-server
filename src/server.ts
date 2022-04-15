@@ -15,11 +15,11 @@ import log from './logger'
 
 process.env.NODE_ENV = config.environment
 
-const production = config.environment === 'production'
+const isProduction = config.environment === 'production'
 
 const serverOptions = {
-	http2: production,
-	https: production ? {
+	http2: isProduction,
+	https: isProduction ? {
 		allowHTTP1: true,
 		key: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.key'), 'utf8'),
 		cert: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.cer'), 'utf8'),
@@ -45,7 +45,7 @@ server.register(fastifyJwt, {
 	},
 	trusted: trustedApiTokens,
 })
-server.register(fastifyCors, { origin: '*', exposedHeaders: ['*'] })
+server.register(fastifyCors, { origin: isProduction, exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })

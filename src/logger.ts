@@ -1,5 +1,18 @@
 import pino from 'pino'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
+const multistream = pino.multistream(
+	[
+		{ stream: process.stdout },
+		{ level: 'info', stream: pino.destination(`./logs/app.log`) },
+		{ level: 'error', stream: pino.destination(`./logs/app-error.log`) },
+	],
+	{
+		dedupe: false,
+	}
+)
+
 const log = pino(
 	{
 		level: 'info',
@@ -7,16 +20,7 @@ const log = pino(
 			level: (label: string) => ({ level: label }),
 		},
 	},
-	pino.multistream(
-		[
-			{ stream: process.stdout },
-			{ level: 'info', stream: pino.destination(`./logs/app.log`) },
-			{ level: 'error', stream: pino.destination(`./logs/app-error.log`) },
-		],
-		{
-			dedupe: false
-		}
-	)
+	isProduction ? multistream : null
 )
 
 export default log
