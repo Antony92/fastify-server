@@ -14,6 +14,10 @@ const config = {
 		audience: process.env.JWT_AUDIENCE,
 		secret: process.env.JWT_SECRET
 	},
+	cookie: {
+		secret: process.env.COOKIE_SECRET,
+		expire: process.env.COOKIE_EXPIRE
+	}
 }
 
 export default config

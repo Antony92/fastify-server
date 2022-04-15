@@ -18,8 +18,16 @@ export const testSecuredHandler = async (request: FastifyRequest<RequestAny>, re
 }
 
 export const testLoginHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	const token = await reply.jwtSign({ jti: crypto.randomBytes(30).toString('hex') ,name: 'user', email: 'user@email.com', roles: ['admin'] })
-	reply.send({ token })
+	const token = await reply.jwtSign({ jti: crypto.randomBytes(30).toString('hex'), name: 'user', email: 'user@email.com', roles: ['admin'] })
+	reply
+		.cookie('jwt', token, {
+			httpOnly: true,
+			secure: true,
+			sameSite: true,
+			path: '/',
+			expires: new Date(Date.now() + 50000),
+		})
+		.send({ token })
 	return reply
 }
 

@@ -5,12 +5,13 @@ import fastifyHelmet from 'fastify-helmet'
 import fastifyStatic from 'fastify-static'
 import fastifyRateLimit from 'fastify-rate-limit'
 import fastifyJwt from 'fastify-jwt'
+import fastifyCookie from 'fastify-cookie'
 import path from 'path'
 import fs from 'fs'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
 import config from './config'
-import { trustedApiTokens } from './auth/auth.guard'
+import { getToken, trustedApiTokens } from './auth/auth.guard'
 import log from './logger'
 
 process.env.NODE_ENV = config.environment
@@ -24,7 +25,7 @@ const serverOptions = {
 		key: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.key'), 'utf8'),
 		cert: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.cer'), 'utf8'),
 	} : null,
-	logger: log
+	logger: log,
 }
 
 // Init fastify server with config
@@ -41,10 +42,11 @@ server.register(fastifyJwt, {
 	},
 	verify: {
 		allowedIss: config.jwt.issuer,
-		extractToken: (request) => request.headers['authorization']?.toString().split(' ')[1] || request.headers['x-api-key']?.toString(),
+		extractToken: getToken,
 	},
 	trusted: trustedApiTokens,
 })
+server.register(fastifyCookie, { secret: config.cookie.secret })
 server.register(fastifyCors, { origin: isProduction, exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })

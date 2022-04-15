@@ -23,3 +23,7 @@ export const trustedApiTokens = (request: FastifyRequest, decodedToken: User) =>
 	}
 	return decodedToken
 }
+
+export const getToken = (request: FastifyRequest) => {
+	return request.headers['authorization']?.toString().split(' ')[1] || request.headers['x-api-key']?.toString() || request.cookies.jwt
+}

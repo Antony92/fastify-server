@@ -6,7 +6,7 @@ import { testSchemaBody } from '../schema/test.schema'
 const testRoute = async (fastify: FastifyInstance) => {
     fastify.get('/test/:id', testGetHandler)
     fastify.post('/test', { schema: testSchemaBody }, testPostHandler)
-    fastify.post('/test/login', testLoginHandler)
+    fastify.get('/test/login', testLoginHandler)
     fastify.get('/test/secured', { onRequest: secured() }, testSecuredHandler)
     fastify.get('/test/admin', { onRequest: secured(['admin'])}, testSecuredHandler)
     fastify.get('/test/event', testEventHandler)
