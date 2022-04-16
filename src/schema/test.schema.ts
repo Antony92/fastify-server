@@ -44,6 +44,7 @@ export const testSecuredSchema: FastifySchema = {
 	security: [
 		{
 			apiKey: [],
+			bearerAuth: []
 		},
 	],
 
@@ -56,6 +57,7 @@ export const testAdminSchema: FastifySchema = {
 	security: [
 		{
 			apiKey: [],
+			bearerAuth: []
 		},
 	],
 }

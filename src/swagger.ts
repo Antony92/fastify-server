@@ -31,6 +31,11 @@ export const swaggerOptions: SwaggerOptions = {
 		],
 		components: {
 			securitySchemes: {
+				bearerAuth: {
+					type: 'http',
+					scheme: 'bearer',
+					bearerFormat: 'JWT'
+				},
 				apiKey: {
 					type: 'apiKey',
 					name: 'x-api-key',
