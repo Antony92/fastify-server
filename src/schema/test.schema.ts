@@ -31,6 +31,7 @@ export const testGetByIdSchema: FastifySchema = {
 }
 
 export const testUploadSchema: FastifySchema = {
+	hide: true,
 	tags: ['Test'],
 	description: 'Test upload route',
 	consumes: ['multipart/form-data']
