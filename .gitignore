@@ -4,6 +4,9 @@
 # private keys
 /src/pk
 
+# tmp folder
+/src/tmp
+
 # log
 /logs
 

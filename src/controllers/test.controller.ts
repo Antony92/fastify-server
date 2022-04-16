@@ -1,4 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
+import path from 'path'
+import fs from 'fs'
 import { RequestAny } from '../types/request.type'
 
 export const testGetHandler = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -18,6 +20,19 @@ export const testPostHandler = async (request: FastifyRequest<RequestAny>, reply
 		name
 	}
 	reply.send({ message: `Post test works`, test })
+	return reply
+}
+
+export const testUploadHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+	const file = await request.file({
+		limits: {
+			files: 1,
+			fileSize: 17000
+		}
+	})
+	const buffer = await file.toBuffer()
+	fs.writeFileSync(path.resolve(__dirname, `../tmp/${file.filename}`), buffer)
+	reply.send({ message: `Upload file works`, file: file.filename })
 	return reply
 }
 

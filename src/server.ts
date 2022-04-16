@@ -4,6 +4,7 @@ import fastifyCors from 'fastify-cors'
 import fastifyHelmet from 'fastify-helmet'
 import fastifyStatic from 'fastify-static'
 import fastifyRateLimit from 'fastify-rate-limit'
+import fastifyMultipart from 'fastify-multipart'
 import fastifyJwt from 'fastify-jwt'
 import fastifyCookie from 'fastify-cookie'
 import fastifySwagger from 'fastify-swagger'
@@ -54,6 +55,7 @@ server.register(fastifyCors, { origin: isProduction, exposedHeaders: ['*'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
+server.register(fastifyMultipart)
 server.register(fastifySwagger, swaggerOptions)
 server.setNotFoundHandler((request, reply) => {
 	if (request.url.includes('/api')) {
