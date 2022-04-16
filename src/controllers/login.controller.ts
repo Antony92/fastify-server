@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { RequestAny } from '../types/request.type'
 import config from '../config'
-import { getUser } from 'src/services/user.service'
+import { getUser } from '../services/user.service'
 
 const cookieName = 'jwt'
 

@@ -2,7 +2,7 @@ import { FastifySchema } from 'fastify'
 
 export const loginSchema: FastifySchema = {
     tags: ['Authentication'],
-    description: 'Token authentication',
+    description: 'Login route',
 	body: {
 		type: 'object',
 		required: ['email', 'password'],
@@ -14,4 +14,9 @@ export const loginSchema: FastifySchema = {
 			password: { type: 'string' },
 		},
 	},
+}
+
+export const logoutSchema: FastifySchema = {
+	tags: ['Authentication'],
+    description: 'Logout route',
 }

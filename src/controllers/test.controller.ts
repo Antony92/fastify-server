@@ -7,7 +7,7 @@ export const testGetHandler = async (request: FastifyRequest, reply: FastifyRepl
 }
 
 export const testGetByIdHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	reply.send({ message: `Get test ${request.params.id} works` })
+	reply.send({ message: `Get test by id works`, id: request.params.id })
 	return reply
 }
 
@@ -17,17 +17,17 @@ export const testPostHandler = async (request: FastifyRequest<RequestAny>, reply
 		number,
 		name
 	}
-	reply.send({ message: `Post test ${JSON.stringify(test)} works` })
+	reply.send({ message: `Post test works`, test })
 	return reply
 }
 
 export const testSecuredHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.send({ message: `Secured by logged user ${JSON.stringify(request.user)}` })
+	reply.send({ message: `Secured by logged user`, user: request.user })
 	return reply
 }
 
 export const testAdminHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.send({ message: `Secured by role admin ${JSON.stringify(request.user)}` })
+	reply.send({ message: `Secured by role admin`, user: request.user })
 	return reply
 }
 
