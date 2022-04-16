@@ -9,12 +9,13 @@ import fastifyCookie from 'fastify-cookie'
 import fastifySwagger from 'fastify-swagger'
 import path from 'path'
 import fs from 'fs'
-import healthRoute from './routes/health.route'
-import testRoute from './routes/test.route'
 import config from './config'
 import { getToken, trustedApiTokens } from './auth/auth.guard'
 import log from './utils/logger'
 import { swaggerOptions } from './swagger'
+import healthRoute from './routes/health.route'
+import testRoute from './routes/test.route'
+import loginRoute from './routes/login.route'
 
 process.env.NODE_ENV = config.environment
 
@@ -69,6 +70,7 @@ server.setNotFoundHandler((request, reply) => {
 // Routes
 server.register(healthRoute, { prefix: '/api/v1' })
 server.register(testRoute, { prefix: '/api/v1' })
+server.register(loginRoute, { prefix: '/api/v1'})
 
 // testing
 export default server

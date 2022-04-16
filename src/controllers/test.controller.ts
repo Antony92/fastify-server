@@ -1,33 +1,33 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import crypto from 'crypto'
 import { RequestAny } from '../types/request.type'
 
-export const testGetHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	reply.send({ message: `Get ${request.params.id} works` })
+export const testGetHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+	reply.send({ message: `Get test works` })
+	return reply
+}
+
+export const testGetByIdHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
+	reply.send({ message: `Get test ${request.params.id} works` })
 	return reply
 }
 
 export const testPostHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	reply.send({ message: 'Post works' })
+	const { number, name } = request.body
+	const test = {
+		number,
+		name
+	}
+	reply.send({ message: `Post test ${JSON.stringify(test)} works` })
 	return reply
 }
 
-export const testSecuredHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	reply.send({ message: 'Secured' })
+export const testSecuredHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+	reply.send({ message: 'Secured by logged user' })
 	return reply
 }
 
-export const testLoginHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	const token = await reply.jwtSign({ jti: crypto.randomBytes(30).toString('hex'), name: 'user', email: 'user@email.com', roles: ['admin'] })
-	reply
-		.cookie('jwt', token, {
-			httpOnly: true,
-			secure: true,
-			sameSite: true,
-			path: '/',
-			expires: new Date(Date.now() + 50000),
-		})
-		.send({ token })
+export const testAdminHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+	reply.send({ message: 'Secured by role admin' })
 	return reply
 }
 

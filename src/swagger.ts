@@ -21,6 +21,10 @@ export const swaggerOptions: SwaggerOptions = {
 		},
 		tags: [
 			{
+				name: 'Authentication',
+				description: 'Authentication API'
+			},
+			{
 				name: 'Test',
 				description: 'Test API',
 			},

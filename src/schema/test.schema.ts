@@ -1,15 +1,14 @@
 import { FastifySchema } from 'fastify'
 
-export const testSchemaBody: FastifySchema = {
+export const testPostSchema: FastifySchema = {
+	tags: ['Test'],
+	description: 'Test post',
 	body: {
 		type: 'object',
-		required: ['email'],
+		required: ['number'],
 		properties: {
-			email: {
-				type: 'string',
-				format: 'email',
-			},
 			number: { type: 'number' },
+			name: { type: 'string' }
 		},
 	},
 }
