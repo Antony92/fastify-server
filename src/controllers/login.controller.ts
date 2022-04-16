@@ -1,20 +1,13 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import crypto from 'crypto'
 import { RequestAny } from '../types/request.type'
 import config from '../config'
-import { User } from '../models/user.model'
+import { getUser } from 'src/services/user.service'
 
 const cookieName = 'jwt'
 
 export const loginHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
 	const { email, password } = request.body
-	// check against db
-    const user: User = {
-        email,
-        name: 'user',
-        roles: ['admin'],
-        jti: crypto.randomBytes(30).toString('hex')
-    }
+    const user = await getUser(email, password)
 	const token = await reply.jwtSign(user)
 	reply
 		.cookie(cookieName, token, {

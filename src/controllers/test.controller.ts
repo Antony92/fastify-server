@@ -22,12 +22,12 @@ export const testPostHandler = async (request: FastifyRequest<RequestAny>, reply
 }
 
 export const testSecuredHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.send({ message: 'Secured by logged user' })
+	reply.send({ message: `Secured by logged user ${JSON.stringify(request.user)}` })
 	return reply
 }
 
 export const testAdminHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.send({ message: 'Secured by role admin' })
+	reply.send({ message: `Secured by role admin ${JSON.stringify(request.user)}` })
 	return reply
 }
 
