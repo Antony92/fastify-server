@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 
-dotenv.config({ path: `${__dirname}/.env` })
+dotenv.config()
 
 const config = {
 	environment: process.env.ENVIRONMENT || 'development',
