@@ -51,7 +51,7 @@ server.register(fastifyJwt, {
 	trusted: trustedApiTokens,
 })
 server.register(fastifyCookie, { secret: config.cookie.secret })
-server.register(fastifyCors, { origin: isProduction, exposedHeaders: ['*'] })
+server.register(fastifyCors, { origin: ['http://localhost:8080'], allowedHeaders: ['Content-Type', 'Authorization'] })
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
