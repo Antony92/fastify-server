@@ -27,11 +27,11 @@ export const testUploadHandler = async (request: FastifyRequest, reply: FastifyR
 	const file = await request.file({
 		limits: {
 			files: 1,
-			fileSize: 17000
+			fileSize: 1 * 1024 * 1024 // 1MB
 		}
 	})
 	const buffer = await file.toBuffer()
-	fs.writeFileSync(path.resolve(__dirname, `../tmp/${file.filename}`), buffer)
+	fs.writeFileSync(path.resolve(__dirname, `../../tmp/${file.filename}`), buffer)
 	reply.send({ message: `Upload file works`, file: file.filename })
 	return reply
 }
