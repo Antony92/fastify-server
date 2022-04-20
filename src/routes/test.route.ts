@@ -8,7 +8,7 @@ const testRoute = async (fastify: FastifyInstance) => {
 	fastify.get('/test', { schema: testGetSchema }, testGetHandler)
 	fastify.get('/test/:id', { schema: testGetByIdSchema }, testGetByIdHandler)
 	fastify.post('/test', { schema: testPostSchema }, testPostHandler)
-	fastify.post('/test/upload', { schema: testUploadSchema, compress: false }, testUploadHandler)
+	fastify.post('/test/upload', { schema: testUploadSchema }, testUploadHandler)
 	fastify.get('/test/secured', { onRequest: secured(), schema: testSecuredSchema }, testSecuredHandler)
 	fastify.get('/test/admin', { onRequest: secured([Roles.ADMIN]), schema: testAdminSchema }, testSecuredHandler)
 	fastify.get('/test/event', testEventHandler)
