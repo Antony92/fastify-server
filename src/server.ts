@@ -55,7 +55,7 @@ server.register(fastifyCors, { origin: ['http://localhost:8080'], allowedHeaders
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
-server.register(fastifyMultipart)
+server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } })
 server.register(fastifySwagger, swaggerOptions)
 server.setNotFoundHandler((request, reply) => {
 	if (request.url.includes('/api')) {
