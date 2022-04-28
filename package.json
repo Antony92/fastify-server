@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "dev": "nodemon",
+    "build": "tsc -p .",
     "test:functional": "mocha -r ts-node/register src/tests/functional/*.spec.ts",
     "test:integration": "mocha -r ts-node/register src/tests/integration/*.spec.ts",
     "test:main": "ts-node src/tests/main.test.ts"
