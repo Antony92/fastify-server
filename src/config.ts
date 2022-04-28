@@ -10,14 +10,14 @@ const config = {
 	},
 	jwt: {
 		issuer: process.env.JWT_ISSUER,
-		expire: process.env.JWT_EXPIRE ?? '1h',
+		expire: process.env.JWT_EXPIRE ?? '15m',
 		audience: process.env.JWT_AUDIENCE,
 		secret: process.env.JWT_SECRET
 	},
 	cookie: {
 		name: process.env.COOKIE_NAME || 'jwt',
 		secret: process.env.COOKIE_SECRET,
-		expire: process.env.COOKIE_EXPIRE ? parseInt(process.env.COOKIE_EXPIRE) : 10000
+		expire: process.env.COOKIE_EXPIRE ? parseInt(process.env.COOKIE_EXPIRE) : 900000
 	}
 }
 
