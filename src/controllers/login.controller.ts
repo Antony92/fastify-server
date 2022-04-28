@@ -7,7 +7,11 @@ export const loginHandler = async (request: FastifyRequest<RequestAny>, reply: F
 	const { email, password } = request.body
 	const user = await getUser(email, password)
 	if (!user) {
-		reply.status(401).send({ message: 'Wrong email or password' })
+		reply.status(401).send({
+			message: 'Wrong email or password',
+			error: 'Login',
+			statusCode: 403,
+		})
 		return reply
 	}
 	const token = await reply.jwtSign(user)
