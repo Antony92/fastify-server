@@ -15,6 +15,7 @@ const config = {
 		secret: process.env.JWT_SECRET
 	},
 	cookie: {
+		name: process.env.COOKIE_NAME || 'jwt',
 		secret: process.env.COOKIE_SECRET,
 		expire: process.env.COOKIE_EXPIRE ? parseInt(process.env.COOKIE_EXPIRE) : 10000
 	}

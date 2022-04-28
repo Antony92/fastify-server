@@ -11,7 +11,7 @@ import fastifySwagger from '@fastify/swagger'
 import path from 'path'
 import fs from 'fs'
 import config from './config'
-import { getToken, trustedApiTokens } from './auth/auth.guard'
+import { trustedApiTokens } from './auth/auth.guard'
 import log from './utils/logger'
 import { swaggerOptions } from './swagger'
 import healthRoute from './routes/health.route'
@@ -39,14 +39,17 @@ const server = fastify(serverOptions)
 server.register(fastifyCompress)
 server.register(fastifyJwt, {
 	secret: config.jwt.secret,
+	cookie: {
+		cookieName: 'jwt',
+		signed: false
+	},
 	sign: {
 		iss: config.jwt.issuer,
 		aud: config.jwt.audience,
 		expiresIn: config.jwt.expire,
 	},
 	verify: {
-		allowedIss: config.jwt.issuer,
-		extractToken: getToken,
+		allowedIss: config.jwt.issuer
 	},
 	trusted: trustedApiTokens,
 })

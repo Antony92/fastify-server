@@ -3,14 +3,16 @@ import { RequestAny } from '../types/request.type'
 import config from '../config'
 import { getUser } from '../services/user.service'
 
-const cookieName = 'jwt'
-
 export const loginHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
 	const { email, password } = request.body
-    const user = await getUser(email, password)
+	const user = await getUser(email, password)
+	if (!user) {
+		reply.status(401).send({ message: 'Wrong email or password' })
+		return reply
+	}
 	const token = await reply.jwtSign(user)
 	reply
-		.cookie(cookieName, token, {
+		.cookie(config.cookie.name, token, {
 			httpOnly: true,
 			secure: true,
 			sameSite: true,
@@ -22,6 +24,6 @@ export const loginHandler = async (request: FastifyRequest<RequestAny>, reply: F
 }
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.clearCookie(cookieName).send({ message: 'Logout successful' })
+	reply.clearCookie(config.cookie.name).send({ message: 'Logout successful' })
 	return reply
 }
