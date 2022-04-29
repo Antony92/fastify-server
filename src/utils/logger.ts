@@ -1,7 +1,10 @@
 import pino from 'pino'
+import fs from 'fs'
 import config from '../config'
 
 const isProduction = process.env.NODE_ENV === 'production' || config.environment === 'production'
+
+!fs.existsSync('./logs') && fs.mkdirSync('./logs')
 
 const multistream = pino.multistream(
 	[
