@@ -40,7 +40,7 @@ server.register(fastifyCompress)
 server.register(fastifyJwt, {
 	secret: config.jwt.secret,
 	cookie: {
-		cookieName: 'jwt',
+		cookieName: config.cookie.name,
 		signed: false
 	},
 	sign: {
