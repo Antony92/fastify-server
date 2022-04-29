@@ -17,7 +17,7 @@ const config = {
 	cookie: {
 		name: process.env.COOKIE_NAME || 'jwt',
 		secret: process.env.COOKIE_SECRET,
-		expire: process.env.COOKIE_EXPIRE ? parseInt(process.env.COOKIE_EXPIRE) : 900000
+		expire: process.env.COOKIE_EXPIRE ? parseInt(process.env.COOKIE_EXPIRE) : 15 * 1000 * 60 // 15 min
 	}
 }
 
