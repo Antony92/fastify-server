@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { User } from 'src/models/user.model'
+import { User } from '../models/user.model'
 import { hasRole } from '../helpers/user.helper'
 
 export const secured = (roles?: string[]) => {
