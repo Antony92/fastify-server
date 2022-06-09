@@ -3,7 +3,7 @@ import server from './server'
 
 const start = async () => {
 	try {
-		await server.listen(config.server.port)
+		await server.listen({ port: config.server.port })
 	} catch (err) {
 		server.log.error(err)
 		process.exit(1)
