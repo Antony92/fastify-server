@@ -12,7 +12,6 @@ import path from 'path'
 import fs from 'fs'
 import config from './config'
 import { trustedApiTokens } from './auth/auth.guard'
-import log from './utils/logger'
 import { swaggerOptions } from './swagger'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
@@ -29,7 +28,7 @@ const serverOptions = {
 		key: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.key'), 'utf8'),
 		cert: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.cer'), 'utf8'),
 	} : null,
-	logger: log,
+	logger: true
 }
 
 // Init fastify server with config
