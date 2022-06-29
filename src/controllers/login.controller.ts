@@ -1,9 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { RequestAny } from '../types/request.type'
+import { LoginRequest } from '../types/request.type'
 import config from '../config'
 import { getUser } from '../services/user.service'
 
-export const loginHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
+export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply: FastifyReply) => {
 	const { email, password } = request.body
 	const user = await getUser(email, password)
 	if (!user) {

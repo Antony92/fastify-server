@@ -1,18 +1,18 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { RequestAny } from '../types/request.type'
 
 export const testGetHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	reply.send({ message: `Get test works` })
 	return reply
 }
 
-export const testGetByIdHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	reply.send({ message: `Get test by id works`, id: request.params.id })
+export const testGetByIdHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+	const { id } = request.params as any
+	reply.send({ message: `Get test by id works`, id })
 	return reply
 }
 
-export const testPostHandler = async (request: FastifyRequest<RequestAny>, reply: FastifyReply) => {
-	const { number, name } = request.body
+export const testPostHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+	const { number, name } = request.body as any
 	const test = {
 		number,
 		name
