@@ -9,7 +9,6 @@ import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
 import fastifySwagger from '@fastify/swagger'
 import path from 'path'
-import fs from 'fs'
 import config from './config'
 import { trustedApiTokens } from './auth/auth.guard'
 import { swaggerOptions } from './swagger'
@@ -19,20 +18,10 @@ import loginRoute from './routes/login.route'
 
 process.env.NODE_ENV = config.environment
 
-const isProduction = config.environment === 'production'
-
-const serverOptions = {
-	http2: isProduction,
-	https: isProduction ? {
-		allowHTTP1: true,
-		key: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.key'), 'utf8'),
-		cert: fs.readFileSync(path.resolve(__dirname, 'pk/ssl.cer'), 'utf8'),
-	} : null,
-	logger: true
-}
-
-// Init fastify server with config
-const server = fastify(serverOptions)
+// Init fastify server
+const server = fastify({
+	logger: true,
+})
 
 // Plugins
 server.register(fastifyCompress)
