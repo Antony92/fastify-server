@@ -34,7 +34,8 @@ export const testUploadSchema: FastifySchema = {
 	hide: true,
 	tags: ['Test'],
 	description: 'Test upload route',
-	consumes: ['multipart/form-data']
+	consumes: ['multipart/form-data'],
+	produces: ['application/json']
 }
 
 export const testSecuredSchema: FastifySchema = {
@@ -52,7 +53,7 @@ export const testSecuredSchema: FastifySchema = {
 
 export const testAdminSchema: FastifySchema = {
 	tags: ['Test'],
-	description: 'Test admin reoute',
+	description: 'Test admin route',
 	produces: ['application/json'],
 	security: [
 		{
