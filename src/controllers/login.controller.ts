@@ -26,6 +26,6 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 }
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.clearCookie(config.cookie.name).send({ message: 'Logout successful' })
-	return reply
+	reply.clearCookie(config.cookie.name)
+	return { message: 'Logout successful' }
 }
