@@ -1,6 +1,6 @@
 import { SwaggerOptions } from '@fastify/swagger'
 
-export const swaggerOptions: SwaggerOptions = {
+const swaggerOptions: SwaggerOptions = {
 	routePrefix: '/documentation',
 	exposeRoute: true,
 	openapi: {
@@ -45,3 +45,5 @@ export const swaggerOptions: SwaggerOptions = {
 		},
 	},
 }
+
+export default swaggerOptions
