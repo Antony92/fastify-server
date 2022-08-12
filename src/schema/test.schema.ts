@@ -10,7 +10,7 @@ export const testPostSchema: FastifySchema = {
 		required: ['number'],
 		properties: {
 			number: { type: 'number' },
-			name: { type: 'string' }
+			name: { type: 'string' },
 		},
 	},
 }
@@ -26,8 +26,8 @@ export const testGetByIdSchema: FastifySchema = {
 	description: 'Test get by id route',
 	produces: ['application/json'],
 	params: {
-		id: { type: 'number'}
-	}
+		id: { type: 'number' },
+	},
 }
 
 export const testUploadSchema: FastifySchema = {
@@ -35,7 +35,7 @@ export const testUploadSchema: FastifySchema = {
 	tags: ['Test'],
 	description: 'Test upload route',
 	consumes: ['multipart/form-data'],
-	produces: ['application/json']
+	produces: ['application/json'],
 }
 
 export const testSecuredSchema: FastifySchema = {
@@ -44,11 +44,9 @@ export const testSecuredSchema: FastifySchema = {
 	produces: ['application/json'],
 	security: [
 		{
-			apiKey: [],
-			bearerAuth: []
+			bearerAuth: [],
 		},
 	],
-
 }
 
 export const testAdminSchema: FastifySchema = {
@@ -57,8 +55,7 @@ export const testAdminSchema: FastifySchema = {
 	produces: ['application/json'],
 	security: [
 		{
-			apiKey: [],
-			bearerAuth: []
+			bearerAuth: [],
 		},
 	],
 }
