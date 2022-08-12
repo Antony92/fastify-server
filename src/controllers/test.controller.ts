@@ -1,24 +1,17 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 
 export const testGetHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.send({ message: `Get test works` })
-	return reply
+	return { message: `Get test works` }
 }
 
 export const testGetByIdHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	const { id } = request.params as any
-	reply.send({ message: `Get test by id works`, id })
-	return reply
+	return { message: `Get test by id works`, id }
 }
 
 export const testPostHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	const { number, name } = request.body as any
-	const test = {
-		number,
-		name
-	}
-	reply.send({ message: `Post test works`, test })
-	return reply
+	return { number, name }
 }
 
 export const testUploadHandler = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -28,18 +21,15 @@ export const testUploadHandler = async (request: FastifyRequest, reply: FastifyR
 			fileSize: 1 * 1024 * 1024 // 1MB
 		}
 	})
-	reply.send({ message: `Upload file works` })
-	return reply
+	return { message: `Upload file works` }
 }
 
 export const testSecuredHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.send({ message: `Secured by logged user`, user: request.user })
-	return reply
+	return { message: `Secured by logged user`, user: request.user }
 }
 
 export const testAdminHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.send({ message: `Secured by role admin`, user: request.user })
-	return reply
+	return { message: `Secured by role admin`, user: request.user }
 }
 
 export const testEventHandler = (request: FastifyRequest, reply: FastifyReply) => {

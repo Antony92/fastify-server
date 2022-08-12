@@ -7,24 +7,22 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 	const { email, password } = request.body
 	const user = await getUser(email, password)
 	if (!user) {
-		reply.status(401).send({
+		reply.status(401)
+		return {
 			message: 'Wrong email or password',
 			error: 'Login',
 			statusCode: 403,
-		})
-		return reply
+		}
 	}
 	const token = await reply.jwtSign(user)
-	reply
-		.cookie(config.cookie.name, token, {
-			httpOnly: true,
-			secure: true,
-			sameSite: true,
-			path: '/',
-			expires: new Date(Date.now() + config.cookie.expire),
-		})
-		.send({ token })
-	return reply
+	reply.cookie(config.cookie.name, token, {
+		httpOnly: true,
+		secure: true,
+		sameSite: true,
+		path: '/',
+		expires: new Date(Date.now() + config.cookie.expire),
+	})
+	return { token }
 }
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
