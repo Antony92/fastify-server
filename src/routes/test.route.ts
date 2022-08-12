@@ -6,6 +6,7 @@ import {
 	testEventHandler,
 	testGetByIdHandler,
 	testUploadHandler,
+	testAdminHandler,
 } from '../controllers/test.controller'
 import { secured } from '../auth/auth.guard'
 import { testGetByIdSchema, testGetSchema, testSecuredSchema, testPostSchema, testAdminSchema, testUploadSchema } from '../schema/test.schema'
@@ -17,7 +18,7 @@ const testRoute = async (fastify: FastifyInstance) => {
 	fastify.post('/test', { schema: testPostSchema }, testPostHandler)
 	fastify.post('/test/upload', { schema: testUploadSchema }, testUploadHandler)
 	fastify.get('/test/secured', { onRequest: secured(), schema: testSecuredSchema }, testSecuredHandler)
-	fastify.get('/test/admin', { onRequest: secured([Roles.ADMIN]), schema: testAdminSchema }, testSecuredHandler)
+	fastify.get('/test/admin', { onRequest: secured([Roles.ADMIN]), schema: testAdminSchema }, testAdminHandler)
 	fastify.get('/test/event', { schema: { hide: true } }, testEventHandler)
 }
 
