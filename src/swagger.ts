@@ -36,11 +36,6 @@ const swaggerOptions: SwaggerOptions = {
 					scheme: 'bearer',
 					bearerFormat: 'JWT'
 				},
-				apiKey: {
-					type: 'apiKey',
-					name: 'x-api-key',
-					in: 'header',
-				},
 			},
 		},
 	},
