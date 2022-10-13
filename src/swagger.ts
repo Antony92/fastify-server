@@ -1,8 +1,6 @@
 import { SwaggerOptions } from '@fastify/swagger'
 
 const swaggerOptions: SwaggerOptions = {
-	routePrefix: '/documentation',
-	exposeRoute: true,
 	openapi: {
 		info: {
 			title: 'Test swagger',
