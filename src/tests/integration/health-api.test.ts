@@ -1,7 +1,5 @@
-import { expect } from 'chai'
+import { expect, describe, it } from 'vitest'
 import server from '../../server'
-
-server.log.level = 'silent'
 
 describe('Health check route', () => {
 	describe('GET /api/v1/health', () => {
@@ -9,7 +7,7 @@ describe('Health check route', () => {
 			const req = await server.inject({ method: 'GET', url: '/api/v1/health' })
             const body = req.json()
             expect(req.statusCode).to.be.eq(200)
-            expect(body).to.have.property('serverInfo')
+            expect(body).to.have.property('uptime')
 		})
 	})
 })

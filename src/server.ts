@@ -21,7 +21,7 @@ process.env.NODE_ENV = config.environment
 
 // Init fastify server
 const server = fastify({
-	logger: true,
+	logger: false,
 })
 
 // Plugins
