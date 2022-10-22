@@ -17,7 +17,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		path: '/',
 		expires: new Date(Date.now() + config.cookie.expire),
 	})
-	return { user, token }
+	return { token }
 }
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
