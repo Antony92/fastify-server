@@ -28,21 +28,3 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 	reply.clearCookie(config.cookie.name)
 	return { message: 'Logout successful' }
 }
-
-export const silentLoginHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	const { email, name, roles } = request.user
-	const token = await reply.jwtSign({
-		jti: crypto.randomBytes(30).toString('hex'),
-		email,
-		name,
-		roles,
-	})
-	reply.cookie(config.cookie.name, token, {
-		httpOnly: true,
-		secure: true,
-		sameSite: true,
-		path: '/',
-		expires: new Date(Date.now() + config.cookie.expire),
-	})
-	return { token }
-}
