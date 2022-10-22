@@ -11,7 +11,6 @@ export enum Roles {
 
 declare module '@fastify/jwt' {
 	interface FastifyJWT {
-		payload: User
 		user: User
 	}
 }
