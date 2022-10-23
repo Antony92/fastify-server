@@ -7,6 +7,7 @@ import fastifyRateLimit from '@fastify/rate-limit'
 import fastifyMultipart from '@fastify/multipart'
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
+import fastifyOauth2 from '@fastify/oauth2'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import path from 'path'
@@ -43,7 +44,26 @@ server.register(fastifyJwt, {
 	trusted: trustedApiTokens,
 })
 server.register(fastifyCookie, { secret: config.cookie.secret })
-server.register(fastifyCors, { origin: ['http://localhost:8080'], allowedHeaders: ['Content-Type', 'Authorization'] })
+server.register(fastifyOauth2, {
+	name: 'googleOAuth2',
+	scope: ['profile', 'email'],
+	credentials: {
+		client: {
+			id: config.google.clientId,
+			secret: config.google.clientSecret,
+		},
+		auth: fastifyOauth2.GOOGLE_CONFIGURATION
+	},
+	startRedirectPath: '/auth/login',
+	callbackUri: config.google.redirect,
+	callbackUriParams: {
+		access_type: 'offline'
+	}
+})
+server.register(fastifyCors, {
+	origin: ['http://localhost:8080'],
+	allowedHeaders: ['Content-Type', 'Authorization'],
+})
 server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
@@ -65,7 +85,7 @@ server.setNotFoundHandler((request, reply) => {
 // Routes
 server.register(healthRoute, { prefix: '/api/v1' })
 server.register(testRoute, { prefix: '/api/v1' })
-server.register(loginRoute, { prefix: '/api/v1' })
+server.register(loginRoute, { prefix: '/auth' })
 
 // testing
 export default server

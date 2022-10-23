@@ -1,10 +1,11 @@
 import { FastifyInstance } from 'fastify'
-import { loginHandler, logoutHandler } from '../controllers/login.controller'
-import { loginSchema, logoutSchema } from '../schema/login.schema'
+import { loginCallbackHandler, loginRefreshHandler, logoutHandler } from '../controllers/login.controller'
+import { logoutSchema } from '../schema/login.schema'
 
 const loginRoute = async (fastify: FastifyInstance) => {
-	fastify.post('/auth/login', { schema: loginSchema }, loginHandler)
-	fastify.get('/auth/logout', { schema: logoutSchema }, logoutHandler)
+	fastify.get('/login/callback', { schema: { hide: true} }, loginCallbackHandler)
+	fastify.post('/login/refresh', { schema: { hide: true} }, loginRefreshHandler)
+	fastify.get('/logout', { schema: logoutSchema }, logoutHandler)
 }
 
 export default loginRoute
