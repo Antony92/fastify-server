@@ -7,12 +7,11 @@ export const secured = (roles?: string[]) => {
 		await request.jwtVerify()
 		const inRole = hasRole(request.user, roles)
 		if (roles && !inRole) {
-			reply.status(403).send({
+			throw {
 				message: `Access denied`,
 				error: 'Access',
 				statusCode: 403,
-			})
-			return reply
+			}
 		}
 	}
 }
