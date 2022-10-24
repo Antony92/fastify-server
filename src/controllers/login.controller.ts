@@ -50,9 +50,9 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 
-	request.server.jwt.verify(request.cookies.jwt)
+	request.server.jwt.verify(request.cookies.refreshJwt)
 
-	const refreshToken = request.server.jwt.decode(request.cookies.jwt) as any
+	const refreshToken = request.server.jwt.decode(request.cookies.refreshJwt) as any
 	const user = await getUser(refreshToken.email)
 
 	if (!user)
