@@ -16,6 +16,8 @@ import swaggerOptions from './swagger'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
 import loginRoute from './routes/login.route'
+import { OAuth2Namespace } from '@fastify/oauth2'
+import { UserToken } from './models/user.model'
 
 process.env.NODE_ENV = config.environment
 
@@ -67,3 +69,17 @@ server.register(loginRoute, { prefix: '/api/v1' })
 
 // testing
 export default server
+
+
+// types
+declare module '@fastify/jwt' {
+	interface FastifyJWT {
+		user: UserToken
+	}
+}
+
+declare module 'fastify' {
+	interface FastifyInstance {
+		microsoftOAuth: OAuth2Namespace
+	}
+}

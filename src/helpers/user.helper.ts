@@ -1,5 +1,5 @@
-import { User } from '../models/user.model'
+import { UserToken } from '../models/user.model'
 
-export const hasRole = (user: User, roles: string[]) => {
+export const hasRole = (user: UserToken, roles: string[]) => {
 	return user?.roles?.some((role) => roles?.includes(role))
 }

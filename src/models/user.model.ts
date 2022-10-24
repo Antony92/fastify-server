@@ -1,5 +1,3 @@
-import { OAuth2Namespace } from '@fastify/oauth2'
-
 export interface User {
 	name: string
 	email: string
