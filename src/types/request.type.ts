@@ -1,7 +1,6 @@
-import { Token } from '@fastify/oauth2'
-
-export type RefreshTokenRequest = {
+export type LoginRequest = {
 	Body: {
-		refreshToken: Token
+		email: string,
+		password: string
 	}
 }

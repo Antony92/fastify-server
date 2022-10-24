@@ -7,7 +7,6 @@ import fastifyRateLimit from '@fastify/rate-limit'
 import fastifyMultipart from '@fastify/multipart'
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
-import fastifyOauth2 from '@fastify/oauth2'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import path from 'path'
@@ -34,9 +33,7 @@ server.register(fastifyJwt, {
 		signed: false,
 	},
 	sign: {
-		iss: config.jwt.issuer,
-		aud: config.jwt.audience,
-		expiresIn: config.jwt.expire,
+		iss: config.jwt.issuer
 	},
 	verify: {
 		allowedIss: config.jwt.issuer,
