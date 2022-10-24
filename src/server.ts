@@ -44,8 +44,9 @@ server.register(fastifyCookie, { secret: config.cookie.secret })
 server.register(fastifyCors, {
 	origin: ['http://localhost:8080'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
+	credentials: true
 })
-server.register(fastifyHelmet)
+server.register(fastifyHelmet, { contentSecurityPolicy: false })
 server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
 server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } })

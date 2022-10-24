@@ -34,7 +34,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 
 	reply.cookie(config.cookie.name, refreshToken, {
 		httpOnly: true,
-		secure: config.environment === 'production',
+		secure: true,
 		sameSite: 'none',
 		path: '/',
 		expires: new Date(Date.now() + config.cookie.expire),
