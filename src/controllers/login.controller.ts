@@ -36,7 +36,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		httpOnly: true,
 		secure: true,
 		sameSite: 'none',
-		path: '/',
+		path: '/api/v1/auth/refresh',
 		expires: new Date(Date.now() + config.cookie.expire),
 	})
 
@@ -44,7 +44,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 }
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.clearCookie(config.cookie.name)
+	reply.clearCookie(config.cookie.name, { path: '/api/v1/auth/refresh' })
 	return { message: 'Logout successful' }
 }
 

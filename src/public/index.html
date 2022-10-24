@@ -8,7 +8,8 @@
 <body>
     Server online
     <button onclick="login()">Login</button>
-    <button onclick="refresh()">Refresh</button>
+    <button onclick="refresh()">Refresh Token</button>
+    <button onclick="secured()">Secured API</button>
     <button onclick="logout()">Logout</button>
     <script>
         const login = async () => {
@@ -27,6 +28,12 @@
             const req = await fetch('http://localhost:8080/api/v1/auth/logout', { method: 'POST' })
             const res = await req.json()
             console.log('Logout:', res)
+        }
+
+        const secured = async () => {
+            const req = await fetch('http://localhost:8080/api/v1/test/secured')
+            const res = await req.json()
+            console.log('Secured:', res)
         }
 
         const refresh = async () => {
