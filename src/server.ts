@@ -27,11 +27,7 @@ const server = fastify({
 // Plugins
 server.register(fastifyCompress)
 server.register(fastifyJwt, {
-	secret: config.jwt.secret,
-	cookie: {
-		cookieName: config.cookie.name,
-		signed: false,
-	},
+	secret: config.jwt.tokenSecret,
 	sign: {
 		iss: config.jwt.issuer
 	},
@@ -40,7 +36,7 @@ server.register(fastifyJwt, {
 	},
 	trusted: trustedApiTokens,
 })
-server.register(fastifyCookie, { secret: config.cookie.secret })
+server.register(fastifyCookie)
 server.register(fastifyCors, {
 	origin: ['http://localhost:8080'],
 	allowedHeaders: ['Content-Type', 'Authorization'],

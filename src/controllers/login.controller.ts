@@ -32,24 +32,25 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		{ expiresIn: config.jwt.refreshTokenExpire }
 	)
 
-	reply.cookie(config.cookie.name, refreshToken, {
+	reply.cookie(config.jwt.jwtRefreshCookieName, refreshToken, {
 		httpOnly: true,
 		secure: true,
 		sameSite: 'none',
 		path: '/api/v1/auth/refresh',
-		expires: new Date(Date.now() + config.cookie.expire),
+		expires: new Date(Date.now() + config.jwt.jwtRefreshCookieExpire),
 	})
 
 	return { accessToken }
 }
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.clearCookie(config.cookie.name, { path: '/api/v1/auth/refresh' })
+	reply.clearCookie(config.jwt.jwtRefreshCookieName, { path: '/api/v1/auth/refresh' })
 	return { message: 'Logout successful' }
 }
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	await request.jwtVerify({ onlyCookie: true } as unknown)
+
+	request.server.jwt.verify(request.cookies.jwt)
 
 	const refreshToken = request.server.jwt.decode(request.cookies.jwt) as any
 	const user = await getUser(refreshToken.email)

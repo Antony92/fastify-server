@@ -12,6 +12,8 @@
     <button onclick="secured()">Secured API</button>
     <button onclick="logout()">Logout</button>
     <script>
+        let accessToken = null
+
         const login = async () => {
             const req = await fetch('http://localhost:8080/api/v1/auth/login', {
                 method: 'POST',
@@ -21,6 +23,7 @@
                 body: JSON.stringify({ email: 'test@email.com', password: 'test' })
             })
             const res = await req.json()
+            accessToken = res.accessToken
             console.log('Login:', res)
         }
 
@@ -31,7 +34,11 @@
         }
 
         const secured = async () => {
-            const req = await fetch('http://localhost:8080/api/v1/test/secured')
+            const req = await fetch('http://localhost:8080/api/v1/test/secured', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
             const res = await req.json()
             console.log('Secured:', res)
         }
@@ -39,6 +46,7 @@
         const refresh = async () => {
             const req = await fetch('http://localhost:8080/api/v1/auth/refresh', { credentials: 'include' })
             const res = await req.json()
+            accessToken = res.accessToken
             console.log('Refresh:', res)
         }
     </script>

@@ -13,13 +13,10 @@ const config = {
 		audience: process.env.JWT_AUDIENCE,
 		accessTokenExpire: process.env.JWT_ACCESS_EXPIRE || '15m',
 		refreshTokenExpire: process.env.JWT_REFRESH_EXPIRE || '1d',
-		secret: process.env.JWT_SECRET
+		tokenSecret: process.env.JWT_SECRET,
+		jwtRefreshCookieName: process.env.JWT_REFRESH_COOKIE_NAME || 'jwt',
+		jwtRefreshCookieExpire: process.env.JWT_REFRESH_COOKIE_EXPIRE ? parseInt(process.env.JWT_REFRESH_COOKIE_EXPIRE) : 24 * 60 * 1000 * 60 // 24 hours
 	},
-	cookie: {
-		name: process.env.COOKIE_NAME || 'jwt',
-		secret: process.env.COOKIE_SECRET,
-		expire: process.env.COOKIE_EXPIRE ? parseInt(process.env.COOKIE_EXPIRE) : 24 * 60 * 1000 * 60 // 24 hours
-	}
 }
 
 export default config
