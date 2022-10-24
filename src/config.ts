@@ -18,11 +18,6 @@ const config = {
 		name: process.env.COOKIE_NAME || 'jwt',
 		secret: process.env.COOKIE_SECRET,
 		expire: process.env.COOKIE_EXPIRE ? parseInt(process.env.COOKIE_EXPIRE) : 15 * 1000 * 60 // 15 min
-	},
-	google: {
-		redirect: process.env.GOOGLE_REDIRECT,
-		clientId: process.env.GOOGLE_CLIENT_ID,
-		clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 	}
 }
 

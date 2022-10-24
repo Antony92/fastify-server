@@ -44,22 +44,6 @@ server.register(fastifyJwt, {
 	trusted: trustedApiTokens,
 })
 server.register(fastifyCookie, { secret: config.cookie.secret })
-server.register(fastifyOauth2, {
-	name: 'googleOAuth2',
-	scope: ['profile', 'email'],
-	credentials: {
-		client: {
-			id: config.google.clientId,
-			secret: config.google.clientSecret,
-		},
-		auth: fastifyOauth2.GOOGLE_CONFIGURATION
-	},
-	startRedirectPath: '/auth/login',
-	callbackUri: config.google.redirect,
-	callbackUriParams: {
-		access_type: 'offline'
-	}
-})
 server.register(fastifyCors, {
 	origin: ['http://localhost:8080'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
@@ -85,7 +69,7 @@ server.setNotFoundHandler((request, reply) => {
 // Routes
 server.register(healthRoute, { prefix: '/api/v1' })
 server.register(testRoute, { prefix: '/api/v1' })
-server.register(loginRoute, { prefix: '/auth' })
+server.register(loginRoute, { prefix: '/api/v1' })
 
 // testing
 export default server

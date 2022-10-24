@@ -19,6 +19,6 @@ declare module '@fastify/jwt' {
 
 declare module 'fastify' {
   interface FastifyInstance {
-    googleOAuth2: OAuth2Namespace;
+    microsoftOAuth: OAuth2Namespace
   }
 }
