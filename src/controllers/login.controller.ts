@@ -12,7 +12,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		throw {
 			message: `Wrong username or password`,
 			error: 'Login',
-			statusCode: 400,
+			statusCode: 401,
 		}
 
 	const accessToken = await reply.jwtSign(
@@ -59,7 +59,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 		throw {
 			message: `User does not exist`,
 			error: 'Login',
-			statusCode: 400,
+			statusCode: 401,
 		}
 
 	const accessToken = await reply.jwtSign(
