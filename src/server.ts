@@ -11,7 +11,7 @@ import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import path from 'path'
 import config from './config'
-import { trustedApiTokens } from './auth/auth.guard'
+import { trustedApiTokens, trustedRefreshTokens } from './auth/auth.guard'
 import swaggerOptions from './swagger'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
@@ -52,7 +52,7 @@ server.register(fastifyJwt, {
 	verify: {
 		allowedIss: config.jwt.issuer,
 	},
-	trusted: trustedApiTokens,
+	trusted: trustedRefreshTokens,
 })
 server.register(fastifyCookie)
 server.register(fastifyCors, {
