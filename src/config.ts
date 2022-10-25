@@ -15,6 +15,7 @@ const config = {
 		refreshTokenExpire: process.env.JWT_REFRESH_EXPIRE || '1d',
 		tokenSecret: process.env.JWT_SECRET,
 		jwtRefreshCookieName: process.env.JWT_REFRESH_COOKIE_NAME || 'refreshJwt',
+		jwtRefreshSecret: process.env.JWT_REFRESH_COOKIE_SECRET,
 		jwtRefreshCookieExpire: process.env.JWT_REFRESH_COOKIE_EXPIRE ? parseInt(process.env.JWT_REFRESH_COOKIE_EXPIRE) : 24 * 60 * 1000 * 60 // 24 hours
 	},
 }

@@ -1,10 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { UserToken } from '../models/user.model'
+import { UserToken } from '../models/jwt.model'
 import { hasRole } from '../helpers/user.helper'
 
 export const secured = (roles?: string[]) => {
 	return async (request: FastifyRequest, reply: FastifyReply) => {
-		await request.jwtVerify()
+		await request.accessJwtVerify()
 		const inRole = hasRole(request.user, roles)
 		if (roles && !inRole) {
 			throw {

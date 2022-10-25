@@ -4,11 +4,6 @@ export interface User {
 	roles: string[]
 }
 
-export interface UserToken extends User {
-	jti: string
-	api?: boolean
-}
-
 export enum Roles {
 	ADMIN = 'admin'
 }

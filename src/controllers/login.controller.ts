@@ -15,7 +15,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 			statusCode: 401,
 		}
 
-	const accessToken = await reply.jwtSign(
+	const accessToken = await reply.accessJwtSign(
 		{
 			jti: crypto.randomUUID(),
 			iss: config.jwt.issuer,
@@ -24,7 +24,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		{ expiresIn: config.jwt.accessTokenExpire }
 	)
 
-	const refreshToken = await reply.jwtSign(
+	const refreshToken = await reply.refreshJwtSign(
 		{
 			jti: crypto.randomUUID(),
 			email: user.email,
@@ -50,10 +50,11 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 
-	request.server.jwt.verify(request.cookies.refreshJwt)
+	await request.refreshJwtVerify()
 
-	const refreshToken = request.server.jwt.decode(request.cookies.refreshJwt) as any
-	const user = await getUser(refreshToken.email)
+	const { email } = request.refreshToken
+
+	const user = await getUser(email)
 
 	if (!user)
 		throw {
@@ -62,7 +63,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			statusCode: 401,
 		}
 
-	const accessToken = await reply.jwtSign(
+	const accessToken = await reply.accessJwtSign(
 		{
 			jti: crypto.randomUUID(),
 			...user,
