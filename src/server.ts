@@ -5,14 +5,7 @@ import fastifyHelmet from '@fastify/helmet'
 import fastifyStatic from '@fastify/static'
 import fastifyRateLimit from '@fastify/rate-limit'
 import fastifyMultipart from '@fastify/multipart'
-import fastifyJwt, {
-	FastifyJwtSignOptions,
-	FastifyJwtVerifyOptions,
-	SignOptions,
-	SignPayloadType,
-	VerifyOptions,
-	VerifyPayloadType,
-} from '@fastify/jwt'
+import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
@@ -23,8 +16,7 @@ import swaggerOptions from './swagger'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
 import loginRoute from './routes/login.route'
-import { OAuth2Namespace } from '@fastify/oauth2'
-import { RefreshToken, UserToken } from './models/jwt.model'
+import './types/fastify.type'
 
 process.env.NODE_ENV = config.environment
 
@@ -93,27 +85,3 @@ server.register(loginRoute, { prefix: '/api/v1' })
 
 // testing
 export default server
-
-// types
-declare module '@fastify/jwt' {
-	interface FastifyJWT {
-		user: UserToken
-	}
-}
-
-declare module 'fastify' {
-	interface FastifyInstance {
-		microsoftOAuth: OAuth2Namespace
-	}
-
-	interface FastifyRequest {
-		accessJwtVerify<Decoded extends VerifyPayloadType>(options?: FastifyJwtVerifyOptions | Partial<VerifyOptions>): Promise<Decoded>
-		refreshJwtVerify<Decoded extends VerifyPayloadType>(options?: FastifyJwtVerifyOptions | Partial<VerifyOptions>): Promise<Decoded>
-		refreshToken: RefreshToken
-	}
-
-	interface FastifyReply {
-		accessJwtSign(payload: SignPayloadType, options?: FastifyJwtSignOptions | Partial<SignOptions>): Promise<string>
-		refreshJwtSign(payload: SignPayloadType, options?: FastifyJwtSignOptions | Partial<SignOptions>): Promise<string>
-	}
-}
