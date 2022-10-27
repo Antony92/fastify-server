@@ -70,16 +70,20 @@ server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
 server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } })
 server.register(fastifySwagger, swaggerOptions)
 server.register(fastifySwaggerUi, { routePrefix: '/documentation' })
-server.setNotFoundHandler((request, reply) => {
-	if (request.url.includes('/api')) {
-		reply.code(404).send({
-			message: `Route ${request.method}:${request.url} not found`,
-			error: 'Not Found',
-			statusCode: 404,
-		})
-	} else {
-		reply.sendFile('index.html')
-	}
+server.setNotFoundHandler(
+	{ 
+		preHandler: server.rateLimit() 
+	}, 
+	(request, reply) => {
+		if (request.url.includes('/api')) {
+			reply.code(404).send({
+				message: `Route ${request.method}:${request.url} not found`,
+				error: 'Not Found',
+				statusCode: 404,
+			})
+		} else {
+			reply.sendFile('index.html')
+		}
 })
 
 // Routes

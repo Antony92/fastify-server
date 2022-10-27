@@ -20,16 +20,14 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		{
 			jti: crypto.randomUUID(),
 			expiresIn: config.jwt.accessTokenExpire,
-			iss: config.jwt.issuer,
 		}
 	)
 
 	const refreshToken = await reply.refreshJwtSign(
 		{ email },
 		{
-			expiresIn: config.jwt.refreshTokenExpire,
 			jti: crypto.randomUUID(),
-			iss: config.jwt.issuer,
+			expiresIn: config.jwt.refreshTokenExpire,
 		}
 	)
 
