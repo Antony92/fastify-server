@@ -1,6 +1,6 @@
 import { User } from "./user.model"
 
-export interface UserToken extends User {
+export interface AccessToken extends User {
 	jti: string
 	api?: boolean
 }

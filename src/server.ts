@@ -56,7 +56,7 @@ server.register(fastifyJwt, {
 })
 server.register(fastifyCookie)
 server.register(fastifyCors, {
-	origin: ['http://localhost:8080'],
+	origin: ['http://localhost:8080', 'http://localhost:5500'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
 	credentials: true,
 })

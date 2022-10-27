@@ -16,26 +16,27 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		}
 
 	const accessToken = await reply.accessJwtSign(
+		{ ...user },
 		{
 			jti: crypto.randomUUID(),
+			expiresIn: config.jwt.accessTokenExpire,
 			iss: config.jwt.issuer,
-			...user,
-		},
-		{ expiresIn: config.jwt.accessTokenExpire }
+		}
 	)
 
 	const refreshToken = await reply.refreshJwtSign(
+		{ email },
 		{
+			expiresIn: config.jwt.refreshTokenExpire,
 			jti: crypto.randomUUID(),
-			email: user.email,
-		},
-		{ expiresIn: config.jwt.refreshTokenExpire }
+			iss: config.jwt.issuer,
+		}
 	)
 
 	reply.cookie(config.jwt.jwtRefreshCookieName, refreshToken, {
 		httpOnly: true,
 		secure: true,
-		sameSite: 'none',
+		sameSite: 'strict',
 		path: '/api/v1/auth/refresh',
 		expires: new Date(Date.now() + config.jwt.jwtRefreshCookieExpire),
 	})
@@ -49,7 +50,6 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 }
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-
 	await request.refreshJwtVerify()
 
 	const { email } = request.refreshToken
@@ -64,13 +64,12 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 		}
 
 	const accessToken = await reply.accessJwtSign(
+		{ ...user },
 		{
+			expiresIn: config.jwt.accessTokenExpire,
 			jti: crypto.randomUUID(),
-			...user,
-		},
-		{ expiresIn: config.jwt.accessTokenExpire }
+		}
 	)
 
 	return { accessToken }
 }
-
