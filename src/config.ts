@@ -11,13 +11,17 @@ const config = {
 	jwt: {
 		issuer: process.env.JWT_ISSUER,
 		audience: process.env.JWT_AUDIENCE,
-		accessTokenExpire: process.env.JWT_ACCESS_EXPIRE || '15m',
-		refreshTokenExpire: process.env.JWT_REFRESH_EXPIRE || '1d',
-		tokenSecret: process.env.JWT_SECRET,
-		jwtRefreshCookieName: process.env.JWT_REFRESH_COOKIE_NAME || 'refreshJwt',
-		jwtRefreshSecret: process.env.JWT_REFRESH_COOKIE_SECRET,
-		jwtRefreshCookieExpire: process.env.JWT_REFRESH_COOKIE_EXPIRE ? parseInt(process.env.JWT_REFRESH_COOKIE_EXPIRE) : 24 * 60 * 1000 * 60 // 24 hours
+		accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
+		refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET,
+		accessTokenExpire: process.env.JWT_ACCESS_TOKEN_EXPIRE || '15m',
+		refreshTokenExpire: process.env.JWT_REFRESH_TOKEN_EXPIRE || '1d',
 	},
+	cookies: {
+		accessName: process.env.COOKIE_ACCESS_NAME || 'accessToken',
+		refreshName: process.env.COOKIE_REFRESH_NAME || 'refreshToken',
+		accessExpire: process.env.COOKIE_ACCESS_EXPIRE ? parseInt(process.env.COOKIE_ACCESS_EXPIRE) : 15 * 1000 * 60, // 15 minutes
+		refreshExpire: process.env.COOKIE_REFRESH_EXPIRE ? parseInt(process.env.COOKIE_REFRESH_EXPIRE) : 24 * 60 * 1000 * 60 // 24 hours
+	}
 }
 
 export default config

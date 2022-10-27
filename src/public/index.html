@@ -1,53 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset='utf-8'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-</head>
-<body>
-    Server online
-    <button onclick="login()">Login</button>
-    <button onclick="refresh()">Refresh Token</button>
-    <button onclick="secured()">Secured API</button>
-    <button onclick="logout()">Logout</button>
-    <script>
-        let accessToken = null
+	<head>
+		<meta charset="utf-8" />
+		<title>Page Title</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</head>
+	<body>
+		Server online
+		<button onclick="login()">Login</button>
+		<button onclick="refresh()">Refresh Token</button>
+		<button onclick="secured()">Secured API</button>
+		<button onclick="logout()">Logout</button>
+		<script>
+			let accessToken = null
 
-        const login = async () => {
-            const req = await fetch('http://localhost:8080/api/v1/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: 'test@email.com', password: 'test' })
-            })
-            const res = await req.json()
-            accessToken = res.accessToken
-            console.log('Login:', res)
-        }
+			const login = async () => {
+				const req = await fetch('http://localhost:8080/api/v1/auth/login', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ email: 'test@email.com', password: 'test' }),
+					credentials: 'include',
+				})
+				const res = await req.json()
+				accessToken = res.accessToken
+				console.log('Login:', res)
+			}
 
-        const logout = async () => {
-            const req = await fetch('http://localhost:8080/api/v1/auth/logout', { method: 'POST' })
-            const res = await req.json()
-            console.log('Logout:', res)
-        }
+			const logout = async () => {
+				const req = await fetch('http://localhost:8080/api/v1/auth/logout', {
+                    method: 'POST', 
+                    credentials: 'include' 
+                })
+				const res = await req.json()
+				console.log('Logout:', res)
+			}
 
-        const secured = async () => {
-            const req = await fetch('http://localhost:8080/api/v1/test/secured', {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
-            const res = await req.json()
-            console.log('Secured:', res)
-        }
+			const secured = async () => {
+				const req = await fetch('http://localhost:8080/api/v1/test/secured', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+					credentials: 'include',
+				})
+				const res = await req.json()
+				console.log('Secured:', res)
+			}
 
-        const refresh = async () => {
-            const req = await fetch('http://localhost:8080/api/v1/auth/refresh', { credentials: 'include' })
-            const res = await req.json()
-            accessToken = res.accessToken
-            console.log('Refresh:', res)
-        }
-    </script>
-</body>
+			const refresh = async () => {
+				const req = await fetch('http://localhost:8080/api/v1/auth/refresh', { 
+                    credentials: 'include' 
+                })
+				const res = await req.json()
+				accessToken = res.accessToken
+				console.log('Refresh:', res)
+			}
+		</script>
+	</body>
+</html>

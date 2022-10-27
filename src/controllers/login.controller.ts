@@ -33,19 +33,28 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		}
 	)
 
-	reply.cookie(config.jwt.jwtRefreshCookieName, refreshToken, {
+	reply.cookie(config.cookies.accessName, accessToken, {
+		httpOnly: true,
+		secure: true,
+		sameSite: 'strict',
+		path: '/',
+		expires: new Date(Date.now() + config.cookies.accessExpire),
+	})
+
+	reply.cookie(config.cookies.refreshName, refreshToken, {
 		httpOnly: true,
 		secure: true,
 		sameSite: 'strict',
 		path: '/api/v1/auth/refresh',
-		expires: new Date(Date.now() + config.jwt.jwtRefreshCookieExpire),
+		expires: new Date(Date.now() + config.cookies.refreshExpire),
 	})
 
 	return { accessToken }
 }
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.clearCookie(config.jwt.jwtRefreshCookieName, { path: '/api/v1/auth/refresh' })
+	reply.clearCookie(config.cookies.accessName, { path: '/' })
+	reply.clearCookie(config.cookies.refreshName, { path: '/api/v1/auth/refresh' })
 	return { message: 'Logout successful' }
 }
 
@@ -70,6 +79,14 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			jti: crypto.randomUUID(),
 		}
 	)
+
+	reply.cookie(config.cookies.accessName, accessToken, {
+		httpOnly: true,
+		secure: true,
+		sameSite: 'strict',
+		path: '/',
+		expires: new Date(Date.now() + config.cookies.accessExpire),
+	})
 
 	return { accessToken }
 }

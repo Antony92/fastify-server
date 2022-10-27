@@ -29,7 +29,11 @@ const server = fastify({
 server.register(fastifyCompress)
 server.register(fastifyJwt, {
 	namespace: 'access',
-	secret: config.jwt.tokenSecret,
+	secret: config.jwt.accessTokenSecret,
+	cookie: {
+		signed: false,
+		cookieName: config.cookies.accessName,
+	},
 	sign: {
 		iss: config.jwt.issuer,
 	},
@@ -41,10 +45,10 @@ server.register(fastifyJwt, {
 server.register(fastifyJwt, {
 	namespace: 'refresh',
 	decoratorName: 'refreshToken',
-	secret: config.jwt.jwtRefreshSecret,
+	secret: config.jwt.refreshTokenSecret,
 	cookie: {
 		signed: false,
-		cookieName: config.jwt.jwtRefreshCookieName,
+		cookieName: config.cookies.refreshName,
 	},
 	sign: {
 		iss: config.jwt.issuer,
