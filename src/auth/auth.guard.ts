@@ -16,12 +16,14 @@ export const secured = (roles?: string[]) => {
 	}
 }
 
-export const trustedApiTokens = (request: FastifyRequest, decodedToken: AccessToken) => {
-	const denylist = ['token1', 'token2']
-	return denylist.includes(decodedToken.jti) ? false : decodedToken
+export const trustedAccessTokens = async (request: FastifyRequest, decodedToken: AccessToken) => {
+	if (decodedToken.api) {
+		// check for api tokens
+	}
+	return decodedToken
 }
 
-export const trustedRefreshTokens = (request: FastifyRequest, decodedToken: RefreshToken) => {
+export const trustedRefreshTokens = async (request: FastifyRequest, decodedToken: RefreshToken) => {
 	return decodedToken
 	const allowed = ['token1', 'token2']
 	return allowed.includes(decodedToken.jti) ? decodedToken : false
