@@ -71,9 +71,6 @@ server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } })
 server.register(fastifySwagger, swaggerOptions)
 server.register(fastifySwaggerUi, { routePrefix: '/documentation' })
 server.setNotFoundHandler(
-	{ 
-		preHandler: server.rateLimit() 
-	}, 
 	(request, reply) => {
 		if (request.url.includes('/api')) {
 			reply.code(404).send({
