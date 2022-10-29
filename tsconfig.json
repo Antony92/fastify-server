@@ -9,8 +9,6 @@
       "rootDir": "./src",
       "outDir": "dist",
       "resolveJsonModule": true,
-      "typeRoots": ["node_modules/@types"],
-      "baseUrl": "."
   },
   "include": [
       "src/**/*"
