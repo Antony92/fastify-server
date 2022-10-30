@@ -8,7 +8,7 @@
     "build": "tsc -p .",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:main": "ts-node src/tests/main.ts"
+    "test:main": "ts-node src/test/main.ts"
   },
   "author": "aasenov",
   "license": "MIT",
@@ -26,7 +26,8 @@
     "@fastify/swagger-ui": "~1.1.0",
     "@prisma/client": "~4.5.0",
     "dotenv": "~16.0.3",
-    "fastify": "~4.9.2"
+    "fastify": "~4.9.2",
+    "rxjs": "~7.5.7"
   },
   "devDependencies": {
     "@types/node": "~18.11.7",
