@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-      "module": "CommonJS",
+      "module": "NodeNext",
       "esModuleInterop": true,
       "target": "ESNext",
       "lib": ["esnext"],
@@ -10,7 +10,10 @@
       "outDir": "dist",
       "resolveJsonModule": true,
   },
+  "exclude": [
+    "src/**/*.test.ts",
+  ],
   "include": [
-      "src/**/*"
+    "src/**/*",
   ]
 }
