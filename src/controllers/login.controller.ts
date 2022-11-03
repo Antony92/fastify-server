@@ -35,7 +35,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		httpOnly: true,
 		secure: true,
 		sameSite: 'strict',
-		path: '/',
+		path: '/api',
 		expires: new Date(Date.now() + config.cookies.accessExpire),
 	})
 
@@ -51,7 +51,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 }
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.clearCookie(config.cookies.accessName, { path: '/' })
+	reply.clearCookie(config.cookies.accessName, { path: '/api' })
 	reply.clearCookie(config.cookies.refreshName, { path: '/api/v1/auth/refresh' })
 	return { message: 'Logout successful' }
 }
@@ -82,7 +82,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 		httpOnly: true,
 		secure: true,
 		sameSite: 'strict',
-		path: '/',
+		path: '/api',
 		expires: new Date(Date.now() + config.cookies.accessExpire),
 	})
 
