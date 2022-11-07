@@ -7,14 +7,6 @@ import { getUser } from '../services/user.service'
 export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply: FastifyReply) => {
 	const { email, password } = request.body
 
-	if (!/^[\w-.]+@([\w-]+\.)+[\w-]+$/.test(email)) {
-		throw {
-			message: `Invalid email address`,
-			error: 'Login',
-			statusCode: 400,
-		}
-	}
-
 	const user = await getUser(email)
 
 	if (!user)
