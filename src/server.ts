@@ -15,8 +15,9 @@ import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard'
 import swaggerOptions from './swagger'
 import healthRoute from './routes/health.route'
 import testRoute from './routes/test.route'
-import loginRoute from './routes/login.route'
+import authRoute from './routes/auth.route'
 import './types/fastify.type'
+import serverEventsRoute from './routes/server-events.route'
 
 process.env.NODE_ENV = config.environment
 
@@ -85,8 +86,9 @@ server.setNotFoundHandler(
 
 // Routes
 server.register(healthRoute, { prefix: '/api/v1' })
+server.register(serverEventsRoute, { prefix: '/api/v1' })
 server.register(testRoute, { prefix: '/api/v1' })
-server.register(loginRoute, { prefix: '/api/v1' })
+server.register(authRoute, { prefix: '/api/v1' })
 
 // testing
 export default server

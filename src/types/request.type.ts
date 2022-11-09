@@ -4,3 +4,10 @@ export type LoginRequest = {
 		password: string
 	}
 }
+
+export type CreateServerEventRequest = {
+	Body: {
+		type: string,
+		message: string
+	}
+}

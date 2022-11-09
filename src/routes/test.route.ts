@@ -3,7 +3,6 @@ import {
 	testGetHandler,
 	testPostHandler,
 	testSecuredHandler,
-	testEventHandler,
 	testGetByIdHandler,
 	testUploadHandler,
 	testAdminHandler,
@@ -19,7 +18,6 @@ const testRoute = async (server: FastifyInstance) => {
 	server.post('/test/upload', { schema: testUploadSchema }, testUploadHandler)
 	server.get('/test/secured', { onRequest: secured(), schema: testSecuredSchema }, testSecuredHandler)
 	server.get('/test/admin', { onRequest: secured([Roles.ADMIN]), schema: testAdminSchema }, testAdminHandler)
-	server.get('/test/event', { schema: { hide: true } }, testEventHandler)
 }
 
 export default testRoute

@@ -23,6 +23,10 @@ const swaggerOptions: SwaggerOptions = {
 				description: 'Authentication API'
 			},
 			{
+				name: 'Server events',
+				description: 'Server events API'
+			},
+			{
 				name: 'Test',
 				description: 'Test API',
 			},

@@ -31,21 +31,3 @@ export const testSecuredHandler = async (request: FastifyRequest, reply: Fastify
 export const testAdminHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	return { message: `Secured by role admin`, user: request.user }
 }
-
-export const testEventHandler = (request: FastifyRequest, reply: FastifyReply) => {
-	reply.raw.setHeader('Content-Type', 'text/event-stream')
-	reply.raw.setHeader('Cache-Control', 'no-cache')
-	reply.raw.setHeader('Connection', 'keep-alive')
-	const timeout = 5000
-	const interval = setInterval(() => {
-		const id = Date.now()
-		const data = `Hello World ${id}`
-		const message = `retry: ${timeout}\nid:${id}\ndata: ${data}\n\n`
-		reply.raw.write(message)
-	}, timeout)
-	reply.raw.on('close', () => {
-		console.log('close')
-		clearInterval(interval)
-		reply.raw.end()
-	})
-}

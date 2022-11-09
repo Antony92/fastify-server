@@ -12,7 +12,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 	if (!user)
 		throw {
 			message: `Wrong username or password`,
-			error: 'Login',
+			error: 'Auth',
 			statusCode: 401,
 		}
 
@@ -67,7 +67,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 	if (!user)
 		throw {
 			message: `User does not exist`,
-			error: 'Login',
+			error: 'Auth',
 			statusCode: 401,
 		}
 
