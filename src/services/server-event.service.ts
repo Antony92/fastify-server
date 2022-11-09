@@ -3,13 +3,13 @@ import { ServerEvent } from '../models/server-event.model'
 
 const $event = new BehaviorSubject<ServerEvent>(null)
 
-const serverEvents = $event.asObservable().pipe(
+const $serverEventsObservable = $event.asObservable().pipe(
 	shareReplay(1),
 	concatMap(async (event) => (event ? event : getLastServerEvent()))
 )
 
-export const getServerEvents = () => {
-	return serverEvents
+export const getServerEventsObservable = () => {
+	return $serverEventsObservable
 }
 
 export const getLastServerEvent = async () => {

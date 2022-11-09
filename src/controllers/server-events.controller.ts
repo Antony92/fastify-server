@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { ServerEvent } from '../models/server-event.model'
-import { getServerEvents, sendServerEvent } from '../services/server-event.service'
+import { getServerEventsObservable, sendServerEvent } from '../services/server-event.service'
 import { CreateServerEventRequest } from '../types/request.type'
 
 export const subscribeServerEventsHandler = (request: FastifyRequest, reply: FastifyReply) => {
@@ -8,7 +8,7 @@ export const subscribeServerEventsHandler = (request: FastifyRequest, reply: Fas
 	reply.raw.setHeader('Cache-Control', 'no-cache')
 	reply.raw.setHeader('Connection', 'keep-alive')
 	const retry = 5000
-	const sub = getServerEvents().subscribe((event) => {
+	const sub = getServerEventsObservable().subscribe((event) => {
 		const message = `retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`
 		reply.raw.write(message)
 	})
