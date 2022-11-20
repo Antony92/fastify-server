@@ -17,7 +17,7 @@ export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply:
 		}
 
 	const accessToken = await reply.accessJwtSign(
-		{ ...user },
+		{ user },
 		{
 			jti: crypto.randomUUID(),
 			expiresIn: config.jwt.accessTokenExpire,
@@ -72,10 +72,10 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 		}
 
 	const accessToken = await reply.accessJwtSign(
-		{ ...user },
+		{ user },
 		{
-			expiresIn: config.jwt.accessTokenExpire,
 			jti: crypto.randomUUID(),
+			expiresIn: config.jwt.accessTokenExpire
 		}
 	)
 

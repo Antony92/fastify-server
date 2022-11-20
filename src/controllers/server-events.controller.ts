@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { ServerEvent } from '../models/server-event.model'
 import { getServerEventsObservable, sendServerEvent } from '../services/server-event.service'
 import { CreateServerEventRequest } from '../types/request.type'
+import { ServerEvent } from '../types/server-event.type'
 
 export const subscribeServerEventsHandler = (request: FastifyRequest, reply: FastifyReply) => {
 	reply.raw.setHeader('Content-Type', 'text/event-stream')

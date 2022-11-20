@@ -1,10 +1,11 @@
 import { VerifyPayloadType, FastifyJwtVerifyOptions, VerifyOptions, SignPayloadType, FastifyJwtSignOptions, SignOptions } from '@fastify/jwt'
 import { OAuth2Namespace } from '@fastify/oauth2'
-import { AccessToken, RefreshToken } from '../models/jwt.model'
+import { RefreshToken } from '../types/jwt.type'
+import { User } from './user.type'
 
 declare module '@fastify/jwt' {
 	interface FastifyJWT {
-		user: AccessToken
+		user: User
 	}
 }
 

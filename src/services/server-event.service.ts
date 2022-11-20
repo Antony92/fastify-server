@@ -1,5 +1,5 @@
 import { concatMap, BehaviorSubject, shareReplay } from 'rxjs'
-import { ServerEvent } from '../models/server-event.model'
+import { ServerEvent } from '../types/server-event.type'
 
 const $event = new BehaviorSubject<ServerEvent>(null)
 

@@ -18,6 +18,7 @@ import testRoute from './routes/test.route'
 import authRoute from './routes/auth.route'
 import './types/fastify.type'
 import serverEventsRoute from './routes/server-events.route'
+import { AccessToken } from './types/jwt.type'
 
 process.env.NODE_ENV = config.environment
 
@@ -41,6 +42,7 @@ server.register(fastifyJwt, {
 	verify: {
 		allowedIss: config.jwt.issuer,
 	},
+	formatUser: (token: AccessToken) => token.user,
 	trusted: trustedAccessTokens,
 })
 server.register(fastifyJwt, {
