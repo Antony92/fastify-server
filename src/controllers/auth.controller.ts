@@ -58,7 +58,7 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 }
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	await request.refreshJwtVerify()
+	await request.refreshJwtVerify({ onlyCookie: true })
 
 	const { email } = request.refreshToken
 
