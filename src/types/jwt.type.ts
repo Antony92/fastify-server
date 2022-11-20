@@ -2,7 +2,7 @@ import { User } from './user.type'
 
 export type AccessToken = {
 	jti: string
-	api?: boolean
+	api: boolean
     user: User
 }
 
