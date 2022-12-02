@@ -36,7 +36,7 @@ await server.register(import('@fastify/jwt'), {
 	formatUser: (token: AccessToken) => token.user,
 	trusted: trustedAccessTokens,
 })
-server.register(import('@fastify/jwt'), {
+await server.register(import('@fastify/jwt'), {
 	namespace: 'refresh',
 	decoratorName: 'refreshToken',
 	secret: config.jwt.refreshTokenSecret,
