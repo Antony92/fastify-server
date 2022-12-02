@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { RefreshToken, AccessToken } from '../types/jwt.type'
-import { hasRole } from '../helpers/user.helper'
+import { RefreshToken, AccessToken } from '../types/jwt.type.js'
+import { hasRole } from '../helpers/user.helper.js'
 
 export const secured = (roles?: string[]) => {
 	return async (request: FastifyRequest, reply: FastifyReply) => {

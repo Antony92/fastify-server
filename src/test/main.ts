@@ -1,4 +1,4 @@
-import { getServerEventsObservable, sendServerEvent } from '../services/server-event.service'
+import { getServerEventsObservable, sendServerEvent } from '../services/server-event.service.js'
 
 const test = async () => {
 	getServerEventsObservable().subscribe(event => console.log(1, event))

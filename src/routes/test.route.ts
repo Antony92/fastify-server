@@ -6,10 +6,10 @@ import {
 	testGetByIdHandler,
 	testUploadHandler,
 	testAdminHandler,
-} from '../controllers/test.controller'
-import { secured } from '../auth/auth.guard'
-import { testGetByIdSchema, testGetSchema, testSecuredSchema, testPostSchema, testAdminSchema, testUploadSchema } from '../schema/test.schema'
-import { Roles } from '../models/user.model'
+} from '../controllers/test.controller.js'
+import { secured } from '../auth/auth.guard.js'
+import { testGetByIdSchema, testGetSchema, testSecuredSchema, testPostSchema, testAdminSchema, testUploadSchema } from '../schema/test.schema.js'
+import { Roles } from '../models/user.model.js'
 
 const testRoute = async (server: FastifyInstance) => {
 	server.get('/test', { schema: testGetSchema }, testGetHandler)

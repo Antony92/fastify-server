@@ -4,7 +4,7 @@
       "esModuleInterop": true,
       "target": "ESNext",
       "lib": ["ESNext"],
-      "moduleResolution": "Node",
+      "moduleResolution": "NodeNext",
       "sourceMap": false,
       "rootDir": "./src",
       "outDir": "dist",

@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import config from '../config'
+import config from '../config.js'
 import crypto from 'crypto'
-import { LoginRequest } from '../types/request.type'
-import { getUser } from '../services/user.service'
+import { LoginRequest } from '../types/request.type.js'
+import { getUser } from '../services/user.service.js'
 
 export const loginHandler = async (request: FastifyRequest<LoginRequest>, reply: FastifyReply) => {
 	const { email, password } = request.body

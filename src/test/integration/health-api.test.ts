@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import server from '../../server'
+import server from '../../server.js'
 
 describe('Health check route', () => {
 	describe('GET /api/v1/health', () => {

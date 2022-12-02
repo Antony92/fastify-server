@@ -1,25 +1,17 @@
-import fastify from 'fastify'
-import fastifyCompress from '@fastify/compress'
-import fastifyCors from '@fastify/cors'
-import fastifyHelmet from '@fastify/helmet'
-import fastifyStatic from '@fastify/static'
-import fastifyRateLimit from '@fastify/rate-limit'
-import fastifyMultipart from '@fastify/multipart'
-import fastifyJwt from '@fastify/jwt'
-import fastifyCookie from '@fastify/cookie'
-import fastifySwagger from '@fastify/swagger'
-import fastifySwaggerUi from '@fastify/swagger-ui'
-import path from 'path'
-import config from './config'
-import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard'
-import swaggerOptions from './swagger'
-import healthRoute from './routes/health.route'
-import testRoute from './routes/test.route'
-import authRoute from './routes/auth.route'
-import './types/fastify.type'
-import serverEventsRoute from './routes/server-events.route'
-import { AccessToken } from './types/jwt.type'
+import { fastify } from 'fastify'
+import path, { dirname } from 'path'
+import config from './config.js'
+import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard.js'
+import swaggerOptions from './swagger.js'
+import healthRoute from './routes/health.route.js'
+import testRoute from './routes/test.route.js'
+import authRoute from './routes/auth.route.js'
+import './types/fastify.type.js'
+import serverEventsRoute from './routes/server-events.route.js'
+import { AccessToken } from './types/jwt.type.js'
+import { fileURLToPath } from 'url'
 
+const __dirname = dirname(fileURLToPath(import.meta.url))
 process.env.NODE_ENV = config.environment
 
 // Init fastify server
@@ -28,8 +20,7 @@ const server = fastify({
 })
 
 // Plugins
-server.register(fastifyCompress)
-server.register(fastifyJwt, {
+await server.register(import('@fastify/jwt'), {
 	namespace: 'access',
 	secret: config.jwt.accessTokenSecret,
 	cookie: {
@@ -45,7 +36,7 @@ server.register(fastifyJwt, {
 	formatUser: (token: AccessToken) => token.user,
 	trusted: trustedAccessTokens,
 })
-server.register(fastifyJwt, {
+server.register(import('@fastify/jwt'), {
 	namespace: 'refresh',
 	decoratorName: 'refreshToken',
 	secret: config.jwt.refreshTokenSecret,
@@ -61,18 +52,19 @@ server.register(fastifyJwt, {
 	},
 	trusted: trustedRefreshTokens,
 })
-server.register(fastifyCookie)
-server.register(fastifyCors, {
+await server.register(import('@fastify/compress'))
+await server.register(import('@fastify/cookie'))
+await server.register(import('@fastify/cors'), {
 	origin: ['http://localhost:8080', 'http://localhost:5500'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
 	credentials: true,
 })
-server.register(fastifyHelmet, { contentSecurityPolicy: false })
-server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' })
-server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
-server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } })
-server.register(fastifySwagger, swaggerOptions)
-server.register(fastifySwaggerUi, { routePrefix: '/documentation' })
+await server.register(import('@fastify/helmet'), { contentSecurityPolicy: false })
+// await server.register(import('@fastify/rate-limit'), { max: config.server.rateLimit, timeWindow: '15 minutes' })
+await server.register(import('@fastify/static'), { root: path.join(__dirname, 'public') })
+await server.register(import('@fastify/multipart'), { limits: { fileSize: 2 * 1024 * 1024 } })
+await server.register(import('@fastify/swagger'), swaggerOptions)
+await server.register(import('@fastify/swagger-ui'), { routePrefix: '/documentation' })
 server.setNotFoundHandler(
 	(request, reply) => {
 		if (request.url.includes('/api')) {
@@ -87,10 +79,10 @@ server.setNotFoundHandler(
 })
 
 // Routes
-server.register(healthRoute, { prefix: '/api/v1' })
-server.register(serverEventsRoute, { prefix: '/api/v1' })
-server.register(testRoute, { prefix: '/api/v1' })
-server.register(authRoute, { prefix: '/api/v1' })
+await server.register(healthRoute, { prefix: '/api/v1' })
+await server.register(serverEventsRoute, { prefix: '/api/v1' })
+await server.register(testRoute, { prefix: '/api/v1' })
+await server.register(authRoute, { prefix: '/api/v1' })
 
 // testing
 export default server

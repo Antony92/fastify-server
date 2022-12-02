@@ -1,4 +1,4 @@
-import { Roles } from '../models/user.model'
+import { Roles } from '../models/user.model.js'
 
 export type User = {
 	name: string
