@@ -60,7 +60,7 @@ await server.register(import('@fastify/cors'), {
 	credentials: true,
 })
 await server.register(import('@fastify/helmet'), { contentSecurityPolicy: false })
-// await server.register(import('@fastify/rate-limit'), { max: config.server.rateLimit, timeWindow: '15 minutes' })
+await server.register(import('@fastify/rate-limit') as any, { max: config.server.rateLimit, timeWindow: '15 minutes' })
 await server.register(import('@fastify/static'), { root: path.join(__dirname, 'public') })
 await server.register(import('@fastify/multipart'), { limits: { fileSize: 2 * 1024 * 1024 } })
 await server.register(import('@fastify/swagger'), swaggerOptions)
