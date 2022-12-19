@@ -9,7 +9,7 @@
     "build": "tsc -p .",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:main": "ts-node src/test/main.ts"
+    "test:main": "ts-node-esm src/test/main.ts"
   },
   "author": "aasenov",
   "license": "MIT",
