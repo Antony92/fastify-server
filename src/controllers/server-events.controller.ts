@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { getServerEventsObservable, sendServerEvent } from '../services/server-event.service.js'
-import { CreateServerEventRequest } from '../types/request.type.js'
 import { ServerEvent } from '../types/server-event.type.js'
 
 export const subscribeServerEventsHandler = (request: FastifyRequest, reply: FastifyReply) => {
@@ -18,10 +17,10 @@ export const subscribeServerEventsHandler = (request: FastifyRequest, reply: Fas
 	})
 }
 
-export const createServerEventHandler = (request: FastifyRequest<CreateServerEventRequest>, reply: FastifyReply) => {
+export const createServerEventHandler = (request: FastifyRequest<{ Body: ServerEvent }>, reply: FastifyReply) => {
 	const { type, message } = request.body
 
-	const event = { type, message } as ServerEvent
+	const event = { type, message }
 	//TODO save event to db
 
 	sendServerEvent(event)

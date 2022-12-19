@@ -1,4 +1,6 @@
+import { JSONSchemaType } from 'ajv'
 import { FastifySchema } from 'fastify'
+import { ServerEvent } from '../types/server-event.type.js'
 
 export const createServerEventSchema: FastifySchema = {
 	tags: ['Server events'],
@@ -7,10 +9,10 @@ export const createServerEventSchema: FastifySchema = {
 	produces: ['application/json'],
 	body: {
 		type: 'object',
-		required: ['type', 'message'],
 		properties: {
 			type: { type: 'string', enum: ['info', 'warning', 'danger'] },
-			message: { type: 'string', maxLength: 500 },
+			message: { type: 'string' },
 		},
-	},
+		required: ['type', 'message']
+	} satisfies JSONSchemaType<ServerEvent>
 }

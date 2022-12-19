@@ -1,7 +1,7 @@
-import { concatMap, BehaviorSubject, shareReplay } from 'rxjs'
+import { concatMap, Subject, shareReplay } from 'rxjs'
 import { ServerEvent } from '../types/server-event.type.js'
 
-const $event = new BehaviorSubject<ServerEvent>(null)
+const $event = new Subject<ServerEvent>()
 
 const $serverEventsObservable = $event.asObservable().pipe(
 	shareReplay(1),

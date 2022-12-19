@@ -1,15 +1,11 @@
 import { fastify } from 'fastify'
+import './helpers/fastify.helper.js'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import config from './config.js'
-import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard.js'
 import swaggerOptions from './swagger.js'
-import './types/fastify.type.js'
 import { AccessToken } from './types/jwt.type.js'
-import healthRoute from './routes/health.route.js'
-import testRoute from './routes/test.route.js'
-import authRoute from './routes/auth.route.js'
-import serverEventsRoute from './routes/server-events.route.js'
+import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 process.env.NODE_ENV = config.environment
@@ -25,7 +21,7 @@ await server.register(import('@fastify/jwt'), {
 	secret: config.jwt.accessTokenSecret,
 	cookie: {
 		signed: false,
-		cookieName: config.cookies.accessName,
+		cookieName: config.cookies.accessCookieName,
 	},
 	sign: {
 		iss: config.jwt.issuer,
@@ -39,10 +35,10 @@ await server.register(import('@fastify/jwt'), {
 await server.register(import('@fastify/jwt'), {
 	namespace: 'refresh',
 	decoratorName: 'refreshToken',
-	secret: config.jwt.refreshTokenSecret,
+	secret: config.jwt.refreshTokenSecret || 'test',
 	cookie: {
 		signed: false,
-		cookieName: config.cookies.refreshName,
+		cookieName: config.cookies.refreshCookieName,
 	},
 	sign: {
 		iss: config.jwt.issuer,
@@ -78,10 +74,10 @@ server.setNotFoundHandler((request, reply) => {
 })
 
 // Routes
-await server.register(healthRoute, { prefix: '/api/v1' })
-await server.register(serverEventsRoute, { prefix: '/api/v1' })
-await server.register(testRoute, { prefix: '/api/v1' })
-await server.register(authRoute, { prefix: '/api/v1' })
+await server.register(import('./routes/health.route.js'), { prefix: '/api/v1' })
+await server.register(import('./routes/server-events.route.js'), { prefix: '/api/v1' })
+await server.register(import('./routes/test.route.js'), { prefix: '/api/v1' })
+await server.register(import('./routes/auth.route.js'), { prefix: '/api/v1' })
 
 // testing
 export default server
