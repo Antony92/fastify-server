@@ -5,10 +5,9 @@ import { hasRole } from '../helpers/user.helper.js'
 export const secured = (roles?: string[]) => {
 	return async (request: FastifyRequest, reply: FastifyReply) => {
 		await request.accessJwtVerify()
-		const inRole = hasRole(request.user, roles)
-		if (roles && !inRole) {
+		if (roles && !hasRole(request.user, roles)) {
 			throw {
-				message: `Access denied`,
+				message: `Insufficient roles`,
 				error: 'Access',
 				statusCode: 403,
 			}

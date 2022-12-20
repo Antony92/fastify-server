@@ -8,13 +8,14 @@ export const loginHandler = async (request: FastifyRequest<{Body: { email: strin
 
 	const user = await getUser(email)
 
-	if (!user)
+	if (!user) {
 		throw {
 			message: `Wrong username or password`,
 			error: 'Auth',
 			statusCode: 401,
 		}
-
+	}
+		
 	const accessToken = await reply.accessJwtSign(
 		{ user },
 		{

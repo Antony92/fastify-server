@@ -1,5 +1,4 @@
 import { fastify } from 'fastify'
-import './helpers/fastify.helper.js'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import config from './config.js'

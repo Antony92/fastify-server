@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
       "module": "NodeNext",
-      "esModuleInterop": true,
       "target": "ESNext",
       "lib": ["ESNext"],
       "moduleResolution": "NodeNext",
@@ -15,6 +14,6 @@
     "src/**/*.test.ts",
   ],
   "include": [
-    "src/**/*",
+    "src/**/*", "types/project.d.ts",
   ]
 }
