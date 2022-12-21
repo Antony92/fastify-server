@@ -11,7 +11,7 @@ export const createServerEventSchema: FastifySchema = {
 		type: 'object',
 		properties: {
 			type: { type: 'string', enum: ['info', 'warning', 'danger'] },
-			message: { type: 'string' },
+			message: { type: 'string', maxLength: 500 },
 		},
 		required: ['type', 'message']
 	} satisfies JSONSchemaType<ServerEvent>
