@@ -1,5 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { addServerEventClient, getLastServerEvent, removeServerEventClient, sendServerEvent } from '../services/server-event.service.js'
+import {
+	addServerEventClient,
+	removeServerEventClient,
+	sendServerEventToClient,
+	sendServerEventToAll,
+} from '../services/server-event.service.js'
 import { ServerEvent } from '../types/server-event.type.js'
 
 export const subscribeServerEventsHandler = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -7,13 +12,12 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 	reply.raw.setHeader('Cache-Control', 'no-cache')
 	reply.raw.setHeader('Connection', 'keep-alive')
 
-	const id = `${request.ip}/${Date.now()}`
+	const id = request.ip
 	addServerEventClient({ id, reply })
 
-	const retry = 5000
-	const event = await getLastServerEvent()
-	const message = `retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`
-	reply.raw.write(message)
+	// TODO get last server event from db
+	const event: ServerEvent = { type: 'info', message: 'Server is online' }
+	sendServerEventToClient(id, event)
 
 	reply.raw.on('close', () => {
 		removeServerEventClient(id)
@@ -27,7 +31,7 @@ export const createServerEventHandler = (request: FastifyRequest<{ Body: ServerE
 	const event: ServerEvent = { type, message }
 	//TODO save event to db
 
-	sendServerEvent(event)
+	sendServerEventToAll(event)
 
 	return { message: 'Server event created', data: event }
 }
