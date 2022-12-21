@@ -8,6 +8,10 @@ const config = {
 		port: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT) : 8080,
 		rateLimit: process.env.SERVER_RATE_LIMIT ? parseInt(process.env.SERVER_RATE_LIMIT) : 1000,
 	},
+	microsoft: {
+		clientId: process.env.MICROSOFT_CLIENT_ID || '',
+		clientSecret: process.env.MICROSOFT_CLIENT_SECRET || '',
+	},
 	jwt: {
 		issuer: process.env.JWT_ISSUER,
 		audience: process.env.JWT_AUDIENCE,
