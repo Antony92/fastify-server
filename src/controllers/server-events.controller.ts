@@ -1,18 +1,22 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { getServerEventsObservable, sendServerEvent } from '../services/server-event.service.js'
+import { addServerEventClient, getLastServerEvent, removeServerEventClient, sendServerEvent } from '../services/server-event.service.js'
 import { ServerEvent } from '../types/server-event.type.js'
 
-export const subscribeServerEventsHandler = (request: FastifyRequest, reply: FastifyReply) => {
+export const subscribeServerEventsHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	reply.raw.setHeader('Content-Type', 'text/event-stream')
 	reply.raw.setHeader('Cache-Control', 'no-cache')
 	reply.raw.setHeader('Connection', 'keep-alive')
+
+	const id = `${request.ip}/${Date.now()}`
+	addServerEventClient({ id, reply })
+
 	const retry = 5000
-	const sub = getServerEventsObservable().subscribe((event) => {
-		const message = `retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`
-		reply.raw.write(message)
-	})
+	const event = await getLastServerEvent()
+	const message = `retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`
+	reply.raw.write(message)
+
 	reply.raw.on('close', () => {
-		sub.unsubscribe()
+		removeServerEventClient(id)
 		reply.raw.end()
 	})
 }
@@ -20,7 +24,7 @@ export const subscribeServerEventsHandler = (request: FastifyRequest, reply: Fas
 export const createServerEventHandler = (request: FastifyRequest<{ Body: ServerEvent }>, reply: FastifyReply) => {
 	const { type, message } = request.body
 
-	const event = { type, message }
+	const event: ServerEvent = { type, message }
 	//TODO save event to db
 
 	sendServerEvent(event)

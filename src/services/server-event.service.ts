@@ -1,22 +1,23 @@
-import { concatMap, Subject, shareReplay } from 'rxjs'
-import { ServerEvent } from '../types/server-event.type.js'
+import { ServerEvent, ServerEventClient } from '../types/server-event.type.js'
 
-const $event = new Subject<ServerEvent>()
+const serverEventClients: ServerEventClient[] = []
 
-const $serverEventsObservable = $event.asObservable().pipe(
-	shareReplay(1),
-	concatMap(async (event) => (event ? event : getLastServerEvent()))
-)
+export const addServerEventClient = (client: ServerEventClient) => {
+	serverEventClients.push(client)
+}
 
-export const getServerEventsObservable = () => {
-	return $serverEventsObservable
+export const removeServerEventClient = (id: string) => {
+	serverEventClients.splice(serverEventClients.findIndex(client => client.id === id), 1)
 }
 
 export const getLastServerEvent = async () => {
-	const event: ServerEvent = { message: 'info', type: 'info' }
+	const event: ServerEvent = { type: 'info', message: 'Server is online' }
 	return event
 }
 
-export const sendServerEvent = (event: ServerEvent) => {
-	$event.next(event)
+export const sendServerEvent = (event: ServerEvent, retry = 5000) => {
+	serverEventClients.forEach(client => {
+		const message = `retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`
+		client.reply.raw.write(message)
+	})
 }
