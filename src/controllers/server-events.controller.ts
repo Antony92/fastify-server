@@ -1,6 +1,16 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { audit } from '../services/audit.service.js'
-import { addServerEventClient, removeServerEventClient, sendServerEventToClient, sendServerEventToAll } from '../services/server-event.service.js'
+import {
+	addServerEventClient,
+	removeServerEventClient,
+	sendServerEventToClient,
+	sendServerEventToAll,
+	getLastServerEvent,
+	getServerEvents,
+	createServerEvent,
+	updateServerEvent,
+	deleteServerEvent,
+} from '../services/server-event.service.js'
 import { AuditAction, AuditTarget } from '../types/audit.type.js'
 import { ServerEvent } from '../types/server-event.type.js'
 
@@ -12,8 +22,7 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 	const id = request.ip
 	addServerEventClient({ id, reply })
 
-	// TODO get last server event from db
-	const event: ServerEvent = { type: 'info', message: 'Server is online' }
+	const event = await getLastServerEvent()
 	sendServerEventToClient(id, event)
 
 	reply.raw.on('close', () => {
@@ -25,16 +34,14 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 export const getServerEventsHandler = async (request: FastifyRequest<{ Querystring: { offset: number; limit: number } }>, reply: FastifyReply) => {
 	const { offset, limit } = request.query
 
-	//TODO get events from db
-	const events: ServerEvent[] = []
+	const events = await getServerEvents(offset, limit)
 	return { data: events }
 }
 
 export const createServerEventHandler = async (request: FastifyRequest<{ Body: ServerEvent }>, reply: FastifyReply) => {
 	const { type, message } = request.body
 
-	//TODO save event to db
-	const event: ServerEvent = { type, message }
+	const event = await createServerEvent({ type, message })
 
 	await audit(request.user, AuditAction.CREATE, AuditTarget.SERVER_EVENT, event)
 
@@ -47,8 +54,7 @@ export const updateServerEventHandler = async (request: FastifyRequest<{ Params:
 	const { id } = request.params
 	const { type, message } = request.body
 
-	//TODO update event in db
-	const event: ServerEvent = { type, message }
+	const event = await updateServerEvent({ id, type, message })
 
 	await audit(request.user, AuditAction.UPDATE, AuditTarget.SERVER_EVENT, event)
 
@@ -60,15 +66,15 @@ export const updateServerEventHandler = async (request: FastifyRequest<{ Params:
 export const deleteServerEventHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
 	const { id } = request.params
 
-	const event = null
-	
-	//TODO delete event in db
+	const event = await deleteServerEvent(id)
+
 	await audit(request.user, AuditAction.DELETE, AuditTarget.SERVER_EVENT, event)
 
-	// TODO get last server event from db
-	const lastEvent: ServerEvent = { type: 'info', message: 'Server is online' }
+	const lastEvent = await getLastServerEvent()
 
-	sendServerEventToAll(lastEvent)
+	if (lastEvent) {
+		sendServerEventToAll(lastEvent)
+	}
 
 	return { message: 'Server event deleted' }
 }

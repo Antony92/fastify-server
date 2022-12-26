@@ -24,3 +24,28 @@ export const sendServerEventToClient = (id: string, event: ServerEvent) => {
 		client.reply.raw.write(`retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`)
 	})
 }
+
+export const getServerEvents = async (offset = 0, limit = 10) => {
+	//TODO get server events from db
+	return [] as ServerEvent[]
+}
+
+export const getLastServerEvent = async () => {
+	//TODO get last server event from db
+	return { type: 'info', message: 'Server is online'} as ServerEvent
+}
+
+export const createServerEvent = async (event: ServerEvent) => {
+	//TODO save server event in db
+	return event
+}
+
+export const updateServerEvent = async (event: ServerEvent) => {
+	//TODO update server event in db
+	return event
+}
+
+export const deleteServerEvent = async (id: string) => {
+	//TODO delete server event in db
+	return { type: 'info', message: 'Server is online'} as ServerEvent
+}
