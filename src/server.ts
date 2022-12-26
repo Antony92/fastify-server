@@ -18,7 +18,6 @@ import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard.js'
 import healthRoute from './routes/health.route.js'
 import authRoute from './routes/auth.route.js'
 import serverEventsRoute from './routes/server-events.route.js'
-import testRoute from './routes/test.route.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 process.env.NODE_ENV = config.environment
@@ -104,7 +103,6 @@ server.setNotFoundHandler((request, reply) => {
 await server.register(healthRoute, { prefix: '/api/v1' })
 await server.register(authRoute, { prefix: '/api/v1' })
 await server.register(serverEventsRoute, { prefix: '/api/v1' })
-await server.register(testRoute, { prefix: '/api/v1' })
 
 // testing
 export default server

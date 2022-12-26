@@ -2,7 +2,7 @@ import { FastifyReply } from 'fastify'
 
 export type ServerEvent = {
 	type: 'info' | 'warning' | 'danger'
-	message: string
+	message: string,
 }
 
 export type ServerEventClient = {

@@ -1,4 +1,6 @@
-import { Roles } from '../models/user.model.js'
+export const enum Roles {
+	ADMIN = 'admin'
+}
 
 export type User = {
 	name: string

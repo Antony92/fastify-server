@@ -1,5 +1,4 @@
-import { Roles } from '../models/user.model.js'
-import { User } from '../types/user.type.js'
+import { User, Roles } from '../types/user.type.js'
 
 export const getUser = async (email: string) => {
     // check againts DB
