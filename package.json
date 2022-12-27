@@ -9,7 +9,9 @@
     "build": "tsc -p .",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:main": "ts-node-esm --files src/test/main.ts"
+    "test:main": "ts-node-esm --files src/test/main.ts",
+    "db:push": "npx prisma db push",
+    "db:pull": "npx prisma db pull"
   },
   "author": "aasenov",
   "license": "MIT",
