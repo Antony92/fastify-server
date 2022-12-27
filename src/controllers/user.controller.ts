@@ -17,8 +17,9 @@ export const createUserHandler = async (request: FastifyRequest<{ Body: UserCrea
 	return { message: 'User created', data: user }
 }
 
-export const updateUserHandler = async (request: FastifyRequest<{ Body: UserUpdateBody }>, reply: FastifyReply) => {
-	const user = await updateUser(request.body)
+export const updateUserHandler = async (request: FastifyRequest<{ Params: { id: string }, Body: UserUpdateBody }>, reply: FastifyReply) => {
+	const { id } = request.params
+	const user = await updateUser({ id, ...request.body })
 	return { message: 'User updated', data: user }
 }
 
