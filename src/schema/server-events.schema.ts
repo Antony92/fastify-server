@@ -10,10 +10,10 @@ export const getServerEventsSchema: FastifySchema = {
 	querystring: {
 		type: 'object',
 		properties: {
-			offset: { type: 'number', nullable: true, minimum: 0 },
+			skip: { type: 'number', nullable: true, minimum: 0 },
 			limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
 		}
-	} satisfies JSONSchemaType<{ offset?: number, limit?: number }>
+	} satisfies JSONSchemaType<{ skip?: number, limit?: number }>
 }
 
 export const createServerEventSchema: FastifySchema = {

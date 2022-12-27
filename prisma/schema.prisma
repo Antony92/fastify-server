@@ -9,3 +9,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model ServerEvent {
+  id      String   @id @default(uuid())
+  type    String
+  message String   @db.VarChar(500)
+  created DateTime @default(now())
+}

@@ -1,4 +1,6 @@
-import { ServerEvent, ServerEventClient } from '../types/server-event.type.js'
+import { ServerEvent } from '@prisma/client'
+import prisma from '../db/prisma.js'
+import { ServerEventBody, ServerEventClient } from '../types/server-event.type.js'
 
 const serverEventClients: ServerEventClient[] = []
 const retry = 5000
@@ -8,44 +10,70 @@ export const addServerEventClient = (client: ServerEventClient) => {
 }
 
 export const removeServerEventClient = (id: string) => {
-	serverEventClients.splice(serverEventClients.findIndex(client => client.id === id), 1)
+	serverEventClients.splice(
+		serverEventClients.findIndex((client) => client.id === id),
+		1
+	)
 }
 
 export const sendServerEventToAll = (event: ServerEvent) => {
-	serverEventClients.forEach(client => {
+	serverEventClients.forEach((client) => {
 		client.reply.raw.write(`retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`)
 	})
 }
 
 export const sendServerEventToClient = (id: string, event: ServerEvent) => {
 	serverEventClients
-	.filter(client => client.id === id)
-	.forEach(client => {
-		client.reply.raw.write(`retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`)
-	})
+		.filter((client) => client.id === id)
+		.forEach((client) => {
+			client.reply.raw.write(`retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`)
+		})
 }
 
-export const getServerEvents = async (offset = 0, limit = 10) => {
-	//TODO get server events from db
-	return [] as ServerEvent[]
+export const getServerEvents = async (skip = 0, limit = 10) => {
+	const events = await prisma.serverEvent.findMany({
+		skip,
+		take: limit,
+	})
+	const total = await prisma.serverEvent.count()
+	return { data: events, total }
 }
 
 export const getLastServerEvent = async () => {
-	//TODO get last server event from db
-	return { type: 'info', message: 'Server is online'} as ServerEvent
-}
-
-export const createServerEvent = async (event: ServerEvent) => {
-	//TODO save server event in db
+	const event = await prisma.serverEvent.findFirst({
+		orderBy: { created: 'desc' },
+	})
 	return event
 }
 
-export const updateServerEvent = async (event: ServerEvent) => {
-	//TODO update server event in db
-	return event
+export const createServerEvent = async (event: ServerEventBody) => {
+	const createdEvent = await prisma.serverEvent.create({
+		data: {
+			type: event.type,
+			message: event.message,
+		},
+	})
+	return createdEvent
+}
+
+export const updateServerEvent = async (id: string, event: ServerEventBody) => {
+	const updatedEvent = await prisma.serverEvent.update({
+		data: {
+			type: event.type,
+			message: event.message,
+		},
+		where: {
+			id,
+		},
+	})
+	return updatedEvent
 }
 
 export const deleteServerEvent = async (id: string) => {
-	//TODO delete server event in db
-	return { type: 'info', message: 'Server is online'} as ServerEvent
+	const deletedEvent = await prisma.serverEvent.delete({
+		where: {
+			id,
+		},
+	})
+	return deletedEvent
 }

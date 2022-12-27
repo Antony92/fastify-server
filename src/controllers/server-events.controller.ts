@@ -12,7 +12,7 @@ import {
 	deleteServerEvent,
 } from '../services/server-event.service.js'
 import { AuditAction, AuditTarget } from '../types/audit.type.js'
-import { ServerEvent } from '../types/server-event.type.js'
+import { ServerEventBody } from '../types/server-event.type.js'
 
 export const subscribeServerEventsHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	reply.raw.setHeader('Content-Type', 'text/event-stream')
@@ -23,7 +23,9 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 	addServerEventClient({ id, reply })
 
 	const event = await getLastServerEvent()
-	sendServerEventToClient(id, event)
+	if (event) {
+		sendServerEventToClient(id, event)
+	}
 
 	reply.raw.on('close', () => {
 		removeServerEventClient(id)
@@ -31,14 +33,14 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 	})
 }
 
-export const getServerEventsHandler = async (request: FastifyRequest<{ Querystring: { offset: number; limit: number } }>, reply: FastifyReply) => {
-	const { offset, limit } = request.query
+export const getServerEventsHandler = async (request: FastifyRequest<{ Querystring: { skip: number; limit: number } }>, reply: FastifyReply) => {
+	const { skip, limit } = request.query
 
-	const events = await getServerEvents(offset, limit)
-	return { data: events }
+	const events = await getServerEvents(skip, limit)
+	return events
 }
 
-export const createServerEventHandler = async (request: FastifyRequest<{ Body: ServerEvent }>, reply: FastifyReply) => {
+export const createServerEventHandler = async (request: FastifyRequest<{ Body: ServerEventBody }>, reply: FastifyReply) => {
 	const { type, message } = request.body
 
 	const event = await createServerEvent({ type, message })
@@ -50,11 +52,11 @@ export const createServerEventHandler = async (request: FastifyRequest<{ Body: S
 	return { message: 'Server event created', data: event }
 }
 
-export const updateServerEventHandler = async (request: FastifyRequest<{ Params: { id: string }; Body: ServerEvent }>, reply: FastifyReply) => {
+export const updateServerEventHandler = async (request: FastifyRequest<{ Params: { id: string }; Body: ServerEventBody }>, reply: FastifyReply) => {
 	const { id } = request.params
 	const { type, message } = request.body
 
-	const event = await updateServerEvent({ id, type, message })
+	const event = await updateServerEvent(id, { type, message })
 
 	await audit(request.user, AuditAction.UPDATE, AuditTarget.SERVER_EVENT, event)
 
