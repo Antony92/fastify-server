@@ -14,8 +14,3 @@ export const loginSchema: FastifySchema = {
 		},
 	},
 }
-
-export const logoutSchema: FastifySchema = {
-	tags: ['Authentication'],
-    description: 'Logout route',
-}
