@@ -1,9 +1,13 @@
 import prisma from '../db/prisma.js'
 
-export const getUser = async (email: string) => {
+export const getUser = async (search: string) => {
     const user = await prisma.user.findFirst({
         where: {
-            email
+            OR: [
+                { id: search },
+                { email: search },
+                { name: search },
+            ]
         }
     })
     return user
