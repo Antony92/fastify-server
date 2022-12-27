@@ -1,6 +1,5 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifySchema } from 'fastify'
-import { ServerEventCreateBody, ServerEventUpdateBody } from '../types/server-event.type.js'
 import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
 
 export const getUserSchema: FastifySchema = {
