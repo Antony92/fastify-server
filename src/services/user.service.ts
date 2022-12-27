@@ -1,11 +1,10 @@
-import { User, Roles } from '../types/user.type.js'
+import prisma from '../db/prisma.js'
 
 export const getUser = async (email: string) => {
-    // check againts DB
-    const user: User = {
-        name: 'admin',
-        email,
-        roles: [Roles.ADMIN]
-    }
+    const user = await prisma.user.findFirst({
+        where: {
+            email
+        }
+    })
     return user
 }

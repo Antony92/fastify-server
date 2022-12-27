@@ -1,11 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { RefreshToken, AccessToken } from '../types/jwt.type.js'
-import { hasRole } from '../helpers/user.helper.js'
 
 export const secured = (roles?: string[]) => {
 	return async (request: FastifyRequest, reply: FastifyReply) => {
 		await request.accessJwtVerify()
-		if (roles && !hasRole(request.user, roles)) {
+		if (roles && !request.user?.roles?.some((role) => roles.includes(role))) {
 			throw {
 				message: `Insufficient roles`,
 				error: 'Access',

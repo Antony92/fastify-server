@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { audit } from '../services/audit.service.js'
+import { auditLog } from '../services/audit-log.service.js'
 import {
 	addServerEventClient,
 	removeServerEventClient,
@@ -11,7 +11,7 @@ import {
 	updateServerEvent,
 	deleteServerEvent,
 } from '../services/server-event.service.js'
-import { AuditAction, AuditTarget } from '../types/audit.type.js'
+import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
 import { ServerEventBody } from '../types/server-event.type.js'
 
 export const subscribeServerEventsHandler = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -45,7 +45,7 @@ export const createServerEventHandler = async (request: FastifyRequest<{ Body: S
 
 	const event = await createServerEvent({ type, message })
 
-	await audit(request.user, AuditAction.CREATE, AuditTarget.SERVER_EVENT, event)
+	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.SERVER_EVENT, event)
 
 	sendServerEventToAll(event)
 
@@ -56,9 +56,9 @@ export const updateServerEventHandler = async (request: FastifyRequest<{ Params:
 	const { id } = request.params
 	const { type, message } = request.body
 
-	const event = await updateServerEvent(id, { type, message })
+	const event = await updateServerEvent({ id, type, message })
 
-	await audit(request.user, AuditAction.UPDATE, AuditTarget.SERVER_EVENT, event)
+	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.SERVER_EVENT, event)
 
 	sendServerEventToAll(event)
 
@@ -70,7 +70,7 @@ export const deleteServerEventHandler = async (request: FastifyRequest<{ Params:
 
 	const event = await deleteServerEvent(id)
 
-	await audit(request.user, AuditAction.DELETE, AuditTarget.SERVER_EVENT, event)
+	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.SERVER_EVENT, event)
 
 	const lastEvent = await getLastServerEvent()
 

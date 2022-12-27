@@ -1,8 +1,10 @@
 export const enum Roles {
-	ADMIN = 'admin'
+	ADMIN = 'ADMIN',
+	GUEST = 'GUEST'
 }
 
 export type User = {
+	id: string
 	name: string
 	email: string
 	roles: Roles[]

@@ -31,11 +31,10 @@ export const sendServerEventToClient = (id: string, event: ServerEvent) => {
 }
 
 export const getServerEvents = async (skip = 0, limit = 10) => {
-	const events = await prisma.serverEvent.findMany({
-		skip,
-		take: limit,
-	})
-	const total = await prisma.serverEvent.count()
+	const [events, total] = await prisma.$transaction([
+		prisma.serverEvent.findMany({ skip, take: limit }),
+		prisma.serverEvent.count()
+	])
 	return { data: events, total }
 }
 
@@ -56,14 +55,14 @@ export const createServerEvent = async (event: ServerEventBody) => {
 	return createdEvent
 }
 
-export const updateServerEvent = async (id: string, event: ServerEventBody) => {
+export const updateServerEvent = async (event: { id: string } & ServerEventBody) => {
 	const updatedEvent = await prisma.serverEvent.update({
 		data: {
 			type: event.type,
 			message: event.message,
 		},
 		where: {
-			id,
+			id: event.id,
 		},
 	})
 	return updatedEvent

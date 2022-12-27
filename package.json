@@ -11,7 +11,8 @@
     "test:run": "vitest run",
     "test:main": "ts-node-esm --files src/test/main.ts",
     "db:push": "npx prisma db push",
-    "db:pull": "npx prisma db pull"
+    "db:pull": "npx prisma db pull",
+    "db:reset": "npx prisma migrate reset"
   },
   "author": "aasenov",
   "license": "MIT",
