@@ -25,7 +25,6 @@ export const loginHandler = async (request: FastifyRequest<{Body: { email: strin
 		{ user },
 		{
 			jti: crypto.randomUUID(),
-			expiresIn: config.jwt.accessTokenExpire,
 		}
 	)
 
@@ -33,7 +32,6 @@ export const loginHandler = async (request: FastifyRequest<{Body: { email: strin
 		{ email },
 		{
 			jti: crypto.randomUUID(),
-			expiresIn: config.jwt.refreshTokenExpire,
 		}
 	)
 
@@ -80,7 +78,6 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 		{ user },
 		{
 			jti: crypto.randomUUID(),
-			expiresIn: config.jwt.accessTokenExpire
 		}
 	)
 

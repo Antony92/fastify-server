@@ -6,8 +6,8 @@ describe('Health check route', () => {
 		it(`it should return status 200 and contain server info`, async () => {
 			const req = await server.inject({ method: 'GET', url: '/api/v1/health' })
             const body = req.json()
-            expect(req.statusCode).to.be.eq(200)
-            expect(body).to.have.property('uptime')
+            expect(req.statusCode).toBe(200)
+            expect(body).toHaveProperty('uptime')
 		})
 	})
 })

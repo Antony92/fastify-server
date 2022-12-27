@@ -49,6 +49,7 @@ await server.register(fastifyJwt, {
 	},
 	sign: {
 		iss: config.jwt.issuer,
+		expiresIn: config.jwt.accessTokenExpire
 	},
 	verify: {
 		allowedIss: config.jwt.issuer,
@@ -66,6 +67,7 @@ await server.register(fastifyJwt, {
 	},
 	sign: {
 		iss: config.jwt.issuer,
+		expiresIn: config.jwt.refreshTokenExpire
 	},
 	verify: {
 		allowedIss: config.jwt.issuer,
