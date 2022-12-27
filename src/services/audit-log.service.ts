@@ -16,20 +16,20 @@ export const auditLog = async (actor: User, action: AuditLogAction, target: Audi
     return auditLog
 }
 
-export const getAuditLogs = async (search?: AuditLogSearchQuery) => {
+export const getAuditLogs = async (query?: AuditLogSearchQuery) => {
     const [auditLogs, total] = await prisma.$transaction([
 		prisma.audit.findMany({
-            skip: search?.skip || 0,
-            take: search?.limit || 10,
+            skip: query?.skip || 0,
+            take: query?.limit || 10,
             where: {
-                name: search?.name,
-                email: search?.email,
-                action: search?.action,
-                target: search?.target,
-                message: search?.message,
+                name: query?.name,
+                email: query?.email,
+                action: query?.action,
+                target: query?.target,
+                message: query?.message,
                 created: {
-                    lte: search?.endDate,
-                    gte: search?.startDate,
+                    lte: query?.endDate,
+                    gte: query?.startDate,
                 }
             }
         }),

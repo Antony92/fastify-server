@@ -3,10 +3,15 @@ import { FastifySchema } from 'fastify'
 import { AuditLogSearchQuery } from '../types/audit-log.type.js'
 
 export const getAuditLogsSchema: FastifySchema = {
-	tags: ['Audit log'],
+	tags: ['Audit logs'],
 	description: 'Get audit logs',
 	consumes: ['application/json'],
 	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
 	querystring: {
 		type: 'object',
 		properties: {

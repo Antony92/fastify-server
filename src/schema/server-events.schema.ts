@@ -1,12 +1,17 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifySchema } from 'fastify'
-import { ServerEventBody } from '../types/server-event.type.js'
+import { ServerEventCreateBody, ServerEventUpdateBody } from '../types/server-event.type.js'
 
 export const getServerEventsSchema: FastifySchema = {
 	tags: ['Server events'],
 	description: 'Get server events',
 	consumes: ['application/json'],
 	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
 	querystring: {
 		type: 'object',
 		properties: {
@@ -21,6 +26,11 @@ export const createServerEventSchema: FastifySchema = {
 	description: 'Create server event',
 	consumes: ['application/json'],
 	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
 	body: {
 		type: 'object',
 		properties: {
@@ -28,7 +38,7 @@ export const createServerEventSchema: FastifySchema = {
 			message: { type: 'string', maxLength: 500 },
 		},
 		required: ['type', 'message']
-	} satisfies JSONSchemaType<ServerEventBody>
+	} satisfies JSONSchemaType<ServerEventCreateBody>
 }
 
 export const updateServerEventSchema: FastifySchema = {
@@ -36,6 +46,11 @@ export const updateServerEventSchema: FastifySchema = {
 	description: 'Update server event',
 	consumes: ['application/json'],
 	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
 	params: {
 		type: 'object',
 		properties: {
@@ -46,11 +61,11 @@ export const updateServerEventSchema: FastifySchema = {
 	body: {
 		type: 'object',
 		properties: {
-			type: { type: 'string', enum: ['info', 'warning', 'danger'] },
-			message: { type: 'string', maxLength: 500 },
-		},
-		required: ['type', 'message']
-	} satisfies JSONSchemaType<ServerEventBody>
+			id: { type: 'string', nullable: true },
+			type: { type: 'string', nullable: true, enum: ['info', 'warning', 'danger'] },
+			message: { type: 'string', nullable: true, maxLength: 500 },
+		}
+	} satisfies JSONSchemaType<ServerEventUpdateBody>
 }
 
 export const deleteServerEventSchema: FastifySchema = {
@@ -58,6 +73,11 @@ export const deleteServerEventSchema: FastifySchema = {
 	description: 'Delete server event',
 	consumes: ['application/json'],
 	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
 	params: {
 		type: 'object',
 		properties: {
