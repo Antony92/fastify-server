@@ -41,9 +41,7 @@ export const getServerEventsHandler = async (request: FastifyRequest<{ Querystri
 }
 
 export const createServerEventHandler = async (request: FastifyRequest<{ Body: ServerEventCreateBody }>, reply: FastifyReply) => {
-	const { type, message } = request.body
-
-	const event = await createServerEvent({ type, message })
+	const event = await createServerEvent(request.body)
 	sendServerEventToAll(event)
 
 	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.SERVER_EVENT, event)
@@ -56,9 +54,8 @@ export const updateServerEventHandler = async (
 	reply: FastifyReply
 ) => {
 	const { id } = request.params
-	const { type, message } = request.body
 
-	const event = await updateServerEvent({ id, type, message })
+	const event = await updateServerEvent({ id, ...request.body })
 	sendServerEventToAll(event)
 
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.SERVER_EVENT, event)
