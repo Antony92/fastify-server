@@ -12,7 +12,6 @@ export const loginHandler = async (request: FastifyRequest<{Body: { email: strin
 	const { email, password } = request.body
 
 	const user = await getUser(email)
-
 	if (!user) {
 		throw {
 			message: `Wrong username or password`,
@@ -57,6 +56,7 @@ export const loginHandler = async (request: FastifyRequest<{Body: { email: strin
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	reply.clearCookie(config.cookies.accessCookieName, { path: '/api' })
 	reply.clearCookie(config.cookies.refreshCookieName, { path: '/api/v1/auth/refresh' })
+	
 	return { message: 'Logout successful' }
 }
 
@@ -66,13 +66,13 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 	const { email } = request.refreshToken
 
 	const user = await getUser(email)
-
-	if (!user)
+	if (!user) {
 		throw {
 			message: `User does not exist`,
 			error: 'Auth',
 			statusCode: 401,
 		}
+	}
 
 	const accessToken = await reply.accessJwtSign(
 		{ user },

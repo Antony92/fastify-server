@@ -44,10 +44,9 @@ export const createServerEventHandler = async (request: FastifyRequest<{ Body: S
 	const { type, message } = request.body
 
 	const event = await createServerEvent({ type, message })
+	sendServerEventToAll(event)
 
 	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.SERVER_EVENT, event)
-
-	sendServerEventToAll(event)
 
 	return { message: 'Server event created', data: event }
 }
@@ -60,10 +59,9 @@ export const updateServerEventHandler = async (
 	const { type, message } = request.body
 
 	const event = await updateServerEvent({ id, type, message })
+	sendServerEventToAll(event)
 
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.SERVER_EVENT, event)
-
-	sendServerEventToAll(event)
 
 	return { message: 'Server event updated', data: event }
 }
@@ -72,14 +70,12 @@ export const deleteServerEventHandler = async (request: FastifyRequest<{ Params:
 	const { id } = request.params
 
 	const event = await deleteServerEvent(id)
-
-	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.SERVER_EVENT, event)
-
 	const lastEvent = await getLastServerEvent()
-
 	if (lastEvent) {
 		sendServerEventToAll(lastEvent)
 	}
 
+	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.SERVER_EVENT, event)
+	
 	return { message: 'Server event deleted', data: event }
 }
