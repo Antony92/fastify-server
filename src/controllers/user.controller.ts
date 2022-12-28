@@ -10,7 +10,9 @@ export const getUserRolesHandler = async (request: FastifyRequest, reply: Fastif
 }
 
 export const getUserHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const user = await getUser(request.params.id)
+	const { id } = request.params
+
+	const user = await getUser(id)
 	return { data: user }
 }
 
