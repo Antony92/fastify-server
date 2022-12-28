@@ -14,19 +14,14 @@ export const getUser = async (id: string) => {
 }
 
 export const getUsers = async (query?: UserSearchQuery) => {
-    const OR = {
-        OR: [
-            { id: { startsWith: query?.search } },
-            { email: { startsWith: query?.search } },
-            { name: { startsWith: query?.search } }
-        ]
-    }
     const [users, total] = await prisma.$transaction([
         prisma.user.findMany({
             skip: query?.skip || 0,
             take: query?.limit || 10,
             where: {
-                ...(query?.search ? OR : {}),
+                name: { startsWith: query?.name },
+                email: { startsWith: query?.email },
+                blocked: query?.blocked
             }
         }),
         prisma.user.count()

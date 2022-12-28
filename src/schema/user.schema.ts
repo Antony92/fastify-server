@@ -36,7 +36,8 @@ export const getUsersSchema: FastifySchema = {
 		properties: {
 			skip: { type: 'number', nullable: true, minimum: 0 },
 			limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
-			search: { type: 'string', nullable: true },
+			name: { type: 'string', nullable: true },
+			email: { type: 'string', nullable: true },
 			blocked: { type: 'boolean', nullable: true },
 		},
 	} satisfies JSONSchemaType<UserSearchQuery>,

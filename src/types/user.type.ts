@@ -22,6 +22,7 @@ export type UserUpdateBody = Partial<User>
 export type UserSearchQuery = {
 	skip?: number
 	limit?: number
-	search?: string
+	name?: string
+	email?: string
 	blocked?: boolean
 }
