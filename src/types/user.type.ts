@@ -1,4 +1,4 @@
-export const enum Roles {
+export enum Role {
 	ADMIN = 'ADMIN',
 	GUEST = 'GUEST'
 }
@@ -8,13 +8,13 @@ export type User = {
 	name: string
 	email: string,
 	blocked: boolean,
-	roles: Roles[]
+	roles: Role[]
 }
 
 export type UserCreateBody = {
 	name: string
 	email: string,
-	roles?: Roles[]
+	roles?: Role[]
 }
 
 export type UserUpdateBody = Partial<User>
