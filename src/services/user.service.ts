@@ -47,7 +47,8 @@ export const updateUser = async (id: string, user: UserUpdateBody) => {
             name: user.name,
             email: user.email,
             blocked: user.blocked,
-            roles: user.roles
+            roles: user.roles,
+            updated: new Date()
         },
         where: {
             id

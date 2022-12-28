@@ -19,6 +19,7 @@ model User {
   roles   Role[]   @default([GUEST])
   blocked Boolean  @default(false)
   created DateTime @default(now())
+  updated DateTime?
 }
 
 model Audit {
@@ -37,4 +38,5 @@ model ServerEvent {
   type    String
   message String
   created DateTime @default(now())
+  updated DateTime?
 }

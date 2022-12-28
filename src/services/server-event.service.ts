@@ -60,6 +60,7 @@ export const updateServerEvent = async (id: string, event: ServerEventUpdateBody
 		data: {
 			type: event.type,
 			message: event.message,
+			updated: new Date()
 		},
 		where: {
 			id,
