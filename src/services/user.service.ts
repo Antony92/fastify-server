@@ -34,13 +34,14 @@ export const createUser = async (user: UserCreateBody) => {
         data: {
             name: user.name,
             email: user.email,
-            roles: user.roles
+            blocked: user.blocked,
+            roles: user.roles,
         }
     })
     return createdUser
 }
 
-export const updateUser = async (user: UserUpdateBody) => {
+export const updateUser = async (id: string, user: UserUpdateBody) => {
     const updatedUser = await prisma.user.update({
         data: {
             name: user.name,
@@ -49,7 +50,7 @@ export const updateUser = async (user: UserUpdateBody) => {
             roles: user.roles
         },
         where: {
-            id: user.id
+            id
         }
     })
     return updatedUser

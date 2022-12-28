@@ -1,6 +1,6 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifySchema } from 'fastify'
-import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
+import { Role, UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
 
 export const getUserSchema: FastifySchema = {
 	tags: ['User'],
@@ -70,9 +70,10 @@ export const createUserSchema: FastifySchema = {
 		properties: {
 			name: { type: 'string' },
 			email: { type: 'string', format: 'email' },
+			blocked: { type: 'boolean', default: false },
 			roles: {
 				type: 'array',
-				nullable: true,
+				default: [Role.GUEST],
 				items: {
 					type: 'string',
 				},
@@ -102,7 +103,6 @@ export const updateUserSchema: FastifySchema = {
 	body: {
 		type: 'object',
 		properties: {
-			id: { type: 'string', nullable: true },
 			name: { type: 'string', nullable: true },
 			email: { type: 'string', nullable: true, format: 'email' },
 			blocked: { type: 'boolean', nullable: true },

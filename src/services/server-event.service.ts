@@ -55,14 +55,14 @@ export const createServerEvent = async (event: ServerEventCreateBody) => {
 	return createdEvent
 }
 
-export const updateServerEvent = async (event: ServerEventUpdateBody) => {
+export const updateServerEvent = async (id: string, event: ServerEventUpdateBody) => {
 	const updatedEvent = await prisma.serverEvent.update({
 		data: {
 			type: event.type,
 			message: event.message,
 		},
 		where: {
-			id: event.id,
+			id,
 		},
 	})
 	return updatedEvent

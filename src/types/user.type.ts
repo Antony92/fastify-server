@@ -11,13 +11,9 @@ export type User = {
 	roles: Role[]
 }
 
-export type UserCreateBody = {
-	name: string
-	email: string,
-	roles?: Role[]
-}
+export type UserCreateBody = Omit<User, 'id'>
 
-export type UserUpdateBody = Partial<User>
+export type UserUpdateBody = Partial<UserCreateBody>
 
 export type UserSearchQuery = {
 	skip?: number

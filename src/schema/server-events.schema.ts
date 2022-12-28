@@ -61,7 +61,6 @@ export const updateServerEventSchema: FastifySchema = {
 	body: {
 		type: 'object',
 		properties: {
-			id: { type: 'string', nullable: true },
 			type: { type: 'string', nullable: true, enum: ['info', 'warning', 'danger'] },
 			message: { type: 'string', nullable: true, maxLength: 500 },
 		}
