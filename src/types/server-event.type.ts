@@ -1,15 +1,14 @@
 import { FastifyReply } from 'fastify'
 
-export type ServerEventCreateBody = {
+export type ServerEvent = {
+	id: string,
 	type: 'info' | 'warning' | 'danger'
 	message: string
 }
 
-export type ServerEventUpdateBody = {
-	id?: string
-	type?: 'info' | 'warning' | 'danger'
-	message?: string
-}
+export type ServerEventCreateBody = Omit<ServerEvent, 'id'>
+
+export type ServerEventUpdateBody = Partial<ServerEvent>
 
 export type ServerEventClient = {
 	id: string

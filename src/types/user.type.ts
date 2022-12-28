@@ -6,7 +6,8 @@ export const enum Roles {
 export type User = {
 	id: string
 	name: string
-	email: string
+	email: string,
+	blocked: boolean,
 	roles: Roles[]
 }
 
@@ -16,13 +17,7 @@ export type UserCreateBody = {
 	roles?: Roles[]
 }
 
-export type UserUpdateBody = {
-	id?: string
-	name?: string
-	email?: string
-	blocked?: boolean
-	roles?: Roles[]
-}
+export type UserUpdateBody = Partial<User>
 
 export type UserSearchQuery = {
 	skip?: number
