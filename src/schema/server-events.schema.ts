@@ -34,7 +34,7 @@ export const createServerEventSchema: FastifySchema = {
 	body: {
 		type: 'object',
 		properties: {
-			type: { type: 'string', enum: ['info', 'warning', 'error'], nullable: true },
+			type: { type: 'string', nullable: true, enum: ['info', 'warning', 'error'] },
 			message: { type: 'string', maxLength: 500 },
 		},
 		required: ['message']
