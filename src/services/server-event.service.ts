@@ -1,6 +1,6 @@
 import { ServerEvent } from '@prisma/client'
 import prisma from '../db/prisma.js'
-import { ServerEventClient, ServerEventCreateBody, ServerEventUpdateBody } from '../types/server-event.type.js'
+import { ServerEventClient, ServerEventCreate, ServerEventUpdate } from '../types/server-event.type.js'
 
 const serverEventClients: ServerEventClient[] = []
 const retry = 5000
@@ -45,7 +45,7 @@ export const getLastServerEvent = async () => {
 	return event
 }
 
-export const createServerEvent = async (event: ServerEventCreateBody) => {
+export const createServerEvent = async (event: ServerEventCreate) => {
 	const createdEvent = await prisma.serverEvent.create({
 		data: {
 			type: event.type,
@@ -55,7 +55,7 @@ export const createServerEvent = async (event: ServerEventCreateBody) => {
 	return createdEvent
 }
 
-export const updateServerEvent = async (id: string, event: ServerEventUpdateBody) => {
+export const updateServerEvent = async (id: string, event: ServerEventUpdate) => {
 	const updatedEvent = await prisma.serverEvent.update({
 		data: {
 			type: event.type,

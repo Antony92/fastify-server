@@ -6,9 +6,9 @@ export type ServerEvent = {
 	message: string
 }
 
-export type ServerEventCreateBody = Omit<ServerEvent, 'id'>
+export type ServerEventCreate = Omit<ServerEvent, 'id'>
 
-export type ServerEventUpdateBody = Partial<ServerEventCreateBody>
+export type ServerEventUpdate = Partial<ServerEventCreate>
 
 export type ServerEventClient = {
 	id: string

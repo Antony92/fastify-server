@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { auditLog } from '../services/audit-log.service.js'
 import { createUser, deleteUser, getUser, getUsers, updateUser } from '../services/user.service.js'
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
-import { Role, UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
+import { Role, UserCreate, UserSearchQuery, UserUpdate } from '../types/user.type.js'
 
 export const getUserRolesHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	const roles = Object.values(Role)
@@ -19,7 +19,7 @@ export const getUsersHandler = async (request: FastifyRequest<{ Querystring: Use
 	return users
 }
 
-export const createUserHandler = async (request: FastifyRequest<{ Body: UserCreateBody }>, reply: FastifyReply) => {
+export const createUserHandler = async (request: FastifyRequest<{ Body: UserCreate }>, reply: FastifyReply) => {
 	const user = await createUser(request.body)
 
 	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.USER, user)
@@ -27,7 +27,7 @@ export const createUserHandler = async (request: FastifyRequest<{ Body: UserCrea
 	return { message: 'User created', data: user }
 }
 
-export const updateUserHandler = async (request: FastifyRequest<{ Params: { id: string }, Body: UserUpdateBody }>, reply: FastifyReply) => {
+export const updateUserHandler = async (request: FastifyRequest<{ Params: { id: string }, Body: UserUpdate }>, reply: FastifyReply) => {
 	const user = await updateUser(request.params.id, request.body)
 
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.USER, user)

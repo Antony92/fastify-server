@@ -1,5 +1,5 @@
 import prisma from '../db/prisma.js'
-import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
+import { UserCreate, UserSearchQuery, UserUpdate } from '../types/user.type.js'
 
 export const getUser = async (id: string) => {
     const user = await prisma.user.findFirst({
@@ -29,7 +29,7 @@ export const getUsers = async (query?: UserSearchQuery) => {
     return { data: users, total }
 }
 
-export const createUser = async (user: UserCreateBody) => {
+export const createUser = async (user: UserCreate) => {
     const createdUser = await prisma.user.create({
         data: {
             name: user.name,
@@ -41,7 +41,7 @@ export const createUser = async (user: UserCreateBody) => {
     return createdUser
 }
 
-export const updateUser = async (id: string, user: UserUpdateBody) => {
+export const updateUser = async (id: string, user: UserUpdate) => {
     const updatedUser = await prisma.user.update({
         data: {
             name: user.name,

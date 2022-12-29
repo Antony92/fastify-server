@@ -1,6 +1,6 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifySchema } from 'fastify'
-import { Role, UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
+import { Role, UserCreate, UserSearchQuery, UserUpdate } from '../types/user.type.js'
 
 export const getUserSchema: FastifySchema = {
 	tags: ['User'],
@@ -80,7 +80,7 @@ export const createUserSchema: FastifySchema = {
 			},
 		},
 		required: ['name', 'email'],
-	} satisfies JSONSchemaType<UserCreateBody>,
+	} satisfies JSONSchemaType<UserCreate>,
 }
 
 export const updateUserSchema: FastifySchema = {
@@ -114,7 +114,7 @@ export const updateUserSchema: FastifySchema = {
 				},
 			},
 		},
-	} satisfies JSONSchemaType<UserUpdateBody>,
+	} satisfies JSONSchemaType<UserUpdate>,
 }
 
 export const deleteUserSchema: FastifySchema = {

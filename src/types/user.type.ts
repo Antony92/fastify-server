@@ -11,9 +11,9 @@ export type User = {
 	roles: Role[]
 }
 
-export type UserCreateBody = Omit<User, 'id'>
+export type UserCreate = Omit<User, 'id'>
 
-export type UserUpdateBody = Partial<UserCreateBody>
+export type UserUpdate = Partial<UserCreate>
 
 export type UserSearchQuery = {
 	skip?: number
