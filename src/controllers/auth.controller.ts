@@ -1,23 +1,22 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import config from '../config.js'
 import crypto from 'crypto'
-import { getUser } from '../services/user.service.js'
+import { createUser, getUser } from '../services/user.service.js'
+import { Role } from '../types/user.type.js'
 
 export const loginCallbackHandler = async(request: FastifyRequest, reply: FastifyReply) => {
 	const token = await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
-	return token
-}
 
-export const loginHandler = async (request: FastifyRequest<{Body: { email: string, password: string }}>, reply: FastifyReply) => {
-	const { email, password } = request.body
+	const { upn: email, name } = JSON.parse(Buffer.from(token.token.access_token.split('.')[1], 'base64').toString())
 
-	const user = await getUser(email)
+	let user = await getUser(email)
 	if (!user) {
-		throw {
-			message: `Wrong username or password`,
-			error: 'Auth',
-			statusCode: 401,
-		}
+		user = await createUser({
+			email,
+			name,
+			blocked: false,
+			roles: [Role.GUEST]
+		})
 	}
 		
 	const accessToken = await reply.accessJwtSign(
@@ -52,6 +51,7 @@ export const loginHandler = async (request: FastifyRequest<{Body: { email: strin
 
 	return { accessToken }
 }
+
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	reply.clearCookie(config.cookies.accessCookieName, { path: '/api' })

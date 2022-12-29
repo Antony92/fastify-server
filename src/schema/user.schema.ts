@@ -70,7 +70,7 @@ export const createUserSchema: FastifySchema = {
 		properties: {
 			name: { type: 'string' },
 			email: { type: 'string', format: 'email' },
-			blocked: { type: 'boolean', default: false },
+			blocked: { type: 'boolean', nullable: true },
 			roles: {
 				type: 'array',
 				default: [Role.GUEST],

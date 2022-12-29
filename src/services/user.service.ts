@@ -1,13 +1,10 @@
 import prisma from '../db/prisma.js'
 import { UserCreate, UserSearchQuery, UserUpdate } from '../types/user.type.js'
 
-export const getUser = async (id: string) => {
+export const getUser = async (email: string) => {
     const user = await prisma.user.findFirst({
         where: {
-            OR: [
-                { id },
-                { email: id },
-            ]
+            email
         }
     })
     return user

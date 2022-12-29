@@ -84,7 +84,12 @@ await server.register(fastifyOauth2, {
 			id: config.microsoft.clientId,
 			secret: config.microsoft.clientSecret,
 		},
-		auth: fastifyOauth2.default.MICROSOFT_CONFIGURATION,
+		auth: {
+			authorizeHost: 'https://login.microsoftonline.com',
+			authorizePath: `/${config.microsoft.tenantId}/oauth2/v2.0/authorize`,
+			tokenHost: 'https://login.microsoftonline.com',
+			tokenPath: `/${config.microsoft.tenantId}/oauth2/v2.0/token`
+		}
 	},
 	startRedirectPath: '/api/v1/auth/login/microsoft',
 	callbackUri: 'http://localhost:8080/api/v1/auth/login/callback',
