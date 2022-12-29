@@ -10,10 +10,11 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:main": "ts-node-esm --files src/test/main.ts",
-    "db:studio": "npx prisma studio",
-    "db:push": "npx prisma db push",
-    "db:pull": "npx prisma db pull",
-    "db:reset": "npx prisma migrate reset"
+    "prisma:generate": "npx prisma generate",
+    "prisma:studio": "npx prisma studio",
+    "prisma:push": "npx prisma db push",
+    "prisma:pull": "npx prisma db pull",
+    "prisma:reset": "npx prisma migrate reset"
   },
   "author": "aasenov",
   "license": "MIT",
