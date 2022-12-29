@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import config from '../config.js'
 import crypto from 'crypto'
 import { createUser, getUser } from '../services/user.service.js'
+import { UserJWT } from '../types/user.type.js'
 
 export const loginCallbackHandler = async(request: FastifyRequest, reply: FastifyReply) => {
 	const token = await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
@@ -15,9 +16,11 @@ export const loginCallbackHandler = async(request: FastifyRequest, reply: Fastif
 		
 	const accessToken = await reply.accessJwtSign(
 		{ 
-			name: user.name,
-			email: user.email,
-			roles: user.roles  
+			user: {
+				name: user.name,
+				email: user.email,
+				roles: user.roles
+			}  
 		},
 		{
 			jti: crypto.randomUUID(),

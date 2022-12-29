@@ -17,7 +17,7 @@ model User {
   name    String
   email   String    @unique()
   roles   Role[]    @default([GUEST])
-  active  Boolean   @default(false)
+  active  Boolean   @default(true)
   created DateTime  @default(now())
   updated DateTime?
 }
