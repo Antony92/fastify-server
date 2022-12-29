@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
 export type UserJWT = {
 	name: string,
@@ -6,12 +6,7 @@ export type UserJWT = {
 	roles: string[],
 }
 
-export type UserBody = {
-	name: string
-	email: string
-	active?: boolean
-	roles?: Role[]
-}
+export type UserBody = Omit<Prisma.UserCreateInput, 'id' | 'created' | 'updated'>
 
 export type UserSearchQuery = {
 	skip?: number

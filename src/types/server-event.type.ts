@@ -1,9 +1,7 @@
+import { Prisma } from '@prisma/client'
 import { FastifyReply } from 'fastify'
 
-export type ServerEventBody = {
-	type: 'info' | 'warning' | 'danger'
-	message: string
-}
+export type ServerEventBody = Omit<Prisma.ServerEventCreateInput, 'id' | 'created' | 'updated'>
 
 export type ServerEventClient = {
 	id: string

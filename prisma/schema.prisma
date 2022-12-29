@@ -12,6 +12,12 @@ enum Role {
   ADMIN
 }
 
+enum ServerEventType {
+  info
+  warning
+  error
+}
+
 model User {
   id      String    @id @default(uuid())
   name    String
@@ -35,7 +41,7 @@ model Audit {
 
 model ServerEvent {
   id      String    @id @default(uuid())
-  type    String
+  type    ServerEventType @default(info)
   message String
   created DateTime  @default(now())
   updated DateTime?
