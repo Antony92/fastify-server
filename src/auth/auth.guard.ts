@@ -1,10 +1,12 @@
+import { Role } from '@prisma/client'
 import { FastifyRequest, FastifyReply } from 'fastify'
+import { hasUserRole } from '../services/user.service.js'
 import { RefreshToken, AccessToken } from '../types/jwt.type.js'
 
-export const secured = (roles?: string[]) => {
+export const secured = (roles?: Role[]) => {
 	return async (request: FastifyRequest, reply: FastifyReply) => {
 		await request.accessJwtVerify()
-		if (roles && !request.user?.roles?.some((role) => roles.includes(role))) {
+		if (roles && !await hasUserRole(request.user.email, roles)) {
 			throw {
 				message: `Insufficient roles`,
 				error: 'Access',
