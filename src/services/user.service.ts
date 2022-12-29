@@ -58,7 +58,7 @@ export const createUser = async (user: Prisma.UserCreateInput) => {
 	return createdUser
 }
 
-export const updateUser = async (email: string, user: Prisma.UserUpdateInput) => {
+export const updateUser = async (id: string, user: Prisma.UserUpdateInput) => {
 	const updatedUser = await prisma.user.update({
 		data: {
 			name: user.name,
@@ -68,16 +68,16 @@ export const updateUser = async (email: string, user: Prisma.UserUpdateInput) =>
 			updated: new Date(),
 		},
 		where: {
-			email
+			id
 		},
 	})
 	return updatedUser
 }
 
-export const deleteUser = async (email: string) => {
+export const deleteUser = async (id: string) => {
 	const deletedUser = await prisma.user.delete({
 		where: {
-			email,
+			id,
 		},
 	})
 	return deletedUser
