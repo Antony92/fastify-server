@@ -1,11 +1,11 @@
 import { expect, describe, it } from 'vitest'
 import server from '../../server.js'
-import { Roles, User } from '../../types/user.type.js'
+import { Role, User } from '../../types/user.type.js'
 
-const admin: User = {
+const admin: Partial<User> = {
     name: 'admin',
     email: 'admin@test.com',
-    roles: [Roles.ADMIN]
+    roles: [Role.ADMIN]
 }
 
 const jwt = server.jwt['access'].sign({ user: admin })
