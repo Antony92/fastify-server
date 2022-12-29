@@ -2,7 +2,6 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import config from '../config.js'
 import crypto from 'crypto'
 import { createUser, getUser } from '../services/user.service.js'
-import { UserJWT } from '../types/user.type.js'
 
 export const loginCallbackHandler = async(request: FastifyRequest, reply: FastifyReply) => {
 	const token = await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
