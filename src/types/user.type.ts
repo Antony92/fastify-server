@@ -1,24 +1,22 @@
-export enum Role {
-	ADMIN = 'ADMIN',
-	GUEST = 'GUEST'
-}
+import { Role } from '@prisma/client'
 
-export type User = {
-	id: string
-	name: string
+export type UserJWT = {
+	name: string,
 	email: string,
-	blocked?: boolean,
-	roles: Role[]
+	roles: string[],
 }
 
-export type UserCreate = Omit<User, 'id'>
-
-export type UserUpdate = Partial<UserCreate>
+export type UserBody = {
+	name: string
+	email: string
+	active?: boolean
+	roles?: Role[]
+}
 
 export type UserSearchQuery = {
 	skip?: number
 	limit?: number
 	name?: string
 	email?: string
-	blocked?: boolean
+	active?: boolean
 }

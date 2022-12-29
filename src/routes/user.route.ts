@@ -9,7 +9,7 @@ import {
 	getUserRolesHandler,
 } from '../controllers/user.controller.js'
 import { createUserSchema, deleteUserSchema, getUserRolesSchema, getUserSchema, getUsersSchema, updateUserSchema } from '../schema/user.schema.js'
-import { Role } from '../types/user.type.js'
+import { Role } from '@prisma/client'
 
 const userRoute = async (server: FastifyInstance) => {
 	server.get('/users', { onRequest: secured([Role.ADMIN]), schema: getUsersSchema }, getUsersHandler)

@@ -8,7 +8,7 @@ import {
 	deleteServerEventHandler,
 } from '../controllers/server-events.controller.js'
 import { createServerEventSchema, deleteServerEventSchema, getServerEventsSchema, updateServerEventSchema } from '../schema/server-events.schema.js'
-import { Role } from '../types/user.type.js'
+import { Role } from '@prisma/client'
 
 const serverEventsRoute = async (server: FastifyInstance) => {
 	server.get('/server-events/subscribe', subscribeServerEventsHandler)

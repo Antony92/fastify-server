@@ -1,5 +1,10 @@
+import { Role } from '@prisma/client'
 import prisma from '../db/prisma.js'
-import { UserCreate, UserSearchQuery, UserUpdate } from '../types/user.type.js'
+import { UserBody, UserSearchQuery } from '../types/user.type.js'
+
+export const getRoles = () => {
+    return Object.values(Role)
+}
 
 export const getUser = async (email: string) => {
     const user = await prisma.user.findFirst({
@@ -18,7 +23,7 @@ export const getUsers = async (query?: UserSearchQuery) => {
             where: {
                 name: { startsWith: query?.name },
                 email: { startsWith: query?.email },
-                blocked: query?.blocked
+                active: query?.active
             }
         }),
         prisma.user.count()
@@ -26,24 +31,34 @@ export const getUsers = async (query?: UserSearchQuery) => {
     return { data: users, total }
 }
 
-export const createUser = async (user: UserCreate) => {
-    const createdUser = await prisma.user.create({
-        data: {
+export const createUser = async (user: UserBody) => {
+    const createdUser = await prisma.user.upsert({
+        create: {
             name: user.name,
             email: user.email,
-            blocked: user.blocked,
+            active: user.active,
             roles: user.roles,
+        },
+        update: {
+            name: user.name,
+            email: user.email,
+            active: user.active,
+            roles: user.roles,
+            updated: new Date(),
+        },
+        where: {
+            email: user.email
         }
     })
     return createdUser
 }
 
-export const updateUser = async (id: string, user: UserUpdate) => {
+export const updateUser = async (id: string, user: Partial<UserBody>) => {
     const updatedUser = await prisma.user.update({
         data: {
             name: user.name,
             email: user.email,
-            blocked: user.blocked,
+            active: user.active,
             roles: user.roles,
             updated: new Date()
         },

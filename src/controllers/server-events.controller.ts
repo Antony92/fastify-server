@@ -12,7 +12,7 @@ import {
 	deleteServerEvent,
 } from '../services/server-event.service.js'
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
-import { ServerEventCreate, ServerEventUpdate } from '../types/server-event.type.js'
+import { ServerEventBody } from '../types/server-event.type.js'
 
 export const subscribeServerEventsHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	reply.raw.setHeader('Content-Type', 'text/event-stream')
@@ -40,7 +40,7 @@ export const getServerEventsHandler = async (request: FastifyRequest<{ Querystri
 	return events
 }
 
-export const createServerEventHandler = async (request: FastifyRequest<{ Body: ServerEventCreate }>, reply: FastifyReply) => {
+export const createServerEventHandler = async (request: FastifyRequest<{ Body: ServerEventBody }>, reply: FastifyReply) => {
 	const event = await createServerEvent(request.body)
 	sendServerEventToAll(event)
 
@@ -50,11 +50,11 @@ export const createServerEventHandler = async (request: FastifyRequest<{ Body: S
 }
 
 export const updateServerEventHandler = async (
-	request: FastifyRequest<{ Params: { id: string }; Body: ServerEventUpdate }>,
+	request: FastifyRequest<{ Params: { id: string }; Body: Partial<ServerEventBody> }>,
 	reply: FastifyReply
 ) => {
 	const event = await updateServerEvent(request.params.id, request.body)
-	sendServerEventToAll(event)
+	sendServerEventToAll({ type: event.type, message: event.message })
 
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.SERVER_EVENT, event)
 
@@ -67,7 +67,7 @@ export const deleteServerEventHandler = async (request: FastifyRequest<{ Params:
 	const event = await deleteServerEvent(id)
 	const lastEvent = await getLastServerEvent()
 	if (lastEvent) {
-		sendServerEventToAll(lastEvent)
+		sendServerEventToAll({ type: lastEvent.type, message: lastEvent.message })
 	}
 
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.SERVER_EVENT, event)

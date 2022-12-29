@@ -22,9 +22,7 @@ const config = {
 		refreshTokenExpire: process.env.JWT_REFRESH_TOKEN_EXPIRE || '1d',
 	},
 	cookies: {
-		accessCookieName: process.env.COOKIE_ACCESS_NAME || 'accessToken',
 		refreshCookieName: process.env.COOKIE_REFRESH_NAME || 'refreshToken',
-		accessCookieExpire: process.env.COOKIE_ACCESS_EXPIRE ? parseInt(process.env.COOKIE_ACCESS_EXPIRE) : 15 * 1000 * 60, // 15 minutes
 		refreshCookieExpire: process.env.COOKIE_REFRESH_EXPIRE ? parseInt(process.env.COOKIE_REFRESH_EXPIRE) : 24 * 60 * 1000 * 60 // 24 hours
 	}
 }

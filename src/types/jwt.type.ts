@@ -1,9 +1,9 @@
-import { User } from './user.type.js'
+import { UserJWT } from './user.type.js'
 
 export type AccessToken = {
 	jti: string
 	api: boolean
-    user: User
+    user: UserJWT
 }
 
 export type RefreshToken = {

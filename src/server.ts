@@ -45,10 +45,6 @@ await server.register(fastifySwaggerUi, { routePrefix: '/documentation' })
 await server.register(fastifyJwt, {
 	namespace: 'access',
 	secret: config.jwt.accessTokenSecret,
-	cookie: {
-		signed: false,
-		cookieName: config.cookies.accessCookieName,
-	},
 	sign: {
 		iss: config.jwt.issuer,
 		expiresIn: config.jwt.accessTokenExpire
@@ -62,7 +58,7 @@ await server.register(fastifyJwt, {
 await server.register(fastifyJwt, {
 	namespace: 'refresh',
 	decoratorName: 'refreshToken',
-	secret: config.jwt.refreshTokenSecret || 'test',
+	secret: config.jwt.refreshTokenSecret,
 	cookie: {
 		signed: false,
 		cookieName: config.cookies.refreshCookieName,

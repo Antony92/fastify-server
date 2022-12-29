@@ -12,20 +12,10 @@
 		<button onclick="secured()">Secured API</button>
 		<button onclick="logout()">Logout</button>
 		<script>
-			let accessToken = null
+			let accessToken = new URLSearchParams(location.search).get('token')
 
 			const login = async () => {
-				const req = await fetch('http://localhost:8080/api/v1/auth/login', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ email: 'test@email.com', password: 'test' }),
-					credentials: 'include',
-				})
-				const res = await req.json()
-				accessToken = res.accessToken
-				console.log('Login:', res)
+				window.location = '/api/v1/auth/login/microsoft'
 			}
 
 			const logout = async () => {
@@ -38,11 +28,10 @@
 			}
 
 			const secured = async () => {
-				const req = await fetch('http://localhost:8080/api/v1/test/secured', {
+				const req = await fetch('http://localhost:8080/api/v1/users', {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
                     },
-					credentials: 'include',
 				})
 				const res = await req.json()
 				console.log('Secured:', res)

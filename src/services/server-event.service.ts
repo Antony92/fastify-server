@@ -1,6 +1,5 @@
-import { ServerEvent } from '@prisma/client'
 import prisma from '../db/prisma.js'
-import { ServerEventClient, ServerEventCreate, ServerEventUpdate } from '../types/server-event.type.js'
+import { ServerEventBody, ServerEventClient } from '../types/server-event.type.js'
 
 const serverEventClients: ServerEventClient[] = []
 const retry = 5000
@@ -16,13 +15,13 @@ export const removeServerEventClient = (id: string) => {
 	)
 }
 
-export const sendServerEventToAll = (event: ServerEvent) => {
+export const sendServerEventToAll = (event: { type: string, message: string }) => {
 	serverEventClients.forEach((client) => {
 		client.reply.raw.write(`retry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`)
 	})
 }
 
-export const sendServerEventToClient = (id: string, event: ServerEvent) => {
+export const sendServerEventToClient = (id: string, event: { type: string, message: string }) => {
 	serverEventClients
 		.filter((client) => client.id === id)
 		.forEach((client) => {
@@ -45,7 +44,7 @@ export const getLastServerEvent = async () => {
 	return event
 }
 
-export const createServerEvent = async (event: ServerEventCreate) => {
+export const createServerEvent = async (event: ServerEventBody) => {
 	const createdEvent = await prisma.serverEvent.create({
 		data: {
 			type: event.type,
@@ -55,7 +54,7 @@ export const createServerEvent = async (event: ServerEventCreate) => {
 	return createdEvent
 }
 
-export const updateServerEvent = async (id: string, event: ServerEventUpdate) => {
+export const updateServerEvent = async (id: string, event: Partial<ServerEventBody>) => {
 	const updatedEvent = await prisma.serverEvent.update({
 		data: {
 			type: event.type,

@@ -1,7 +1,7 @@
 import prisma from '../db/prisma.js'
 import { getServerEvents } from '../services/server-event.service.js'
-import { getUsers } from '../services/user.service.js'
+import { getRoles, getUsers } from '../services/user.service.js'
 
-const data = await getUsers()
+const data = getRoles()
 
 console.log(data)
