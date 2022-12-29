@@ -1,6 +1,6 @@
-import { Role } from '@prisma/client'
+import { Prisma, Role } from '@prisma/client'
 import prisma from '../db/prisma.js'
-import { UserBody, UserSearchQuery } from '../types/user.type.js'
+import { UserSearchQuery } from '../types/user.type.js'
 
 export const getUserRoles = () => {
 	return Object.values(Role)
@@ -36,7 +36,7 @@ export const getUsers = async (query?: UserSearchQuery) => {
 	return { data: users, total }
 }
 
-export const createUser = async (user: UserBody) => {
+export const createUser = async (user: Prisma.UserCreateInput) => {
 	const createdUser = await prisma.user.upsert({
 		create: {
 			name: user.name,
@@ -58,7 +58,7 @@ export const createUser = async (user: UserBody) => {
 	return createdUser
 }
 
-export const updateUser = async (id: string, user: Partial<UserBody>) => {
+export const updateUser = async (email: string, user: Prisma.UserUpdateInput) => {
 	const updatedUser = await prisma.user.update({
 		data: {
 			name: user.name,
@@ -68,16 +68,16 @@ export const updateUser = async (id: string, user: Partial<UserBody>) => {
 			updated: new Date(),
 		},
 		where: {
-			id,
+			email
 		},
 	})
 	return updatedUser
 }
 
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (email: string) => {
 	const deletedUser = await prisma.user.delete({
 		where: {
-			id,
+			email,
 		},
 	})
 	return deletedUser
