@@ -41,7 +41,7 @@ export const loginCallbackHandler = async(request: FastifyRequest, reply: Fastif
 		expires: new Date(Date.now() + config.cookies.refreshCookieExpire),
 	})
 
-	reply.redirect(301, `/login?token=${accessToken}`)
+	reply.redirect(302, `/login?token=${accessToken}`)
 
 	return reply
 }
