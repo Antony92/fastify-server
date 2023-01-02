@@ -1,6 +1,6 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifySchema } from 'fastify'
-import { ServerEventBody } from '../types/server-event.type.js'
+import { ServerEventCreateBody, ServerEventUpdateBody } from '../types/server-event.type.js'
 
 export const getServerEventsSchema: FastifySchema = {
 	tags: ['Server events'],
@@ -38,7 +38,7 @@ export const createServerEventSchema: FastifySchema = {
 			message: { type: 'string', maxLength: 500 },
 		},
 		required: ['message']
-	} satisfies JSONSchemaType<ServerEventBody>
+	} satisfies JSONSchemaType<ServerEventCreateBody>
 }
 
 export const updateServerEventSchema: FastifySchema = {
@@ -64,7 +64,7 @@ export const updateServerEventSchema: FastifySchema = {
 			type: { type: 'string', nullable: true, enum: ['info', 'warning', 'error'] },
 			message: { type: 'string', nullable: true, maxLength: 500 },
 		}
-	} satisfies JSONSchemaType<Partial<ServerEventBody>>
+	} satisfies JSONSchemaType<ServerEventUpdateBody>
 }
 
 export const deleteServerEventSchema: FastifySchema = {

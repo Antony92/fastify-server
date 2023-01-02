@@ -19,13 +19,14 @@ enum ServerEventType {
 }
 
 model User {
-  id      String    @id @default(uuid())
-  name    String
-  email   String    @unique()
-  roles   Role[]    @default([GUEST])
-  active  Boolean   @default(true)
-  created DateTime  @default(now())
-  updated DateTime?
+  id       String    @id @default(uuid())
+  name     String
+  username String    @unique()
+  roles    Role[]    @default([GUEST])
+  active   Boolean   @default(true)
+  apiKey   String?
+  created  DateTime  @default(now())
+  updated  DateTime?
 }
 
 model Audit {
@@ -40,9 +41,9 @@ model Audit {
 }
 
 model ServerEvent {
-  id      String    @id @default(uuid())
+  id      String          @id @default(uuid())
   type    ServerEventType @default(info)
   message String
-  created DateTime  @default(now())
+  created DateTime        @default(now())
   updated DateTime?
 }

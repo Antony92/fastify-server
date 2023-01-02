@@ -6,15 +6,15 @@ export const getUserRoles = () => {
 	return Object.values(Role)
 }
 
-export const hasUserRole = async (email: string, roles: Role[]) => {
-	const user = await prisma.user.findFirst({ where: { email } })
+export const hasUserRole = async (username: string, roles: Role[]) => {
+	const user = await prisma.user.findFirst({ where: { username } })
     return user && user.roles.some(role => roles.includes(role))
 }
 
-export const getUser = async (email: string) => {
+export const getUser = async (username: string) => {
 	const user = await prisma.user.findFirst({
 		where: {
-			email,
+			username,
 		},
 	})
 	return user
@@ -27,7 +27,7 @@ export const getUsers = async (query?: UserSearchQuery) => {
 			take: query?.limit || 10,
 			where: {
 				name: { startsWith: query?.name },
-				email: { startsWith: query?.email },
+				username: { startsWith: query?.username },
 				active: query?.active,
 			},
 		}),
@@ -40,19 +40,19 @@ export const createUser = async (user: Prisma.UserCreateInput) => {
 	const createdUser = await prisma.user.upsert({
 		create: {
 			name: user.name,
-			email: user.email,
+			username: user.username,
 			active: user.active,
 			roles: user.roles,
 		},
 		update: {
 			name: user.name,
-			email: user.email,
+			username: user.username,
 			active: user.active,
 			roles: user.roles,
 			updated: new Date(),
 		},
 		where: {
-			email: user.email,
+			username: user.username,
 		},
 	})
 	return createdUser
@@ -62,9 +62,10 @@ export const updateUser = async (id: string, user: Prisma.UserUpdateInput) => {
 	const updatedUser = await prisma.user.update({
 		data: {
 			name: user.name,
-			email: user.email,
+			username: user.username,
 			active: user.active,
 			roles: user.roles,
+			apiKey: user.apiKey,
 			updated: new Date(),
 		},
 		where: {

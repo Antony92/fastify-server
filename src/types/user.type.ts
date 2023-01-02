@@ -2,16 +2,18 @@ import { Prisma } from '@prisma/client'
 
 export type UserJWT = {
 	name: string,
-	email: string,
+	username: string,
 	roles: string[],
 }
 
-export type UserBody = Omit<Prisma.UserCreateInput, 'id' | 'created' | 'updated'>
+export type UserCreateBody = Omit<Prisma.UserCreateInput, 'id' | 'apiKey' | 'created' | 'updated'>
+
+export type UserUpdateBody = Omit<Prisma.UserUpdateInput, 'id' | 'apiKey' | 'created' | 'updated'>
 
 export type UserSearchQuery = {
 	skip?: number
 	limit?: number
 	name?: string
-	email?: string
+	username?: string
 	active?: boolean
 }

@@ -1,6 +1,6 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifySchema } from 'fastify'
-import { UserBody, UserSearchQuery } from '../types/user.type.js'
+import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
 
 export const getUserSchema: FastifySchema = {
 	tags: ['User'],
@@ -49,7 +49,7 @@ export const getUsersSchema: FastifySchema = {
 			skip: { type: 'number', nullable: true, minimum: 0 },
 			limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
 			name: { type: 'string', nullable: true },
-			email: { type: 'string', nullable: true },
+			username: { type: 'string', nullable: true },
 			active: { type: 'boolean', nullable: true },
 		},
 	} satisfies JSONSchemaType<UserSearchQuery>,
@@ -69,7 +69,7 @@ export const createUserSchema: FastifySchema = {
 		type: 'object',
 		properties: {
 			name: { type: 'string' },
-			email: { type: 'string', format: 'email' },
+			username: { type: 'string' },
 			active: { type: 'boolean', nullable: true },
 			roles: {
 				type: 'array',
@@ -79,8 +79,8 @@ export const createUserSchema: FastifySchema = {
 				},
 			},
 		},
-		required: ['name', 'email'],
-	} satisfies JSONSchemaType<UserBody>,
+		required: ['name', 'username'],
+	} satisfies JSONSchemaType<UserCreateBody>,
 }
 
 export const updateUserSchema: FastifySchema = {
@@ -104,7 +104,7 @@ export const updateUserSchema: FastifySchema = {
 		type: 'object',
 		properties: {
 			name: { type: 'string', nullable: true },
-			email: { type: 'string', nullable: true, format: 'email' },
+			username: { type: 'string', nullable: true },
 			active: { type: 'boolean', nullable: true },
 			roles: {
 				type: 'array',
@@ -114,7 +114,7 @@ export const updateUserSchema: FastifySchema = {
 				},
 			},
 		},
-	} satisfies JSONSchemaType<Partial<UserBody>>,
+	} satisfies JSONSchemaType<UserUpdateBody>,
 }
 
 export const deleteUserSchema: FastifySchema = {
