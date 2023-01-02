@@ -18,7 +18,7 @@ export const getAuditLogsSchema: FastifySchema = {
 			skip: { type: 'number', nullable: true, minimum: 0 },
 			limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
             name: { type: 'string', nullable: true },
-            email: { type: 'string', nullable: true },
+            username: { type: 'string', nullable: true },
             action: { type: 'string', nullable: true },
             target: { type: 'string', nullable: true },
             message: { type: 'string', nullable: true },

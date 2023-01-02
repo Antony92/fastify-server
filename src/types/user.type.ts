@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 
 export type UserJWT = {
+	id: string,
 	name: string,
 	username: string,
 	roles: string[],

@@ -24,8 +24,16 @@ model User {
   username String    @unique()
   roles    Role[]    @default([GUEST])
   active   Boolean   @default(true)
+  apiKey   ApiKey?
   created  DateTime  @default(now())
   updated  DateTime?
+}
+
+model ApiKey {
+  id     String @id @default(uuid())
+  apiKey String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 }
 
 model Audit {

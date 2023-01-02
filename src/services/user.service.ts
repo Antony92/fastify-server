@@ -39,6 +39,9 @@ export const getUsers = async (query?: UserSearchQuery) => {
 				username: { startsWith: query?.username },
 				active: query?.active,
 			},
+			include: {
+				apiKey: true
+			}
 		}),
 		prisma.user.count(),
 	])
@@ -90,4 +93,39 @@ export const deleteUser = async (id: string) => {
 		},
 	})
 	return deletedUser
+}
+
+export const createUserApiKey = async (userId: string, apiKey: string) => {
+	const createdApiKey = await prisma.apiKey.create({
+        data: {
+            apiKey,
+            userId
+        },
+		include: {
+			user: true
+		}
+    })
+    return createdApiKey
+}
+
+export const deleteUserApiKey = async (userId: string) => {
+	const deletedApiKey = await prisma.apiKey.delete({
+        where: {
+            userId
+        },
+		include: {
+			user: true
+		}
+    })
+    return deletedApiKey
+}
+
+export const hasUserApiKey = async (userId: string, apiKey: string) => {
+	const exist = await prisma.apiKey.findFirst({
+		where: {
+			userId,
+			apiKey
+		},
+	})
+	return exist ? true : false
 }

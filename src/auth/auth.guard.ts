@@ -1,6 +1,6 @@
 import { Role } from '@prisma/client'
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { getUser, hasUserRole } from '../services/user.service.js'
+import { hasUserApiKey, hasUserRole } from '../services/user.service.js'
 import { RefreshToken, AccessToken } from '../types/jwt.type.js'
 
 export const secured = (roles?: Role[]) => {
@@ -18,9 +18,9 @@ export const secured = (roles?: Role[]) => {
 
 export const trustedAccessTokens = async (request: FastifyRequest, decodedToken: AccessToken) => {
 	if (decodedToken.api) {
-		const jwt = request.headers.authorization?.split(' ')[1]
-		const user = await getUser(decodedToken.user.username)
-		return user && user.apiKey === jwt
+		const jwt = request.headers.authorization?.split(' ')[1] || ''
+		const exist = await hasUserApiKey(decodedToken.user.id, jwt)
+		return exist
 	}
 	return decodedToken
 }

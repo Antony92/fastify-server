@@ -15,6 +15,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 	const accessToken = await reply.accessJwtSign(
 		{
 			user: {
+				id: user.id,
 				name: user.name,
 				username: user.username,
 				roles: user.roles,
@@ -62,6 +63,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 
 	const accessToken = await reply.accessJwtSign({
 		user: {
+			id: user.id,
 			name: user.name,
 			username: user.username,
 			roles: user.roles,
