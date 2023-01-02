@@ -6,7 +6,7 @@ export const auditLog = async (actor: UserJWT, action: AuditLogAction, target: A
     const auditLog = await prisma.audit.create({
         data: {
             name: actor.name,
-            email: actor.email,
+            username: actor.username,
             action,
             target,
             data,
@@ -23,7 +23,7 @@ export const getAuditLogs = async (query?: AuditLogSearchQuery) => {
             take: query?.limit || 10,
             where: {
                 name: query?.name,
-                email: query?.email,
+                username: query?.username,
                 action: query?.action,
                 target: query?.target,
                 message: query?.message,

@@ -11,10 +11,19 @@ export const hasUserRole = async (username: string, roles: Role[]) => {
     return user && user.roles.some(role => roles.includes(role))
 }
 
-export const getUser = async (username: string) => {
+export const getUserByUsername = async (username: string) => {
 	const user = await prisma.user.findFirst({
 		where: {
 			username,
+		},
+	})
+	return user
+}
+
+export const getUserById = async (id: string) => {
+	const user = await prisma.user.findFirst({
+		where: {
+			id,
 		},
 	})
 	return user

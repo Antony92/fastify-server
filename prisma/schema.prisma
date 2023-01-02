@@ -24,20 +24,19 @@ model User {
   username String    @unique()
   roles    Role[]    @default([GUEST])
   active   Boolean   @default(true)
-  apiKey   String?
   created  DateTime  @default(now())
   updated  DateTime?
 }
 
 model Audit {
-  id      String   @id @default(uuid())
-  email   String
-  name    String
-  action  String
-  target  String
-  data    Json
-  message String?
-  created DateTime @default(now())
+  id       String   @id @default(uuid())
+  username String
+  name     String
+  action   String
+  target   String
+  data     Json
+  message  String?
+  created  DateTime @default(now())
 }
 
 model ServerEvent {

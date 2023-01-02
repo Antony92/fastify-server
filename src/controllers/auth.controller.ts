@@ -1,9 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import config from '../config.js'
-import crypto from 'crypto'
-import { createUser, getUser } from '../services/user.service.js'
+import { createUser, getUserByUsername } from '../services/user.service.js'
 
-export const loginCallbackHandler = async(request: FastifyRequest, reply: FastifyReply) => {
+export const loginCallbackHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	const token = await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
 
 	const { upn: username, name } = JSON.parse(Buffer.from(token.token.access_token.split('.')[1], 'base64').toString())
@@ -12,26 +11,21 @@ export const loginCallbackHandler = async(request: FastifyRequest, reply: Fastif
 		username,
 		name,
 	})
-		
+
 	const accessToken = await reply.accessJwtSign(
-		{ 
+		{
 			user: {
 				name: user.name,
 				username: user.username,
-				roles: user.roles
-			}  
+				roles: user.roles,
+			},
 		},
 		{
-			jti: crypto.randomUUID(),
+			expiresIn: config.jwt.accessTokenExpire,
 		}
 	)
 
-	const refreshToken = await reply.refreshJwtSign(
-		{ username },
-		{
-			jti: crypto.randomUUID(),
-		}
-	)
+	const refreshToken = await reply.refreshJwtSign({ username })
 
 	reply.cookie(config.cookies.refreshCookieName, refreshToken, {
 		httpOnly: true,
@@ -46,7 +40,6 @@ export const loginCallbackHandler = async(request: FastifyRequest, reply: Fastif
 	return reply
 }
 
-
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	reply.clearCookie(config.cookies.refreshCookieName, { path: '/api/v1/auth/refresh' })
 
@@ -58,7 +51,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 
 	const { username } = request.refreshToken
 
-	const user = await getUser(username)
+	const user = await getUserByUsername(username)
 	if (!user) {
 		throw {
 			message: `User does not exist`,
@@ -67,18 +60,13 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 		}
 	}
 
-	const accessToken = await reply.accessJwtSign(
-		{ 
-			user: {
-				name: user.name,
-				username: user.username,
-				roles: user.roles
-			}  
+	const accessToken = await reply.accessJwtSign({
+		user: {
+			name: user.name,
+			username: user.username,
+			roles: user.roles,
 		},
-		{
-			jti: crypto.randomUUID(),
-		}
-	)
+	})
 
 	return { accessToken }
 }

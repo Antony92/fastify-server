@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { auditLog } from '../services/audit-log.service.js'
-import { createUser, deleteUser, getUserRoles, getUser, getUsers, updateUser } from '../services/user.service.js'
+import { createUser, deleteUser, getUserRoles, getUsers, updateUser, getUserById } from '../services/user.service.js'
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
 import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
 
@@ -10,7 +10,7 @@ export const getUserRolesHandler = async (request: FastifyRequest, reply: Fastif
 }
 
 export const getUserHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const user = await getUser(request.params.id)
+	const user = await getUserById(request.params.id)
 	return { data: user }
 }
 
