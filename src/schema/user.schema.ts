@@ -135,3 +135,42 @@ export const deleteUserSchema: FastifySchema = {
 		required: ['id'],
 	} satisfies JSONSchemaType<{ id: string }>,
 }
+
+export const createUserApiKeySchema: FastifySchema = {
+	tags: ['User'],
+	description: 'Create user api key',
+	consumes: ['application/json'],
+	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
+	params: {
+		type: 'object',
+		properties: {
+			id: { type: 'string' },
+		},
+		required: ['id'],
+	} satisfies JSONSchemaType<{ id: string }>,
+}
+
+export const deleteUserApiKeySchema: FastifySchema = {
+	tags: ['User'],
+	description: 'Delete user api key',
+	consumes: ['application/json'],
+	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
+	params: {
+		type: 'object',
+		properties: {
+			id: { type: 'string' },
+		},
+		required: ['id'],
+	} satisfies JSONSchemaType<{ id: string }>,
+}
+
