@@ -32,7 +32,7 @@ model User {
 model ApiKey {
   id     String @id @default(uuid())
   apiKey String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 }
 
