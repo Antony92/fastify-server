@@ -8,5 +8,5 @@ export type AccessToken = {
 
 export type RefreshToken = {
 	jti: string
-	email: string
+	username: string
 }

@@ -6,10 +6,10 @@ import { createUser, getUser } from '../services/user.service.js'
 export const loginCallbackHandler = async(request: FastifyRequest, reply: FastifyReply) => {
 	const token = await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
 
-	const { upn: email, name } = JSON.parse(Buffer.from(token.token.access_token.split('.')[1], 'base64').toString())
+	const { upn: username, name } = JSON.parse(Buffer.from(token.token.access_token.split('.')[1], 'base64').toString())
 
 	const user = await createUser({
-		email,
+		username,
 		name,
 	})
 		
@@ -17,7 +17,7 @@ export const loginCallbackHandler = async(request: FastifyRequest, reply: Fastif
 		{ 
 			user: {
 				name: user.name,
-				email: user.email,
+				username: user.username,
 				roles: user.roles
 			}  
 		},
@@ -27,7 +27,7 @@ export const loginCallbackHandler = async(request: FastifyRequest, reply: Fastif
 	)
 
 	const refreshToken = await reply.refreshJwtSign(
-		{ email },
+		{ username },
 		{
 			jti: crypto.randomUUID(),
 		}
@@ -56,9 +56,9 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	await request.refreshJwtVerify({ onlyCookie: true })
 
-	const { email } = request.refreshToken
+	const { username } = request.refreshToken
 
-	const user = await getUser(email)
+	const user = await getUser(username)
 	if (!user) {
 		throw {
 			message: `User does not exist`,
@@ -68,7 +68,13 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 	}
 
 	const accessToken = await reply.accessJwtSign(
-		{ user },
+		{ 
+			user: {
+				name: user.name,
+				username: user.username,
+				roles: user.roles
+			}  
+		},
 		{
 			jti: crypto.randomUUID(),
 		}
