@@ -65,7 +65,6 @@ export const updateUser = async (id: string, user: Prisma.UserUpdateInput) => {
 			username: user.username,
 			active: user.active,
 			roles: user.roles,
-			apiKey: user.apiKey,
 			updated: new Date(),
 		},
 		where: {
