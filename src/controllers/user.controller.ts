@@ -58,15 +58,20 @@ export const createUserApiKeyHandler = async (request: FastifyRequest<{ Params: 
 
 	const user = await getUserById(userId)
 
-	const apiKey = await reply.accessJwtSign({
-		api: true,
-		user: {
-			id: user?.id,
-			name: user?.name,
-			username: user?.username,
-			roles: user?.roles,
+	const apiKey = await reply.accessJwtSign(
+		{
+			api: true,
+			user: {
+				id: user?.id,
+				name: user?.name,
+				username: user?.username,
+				roles: user?.roles,
+			}
 		},
-	})
+		{
+			expiresIn: undefined
+		}
+	)
 
 	const createdApiKey = await createUserApiKey(request.params.id, apiKey)
 

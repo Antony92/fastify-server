@@ -96,11 +96,18 @@ export const deleteUser = async (id: string) => {
 }
 
 export const createUserApiKey = async (userId: string, apiKey: string) => {
-	const createdApiKey = await prisma.apiKey.create({
-        data: {
-            apiKey,
-            userId
-        },
+	const createdApiKey = await prisma.apiKey.upsert({
+		create: {
+			userId,
+			apiKey
+		},
+		update: {
+			userId,
+			apiKey
+		},
+		where: {
+			userId
+		},
 		include: {
 			user: true
 		}
