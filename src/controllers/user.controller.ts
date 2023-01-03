@@ -73,7 +73,7 @@ export const createUserApiKeyHandler = async (request: FastifyRequest<{ Params: 
 		}
 	)
 
-	const createdApiKey = await createUserApiKey(request.params.id, apiKey)
+	const createdApiKey = await createUserApiKey(userId, apiKey)
 
 	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.USER_API_KEY, createdApiKey)
 
