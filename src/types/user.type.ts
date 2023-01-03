@@ -7,9 +7,9 @@ export type UserJWT = {
 	roles: string[],
 }
 
-export type UserCreateBody = Omit<Prisma.UserCreateInput, 'id' | 'apiKey' | 'created' | 'updated'>
+export type UserCreateBody = Omit<Prisma.UserCreateInput, 'id' | 'created' | 'updated'>
 
-export type UserUpdateBody = Omit<Prisma.UserUpdateInput, 'id' | 'apiKey' | 'created' | 'updated'>
+export type UserUpdateBody = Omit<Prisma.UserUpdateInput, 'id' | 'created' | 'updated'>
 
 export type UserSearchQuery = {
 	skip?: number
