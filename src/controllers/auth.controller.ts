@@ -43,7 +43,6 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	reply.clearCookie(config.cookies.refreshCookieName, { path: '/api/v1/auth/refresh' })
-
 	return { message: 'Logout successful' }
 }
 
@@ -61,14 +60,19 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 		}
 	}
 
-	const accessToken = await reply.accessJwtSign({
-		user: {
-			id: user.id,
-			name: user.name,
-			username: user.username,
-			roles: user.roles,
+	const accessToken = await reply.accessJwtSign(
+		{
+			user: {
+				id: user.id,
+				name: user.name,
+				username: user.username,
+				roles: user.roles,
+			},
 		},
-	})
+		{
+			expiresIn: config.jwt.accessTokenExpire,
+		}
+	)
 
 	return { accessToken }
 }

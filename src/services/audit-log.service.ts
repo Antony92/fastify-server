@@ -3,7 +3,7 @@ import { AuditLogAction, AuditLogSearchQuery, AuditLogTarget } from '../types/au
 import { UserJWT } from '../types/user.type.js'
 
 export const auditLog = async (actor: UserJWT, action: AuditLogAction, target: AuditLogTarget, data: object, message?: string) => {
-    const auditLog = await prisma.audit.create({
+    const auditLog = await prisma.auditLog.create({
         data: {
             name: actor.name,
             username: actor.username,
@@ -18,7 +18,7 @@ export const auditLog = async (actor: UserJWT, action: AuditLogAction, target: A
 
 export const getAuditLogs = async (query?: AuditLogSearchQuery) => {
     const [auditLogs, total] = await prisma.$transaction([
-		prisma.audit.findMany({
+		prisma.auditLog.findMany({
             skip: query?.skip || 0,
             take: query?.limit || 10,
             where: {

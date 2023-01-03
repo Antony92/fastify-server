@@ -28,7 +28,7 @@ model User {
   updated  DateTime?
 }
 
-model Audit {
+model AuditLog {
   id       String   @id @default(uuid())
   username String
   name     String
