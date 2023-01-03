@@ -1,4 +1,3 @@
-import { Role } from '@prisma/client'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { auditLog } from '../services/audit-log.service.js'
 import {
@@ -8,8 +7,6 @@ import {
 	getUsers,
 	updateUser,
 	getUserById,
-	createUserApiKey,
-	deleteUserApiKey,
 } from '../services/user.service.js'
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
 import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
@@ -51,41 +48,4 @@ export const deleteUserHandler = async (request: FastifyRequest<{ Params: { id: 
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.USER, user)
 
 	return { message: 'User deleted', data: user }
-}
-
-export const createUserApiKeyHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const userId = request.user.roles.includes(Role.ADMIN) ? request.params.id : request.user.id
-
-	const user = await getUserById(userId)
-
-	const apiKey = await reply.accessJwtSign(
-		{
-			api: true,
-			user: {
-				id: user?.id,
-				name: user?.name,
-				username: user?.username,
-				roles: user?.roles,
-			}
-		},
-		{
-			expiresIn: undefined
-		}
-	)
-
-	const createdApiKey = await createUserApiKey(userId, apiKey)
-
-	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.USER_API_KEY, createdApiKey)
-
-	return { message: 'User api key created', data: apiKey }
-}
-
-export const deleteUserApiKeyHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const userId = request.user.roles.includes(Role.ADMIN) ? request.params.id : request.user.id
-
-	const deletedApiKey = await deleteUserApiKey(userId)
-
-	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.USER_API_KEY, deletedApiKey)
-
-	return { message: 'User api key deleted', data: deletedApiKey }
 }

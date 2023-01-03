@@ -7,13 +7,9 @@ import {
 	getUsersHandler,
 	updateUserHandler,
 	getUserRolesHandler,
-	createUserApiKeyHandler,
-	deleteUserApiKeyHandler,
 } from '../controllers/user.controller.js'
 import {
-	createUserApiKeySchema,
 	createUserSchema,
-	deleteUserApiKeySchema,
 	deleteUserSchema,
 	getUserRolesSchema,
 	getUserSchema,
@@ -29,8 +25,6 @@ const userRoute = async (server: FastifyInstance) => {
 	server.post('/user', { onRequest: secured([Role.ADMIN]), schema: createUserSchema }, createUserHandler)
 	server.patch('/user/:id', { onRequest: secured([Role.ADMIN]), schema: updateUserSchema }, updateUserHandler)
 	server.delete('/user/:id', { onRequest: secured([Role.ADMIN]), schema: deleteUserSchema }, deleteUserHandler)
-	server.post('/user/:id/apiKey', { onRequest: secured(), schema: createUserApiKeySchema }, createUserApiKeyHandler)
-	server.delete('/user/:id/apiKey', { onRequest: secured(), schema: deleteUserApiKeySchema }, deleteUserApiKeyHandler)
 }
 
 export default userRoute
