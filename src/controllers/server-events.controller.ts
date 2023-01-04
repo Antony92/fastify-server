@@ -53,7 +53,9 @@ export const updateServerEventHandler = async (
 	request: FastifyRequest<{ Params: { id: string }; Body: ServerEventUpdateBody }>,
 	reply: FastifyReply
 ) => {
-	const event = await updateServerEvent(request.params.id, request.body)
+	const { id } = request.params
+	
+	const event = await updateServerEvent({ id, ...request.body })
 	sendServerEventToAll({ type: event.type, message: event.message })
 
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.SERVER_EVENT, event)

@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
+import crypto from 'crypto'
 import config from '../config.js'
 import { createUser, getUserByUsername } from '../services/user.service.js'
 
@@ -22,11 +23,18 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 			},
 		},
 		{
-			expiresIn: config.jwt.accessTokenExpire,
+			jti: crypto.randomUUID(),
 		}
 	)
 
-	const refreshToken = await reply.refreshJwtSign({ username })
+	const refreshToken = await reply.refreshJwtSign(
+		{
+			username,
+		},
+		{
+			jti: crypto.randomUUID(),
+		}
+	)
 
 	reply.cookie(config.cookies.refreshCookieName, refreshToken, {
 		httpOnly: true,
@@ -70,7 +78,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			},
 		},
 		{
-			expiresIn: config.jwt.accessTokenExpire,
+			jti: crypto.randomUUID(),
 		}
 	)
 

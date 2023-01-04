@@ -1,12 +1,12 @@
-import { Prisma, Role } from '@prisma/client'
+import { Role } from '@prisma/client'
 import prisma from '../db/prisma.js'
-import { UserSearchQuery } from '../types/user.type.js'
+import { UserCreateInput, UserSearchQuery, UserUpdateInput } from '../types/user.type.js'
 
 export const getUserRoles = () => {
 	return Object.values(Role)
 }
 
-export const hasUserRole = async (username: string, roles: Role[]) => {
+export const hasUserRoles = async (username: string, roles: Role[]) => {
 	const user = await prisma.user.findFirst({ where: { username } })
     return user && user.roles.some(role => roles.includes(role))
 }
@@ -45,19 +45,13 @@ export const getUsers = async (query?: UserSearchQuery) => {
 	return { data: users, total }
 }
 
-export const createUser = async (user: Prisma.UserCreateInput) => {
+export const createUser = async (user: UserCreateInput) => {
 	const createdUser = await prisma.user.upsert({
 		create: {
-			name: user.name,
-			username: user.username,
-			active: user.active,
-			roles: user.roles,
+			...user
 		},
 		update: {
-			name: user.name,
-			username: user.username,
-			active: user.active,
-			roles: user.roles,
+			...user,
 			updated: new Date(),
 		},
 		where: {
@@ -67,17 +61,14 @@ export const createUser = async (user: Prisma.UserCreateInput) => {
 	return createdUser
 }
 
-export const updateUser = async (id: string, user: Prisma.UserUpdateInput) => {
+export const updateUser = async (user: UserUpdateInput) => {
 	const updatedUser = await prisma.user.update({
 		data: {
-			name: user.name,
-			username: user.username,
-			active: user.active,
-			roles: user.roles,
+			...user,
 			updated: new Date(),
 		},
 		where: {
-			id
+			id: user.id
 		},
 	})
 	return updatedUser

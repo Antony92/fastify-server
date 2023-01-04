@@ -35,7 +35,9 @@ export const createUserHandler = async (request: FastifyRequest<{ Body: UserCrea
 }
 
 export const updateUserHandler = async (request: FastifyRequest<{ Params: { id: string }; Body: UserUpdateBody }>, reply: FastifyReply) => {
-	const user = await updateUser(request.params.id, request.body)
+	const { id } = request.params
+
+	const user = await updateUser({ id, ...request.body })
 
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.USER, user)
 
