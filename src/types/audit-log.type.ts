@@ -6,7 +6,6 @@ export enum AuditLogAction {
 
 export enum AuditLogTarget {
     USER = 'USER',
-    USER_API_KEY = 'USER:API_KEY',
     SERVER_EVENT = 'SERVER_EVENT',
 }
 
