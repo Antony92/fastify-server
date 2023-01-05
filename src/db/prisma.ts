@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 export const isPrismaActive = async () => {
     try {
-        await prisma.$queryRaw`SELECT 1`
+        await prisma.$queryRaw`SELECT now()`
         return true
     } catch (error) {
         return false
