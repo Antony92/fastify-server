@@ -6,11 +6,6 @@ export const getUserRoles = () => {
 	return Object.values(Role)
 }
 
-export const hasUserRoles = async (username: string, roles: Role[]) => {
-	const user = await prisma.user.findUnique({ where: { username } })
-    return user && user.roles.some(role => roles.includes(role))
-}
-
 export const getUserByUsername = async (username: string) => {
 	const user = await prisma.user.findUnique({
 		where: {
