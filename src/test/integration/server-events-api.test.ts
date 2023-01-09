@@ -1,14 +1,17 @@
+import { JWT } from '@fastify/jwt'
+import { Role } from '@prisma/client'
 import { expect, describe, it } from 'vitest'
 import server from '../../server.js'
-import { Role, User } from '../../types/user.type.js'
+import { UserJWT } from '../../types/user.type.js'
 
-const admin: Partial<User> = {
+const admin: UserJWT = {
+    id: 'admin',
     name: 'admin',
-    email: 'admin@test.com',
+    username: 'admin@test.com',
     roles: [Role.ADMIN]
 }
 
-const jwt = server.jwt['access'].sign({ user: admin })
+const jwt = (server.jwt['access'] as JWT).sign({ user: admin })
 
 describe('Server events route', () => {
 	describe('GET /api/v1/server-events', () => {
