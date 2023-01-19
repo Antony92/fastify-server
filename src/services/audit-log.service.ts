@@ -32,7 +32,7 @@ export const getAuditLogs = async (query?: AuditLogSearchQuery) => {
                 }
             }
         }),
-		prisma.serverEvent.count()
+		prisma.auditLog.count()
 	])
 	return { data: auditLogs, total }    
 }
