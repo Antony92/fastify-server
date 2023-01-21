@@ -1,4 +1,4 @@
-import { fastify } from 'fastify'
+import fastify from 'fastify'
 import fastifyCompress from '@fastify/compress'
 import fastifyCookie from '@fastify/cookie'
 import fastifyCors from '@fastify/cors'
