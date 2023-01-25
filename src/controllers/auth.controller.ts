@@ -63,7 +63,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			statusCode: 401,
 		}
 	}
-	
+
 	const accessToken = await reply.accessJwtSign(
 		{
 			user: {
@@ -77,5 +77,6 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			jti: crypto.randomUUID(),
 		}
 	)
+	
 	return { accessToken }
 }
