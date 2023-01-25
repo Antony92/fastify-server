@@ -2,7 +2,7 @@ import { Role } from '@prisma/client'
 import prisma from '../db/prisma.js'
 import { UserCreateInput, UserSearchQuery, UserUpdateInput } from '../types/user.type.js'
 
-export const getUserRoles = () => {
+export const getRoles = () => {
 	return Object.values(Role)
 }
 
@@ -37,7 +37,7 @@ export const getUsers = async (query?: UserSearchQuery) => {
 		}),
 		prisma.user.count(),
 	])
-	return { data: users, total }
+	return { users, total }
 }
 
 export const createUser = async (user: UserCreateInput) => {
@@ -47,7 +47,6 @@ export const createUser = async (user: UserCreateInput) => {
 		},
 		update: {
 			...user,
-			updated: new Date(),
 		},
 		where: {
 			username: user.username,
@@ -59,8 +58,7 @@ export const createUser = async (user: UserCreateInput) => {
 export const updateUser = async (user: UserUpdateInput) => {
 	const updatedUser = await prisma.user.update({
 		data: {
-			...user,
-			updated: new Date(),
+			...user
 		},
 		where: {
 			id: user.id

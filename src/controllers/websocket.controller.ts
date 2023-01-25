@@ -14,8 +14,6 @@ export const websocketHandler = async (connection: SocketStream, request: Fastif
 
     // client logic
     const client = request.ip
-
 	console.log(`Client ${client} connected.`)
-
     connection.socket.send(`Hello ${client}!`)
 }

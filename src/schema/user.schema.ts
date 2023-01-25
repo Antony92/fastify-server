@@ -21,9 +21,9 @@ export const getUserSchema: FastifySchema = {
 	} satisfies JSONSchemaType<{ id: string }>,
 }
 
-export const getUserRolesSchema: FastifySchema = {
+export const getRolesSchema: FastifySchema = {
 	tags: ['User'],
-	description: 'Get user roles',
+	description: 'Get roles',
 	consumes: ['application/json'],
 	produces: ['application/json'],
 	security: [

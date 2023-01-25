@@ -35,7 +35,7 @@ export const getServerEvents = async (skip = 0, limit = 10) => {
 		prisma.serverEvent.findMany({ skip, take: limit }),
 		prisma.serverEvent.count()
 	])
-	return { data: events, total }
+	return { events, total }
 }
 
 export const getLastServerEvent = async () => {
@@ -58,7 +58,6 @@ export const updateServerEvent = async (event: ServerEventUpdateInput) => {
 	const updatedEvent = await prisma.serverEvent.update({
 		data: {
 			...event,
-			updated: new Date()
 		},
 		where: {
 			id: event.id,

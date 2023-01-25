@@ -35,7 +35,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 			jti: crypto.randomUUID(),
 		}
 	)
-
+	
 	reply.cookie(config.cookies.refreshCookieName, refreshToken, {
 		httpOnly: true,
 		secure: true,
@@ -43,9 +43,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 		path: '/api/v1/auth/refresh',
 		expires: new Date(Date.now() + config.cookies.refreshCookieExpire),
 	})
-
 	reply.redirect(302, `/login?token=${accessToken}`)
-
 	return reply
 }
 
@@ -56,9 +54,7 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	await request.refreshJwtVerify({ onlyCookie: true })
-
 	const { username } = request.refreshToken
-
 	const user = await getUserByUsername(username)
 	if (!user) {
 		throw {
@@ -67,7 +63,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			statusCode: 401,
 		}
 	}
-
+	
 	const accessToken = await reply.accessJwtSign(
 		{
 			user: {
@@ -81,6 +77,5 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			jti: crypto.randomUUID(),
 		}
 	)
-
 	return { accessToken }
 }

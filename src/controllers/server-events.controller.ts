@@ -21,7 +21,6 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 
 	const id = request.ip
 	addServerEventClient({ id, reply })
-
 	const event = await getLastServerEvent()
 	if (event) {
 		sendServerEventToClient(id, event)
@@ -35,17 +34,14 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 
 export const getServerEventsHandler = async (request: FastifyRequest<{ Querystring: { skip: number; limit: number } }>, reply: FastifyReply) => {
 	const { skip, limit } = request.query
-
-	const events = await getServerEvents(skip, limit)
-	return events
+	const { events, total} = await getServerEvents(skip, limit)
+	return { data: events, total }
 }
 
 export const createServerEventHandler = async (request: FastifyRequest<{ Body: ServerEventCreateBody }>, reply: FastifyReply) => {
 	const event = await createServerEvent(request.body)
 	sendServerEventToAll(event)
-
 	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.SERVER_EVENT, event)
-
 	return { message: 'Server event created', data: event }
 }
 
@@ -54,25 +50,19 @@ export const updateServerEventHandler = async (
 	reply: FastifyReply
 ) => {
 	const { id } = request.params
-	
 	const event = await updateServerEvent({ id, ...request.body })
 	sendServerEventToAll({ type: event.type, message: event.message })
-
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.SERVER_EVENT, event)
-
 	return { message: 'Server event updated', data: event }
 }
 
 export const deleteServerEventHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
 	const { id } = request.params
-
 	const event = await deleteServerEvent(id)
 	const lastEvent = await getLastServerEvent()
 	if (lastEvent) {
 		sendServerEventToAll({ type: lastEvent.type, message: lastEvent.message })
 	}
-
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.SERVER_EVENT, event)
-	
 	return { message: 'Server event deleted', data: event }
 }

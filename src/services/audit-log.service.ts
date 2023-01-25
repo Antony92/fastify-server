@@ -34,5 +34,5 @@ export const getAuditLogs = async (query?: AuditLogSearchQuery) => {
         }),
 		prisma.auditLog.count()
 	])
-	return { data: auditLogs, total }    
+	return { auditLogs, total }    
 }

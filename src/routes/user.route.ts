@@ -6,12 +6,12 @@ import {
 	getUserHandler,
 	getUsersHandler,
 	updateUserHandler,
-	getUserRolesHandler,
+	getRolesHandler,
 } from '../controllers/user.controller.js'
 import {
 	createUserSchema,
 	deleteUserSchema,
-	getUserRolesSchema,
+	getRolesSchema,
 	getUserSchema,
 	getUsersSchema,
 	updateUserSchema,
@@ -20,7 +20,7 @@ import { Role } from '@prisma/client'
 
 const userRoute = async (server: FastifyInstance) => {
 	server.get('/users', { onRequest: secured([Role.ADMIN]), schema: getUsersSchema }, getUsersHandler)
-	server.get('/user/roles', { onRequest: secured([Role.ADMIN]), schema: getUserRolesSchema }, getUserRolesHandler)
+	server.get('/roles', { onRequest: secured([Role.ADMIN]), schema: getRolesSchema }, getRolesHandler)
 	server.get('/user/:id', { onRequest: secured([Role.ADMIN]), schema: getUserSchema }, getUserHandler)
 	server.post('/user', { onRequest: secured([Role.ADMIN]), schema: createUserSchema }, createUserHandler)
 	server.patch('/user/:id', { onRequest: secured([Role.ADMIN]), schema: updateUserSchema }, updateUserHandler)

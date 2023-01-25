@@ -11,7 +11,7 @@ export const isPrismaActive = async () => {
     }
 }
 
-export const prismaMetrics = async () => {
+export const getPrismaMetrics = async () => {
     const metrics = await prisma.$metrics.json()
     return metrics
 }
