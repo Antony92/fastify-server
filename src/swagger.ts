@@ -31,8 +31,8 @@ const swaggerOptions: SwaggerOptions = {
 				description: 'Server events API'
 			},
 			{
-				name: 'Audit log',
-				description: 'Audit log API',
+				name: 'Audit logs',
+				description: 'Audit logs API',
 			},
 		],
 		components: {

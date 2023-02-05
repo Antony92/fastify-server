@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify'
+import { FastifyPluginAsync } from 'fastify'
 import { secured } from '../auth/auth.guard.js'
 import {
 	subscribeServerEventsHandler,
@@ -10,7 +10,7 @@ import {
 import { createServerEventSchema, deleteServerEventSchema, getServerEventsSchema, updateServerEventSchema } from '../schema/server-events.schema.js'
 import { Role } from '@prisma/client'
 
-const serverEventsRoute = async (server: FastifyInstance) => {
+const serverEventsRoute: FastifyPluginAsync = async (server) => {
 	server.get('/server-events/subscribe', subscribeServerEventsHandler)
 	server.get('/server-events', { onRequest: secured([Role.ADMIN]), schema: getServerEventsSchema }, getServerEventsHandler)
 	server.post('/server-events', { onRequest: secured([Role.ADMIN]), schema: createServerEventSchema }, createServerEventHandler)

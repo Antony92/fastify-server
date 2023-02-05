@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify'
+import { FastifyPluginAsync } from 'fastify'
 import { secured } from '../auth/auth.guard.js'
 import {
 	createUserHandler,
@@ -18,7 +18,7 @@ import {
 } from '../schema/user.schema.js'
 import { Role } from '@prisma/client'
 
-const userRoute = async (server: FastifyInstance) => {
+const userRoute: FastifyPluginAsync = async (server) => {
 	server.get('/users', { onRequest: secured([Role.ADMIN]), schema: getUsersSchema }, getUsersHandler)
 	server.get('/roles', { onRequest: secured([Role.ADMIN]), schema: getRolesSchema }, getRolesHandler)
 	server.get('/user/:id', { onRequest: secured([Role.ADMIN]), schema: getUserSchema }, getUserHandler)
