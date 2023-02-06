@@ -33,6 +33,11 @@ export const getUsers = async (query?: UserSearchQuery) => {
 				name: { startsWith: query?.name },
 				username: { startsWith: query?.username },
 				active: query?.active,
+				blocked: query?.blocked,
+				lastLogin: {
+					lte: query?.lastLoginEnd,
+                    gte: query?.lastLoginStart,
+				}
 			},
 		}),
 		prisma.user.count(),

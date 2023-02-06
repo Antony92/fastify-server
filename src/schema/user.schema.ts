@@ -52,6 +52,9 @@ export const getUsersSchema: FastifySchema = {
 			name: { type: 'string', nullable: true },
 			username: { type: 'string', nullable: true },
 			active: { type: 'boolean', nullable: true },
+			blocked: { type: 'boolean', nullable: true },
+			lastLoginStart: { type: 'string', nullable: true },
+            lastLoginEnd: { type: 'string', nullable: true },
 		},
 	} satisfies JSONSchemaType<UserSearchQuery>,
 }
@@ -72,6 +75,7 @@ export const createUserSchema: FastifySchema = {
 			name: { type: 'string' },
 			username: { type: 'string' },
 			active: { type: 'boolean', nullable: true, default: true },
+			blocked: { type: 'boolean', nullable: true, default: false },
 			roles: {
 				type: 'array',
 				nullable: true,
@@ -109,6 +113,7 @@ export const updateUserSchema: FastifySchema = {
 			name: { type: 'string', nullable: true },
 			username: { type: 'string', nullable: true },
 			active: { type: 'boolean', nullable: true },
+			blocked: { type: 'boolean', nullable: true, default: false },
 			roles: {
 				type: 'array',
 				nullable: true,
