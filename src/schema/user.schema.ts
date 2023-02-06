@@ -1,5 +1,6 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifySchema } from 'fastify'
+import { getRoles } from '../services/user.service.js'
 import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
 
 export const getUserSchema: FastifySchema = {
@@ -76,6 +77,7 @@ export const createUserSchema: FastifySchema = {
 				nullable: true,
 				items: {
 					type: 'string',
+					enum: getRoles(),
 				},
 			},
 		},
@@ -111,6 +113,7 @@ export const updateUserSchema: FastifySchema = {
 				nullable: true,
 				items: {
 					type: 'string',
+					enum: getRoles(),
 				},
 			},
 		},
