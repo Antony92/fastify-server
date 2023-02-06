@@ -1,15 +1,6 @@
 # node modules
 /node_modules
 
-# private keys
-/src/pk
-
-# tmp folder
-/tmp
-
-# log
-/logs
-
 # dist folder
 /dist
 
