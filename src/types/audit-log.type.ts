@@ -9,6 +9,11 @@ export enum AuditLogTarget {
 	SERVER_EVENT = 'SERVER_EVENT',
 }
 
+export type AuditActor = {
+	username: string
+	name: string
+}
+
 export type AuditLogSearchQuery = {
 	skip?: number
 	limit?: number
@@ -19,9 +24,4 @@ export type AuditLogSearchQuery = {
 	message?: string
 	startDate?: string
 	endDate?: string
-}
-
-export type AuditActor = {
-	username: string
-	name: string
 }
