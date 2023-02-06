@@ -71,10 +71,11 @@ export const createUserSchema: FastifySchema = {
 		properties: {
 			name: { type: 'string' },
 			username: { type: 'string' },
-			active: { type: 'boolean', nullable: true },
+			active: { type: 'boolean', nullable: true, default: true },
 			roles: {
 				type: 'array',
 				nullable: true,
+				default: ['GUEST'],
 				items: {
 					type: 'string',
 					enum: getRoles(),
