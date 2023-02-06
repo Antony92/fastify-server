@@ -11,7 +11,17 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 	const user = await createUser({
 		username,
 		name,
+		active: true,
+		lastLogin: new Date()
 	})
+
+	if (user.blocked) {
+		throw {
+			message: `User is blocked`,
+			error: 'Auth',
+			statusCode: 403,
+		}
+	}
 
 	const accessToken = await reply.accessJwtSign(
 		{
@@ -61,6 +71,14 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			message: `User does not exist`,
 			error: 'Auth',
 			statusCode: 401,
+		}
+	}
+
+	if (user.blocked) {
+		throw {
+			message: `User is blocked`,
+			error: 'Auth',
+			statusCode: 403,
 		}
 	}
 

@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["metrics", "fullTextSearch", "multiSchema"]
 }
 
@@ -20,13 +20,15 @@ enum ServerEventType {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  name     String
-  username String    @unique()
-  roles    Role[]    @default([GUEST])
-  active   Boolean   @default(true)
-  created  DateTime  @default(now())
-  updated  DateTime  @updatedAt()
+  id        String   @id @default(uuid())
+  name      String
+  username  String   @unique()
+  roles     Role[]   @default([GUEST])
+  active    Boolean  @default(true)
+  blocked   Boolean  @default(false)
+  created   DateTime @default(now())
+  updated   DateTime @updatedAt()
+  lastLogin DateTime?
 }
 
 model AuditLog {
