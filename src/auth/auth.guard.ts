@@ -5,7 +5,7 @@ import { RefreshToken, AccessToken } from '../types/jwt.type.js'
 export const secured = (roles?: Role[]) => {
 	return async (request: FastifyRequest, reply: FastifyReply) => {
 		await request.accessJwtVerify()
-		if (roles && !request.user.roles?.some(role => roles.includes(role as Role))) {
+		if (roles && !request.user.roles?.some(role => roles.includes(role))) {
 			throw {
 				message: `Insufficient roles`,
 				error: 'Access',

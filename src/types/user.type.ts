@@ -1,10 +1,10 @@
-import { Prisma } from '@prisma/client'
+import { Prisma, Role } from '@prisma/client'
 
 export type UserJWT = {
 	id: string
 	name: string
 	username: string
-	roles: string[]
+	roles: Role[]
 }
 
 export type UserCreateBody = Omit<Prisma.UserCreateInput, 'id' | 'created' | 'updated'>
