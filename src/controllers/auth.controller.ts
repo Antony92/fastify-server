@@ -70,7 +70,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 		throw {
 			message: `User does not exist`,
 			error: 'Auth',
-			statusCode: 401,
+			statusCode: 404,
 		}
 	}
 
