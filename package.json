@@ -1,5 +1,5 @@
 {
-  "name": "service-portal-v2-server",
+  "name": "fastify-server",
   "version": "1.0.0",
   "description": "",
   "main": "dist/app.js",
