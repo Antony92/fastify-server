@@ -2,6 +2,8 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import crypto from 'crypto'
 import config from '../config.js'
 import { createUser, getUserByUsername } from '../services/user.service.js'
+import { auditLog } from '../services/audit-log.service.js'
+import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
 
 export const loginCallbackHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	const token = await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
@@ -16,11 +18,8 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 	})
 
 	if (user.blocked) {
-		throw {
-			message: `User is blocked`,
-			error: 'Auth',
-			statusCode: 403,
-		}
+		reply.redirect(302, `${config.auth.loginPageURL}?error=User is blocked`)
+		return reply
 	}
 
 	const accessToken = await reply.accessJwtSign(
@@ -53,7 +52,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 		path: '/api/v1/auth/refresh',
 		expires: new Date(Date.now() + config.cookies.refreshCookieExpire),
 	})
-	reply.redirect(302, `/login?token=${accessToken}`)
+	reply.redirect(302, `${config.auth.loginPageURL}?token=${accessToken}`)
 	return reply
 }
 
@@ -66,6 +65,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 	await request.refreshJwtVerify({ onlyCookie: true })
 	const { username } = request.refreshToken
 	const user = await getUserByUsername(username)
+	
 	if (!user) {
 		throw {
 			message: `User does not exist`,
@@ -95,6 +95,48 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			jti: crypto.randomUUID(),
 		}
 	)
+	
+	return { accessToken }
+}
+
+export const impersonateHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+	const { username } = request.body as any
+	const user = await getUserByUsername(username)
+	
+	if (!user) {
+		throw {
+			message: `User does not exist`,
+			error: 'Auth',
+			statusCode: 404,
+		}
+	}
+
+	if (user.blocked) {
+		throw {
+			message: `User is blocked`,
+			error: 'Auth',
+			statusCode: 403,
+		}
+	}
+
+	const accessToken = await reply.accessJwtSign(
+		{
+			user: {
+				id: user.id,
+				name: user.name,
+				username: user.username,
+				roles: user.roles,
+				impersonated: `${request.user.name} - ${request.user.username}`
+			},
+		},
+		{
+			jti: crypto.randomUUID(),
+		}
+	)
+
+	reply.clearCookie(config.cookies.refreshCookieName, { path: '/api/v1/auth/refresh' })
+
+	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.USER, { user, username }, `impersonated user ${user.name}`)
 	
 	return { accessToken }
 }

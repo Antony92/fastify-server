@@ -3,9 +3,9 @@ import { SwaggerOptions } from '@fastify/swagger'
 const swaggerOptions: SwaggerOptions = {
 	openapi: {
 		info: {
-			title: 'Test swagger',
-			description: 'Testing the Fastify swagger API',
-			version: '1.0.0',
+			title: 'Server API',
+			description: 'TODO',
+			version: '2.0.0',
 		},
 		servers: [
 			{
@@ -17,20 +17,6 @@ const swaggerOptions: SwaggerOptions = {
 			description: 'Confluence page',
 			url: 'https://confluence.com',
 		},
-		tags: [
-			{
-				name: 'User',
-				description: 'User API',
-			},
-			{
-				name: 'Server events',
-				description: 'Server events API'
-			},
-			{
-				name: 'Audit logs',
-				description: 'Audit logs API',
-			},
-		],
 		components: {
 			securitySchemes: {
 				bearerAuth: {

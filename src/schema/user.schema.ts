@@ -49,12 +49,15 @@ export const getUsersSchema: FastifySchema = {
 		properties: {
 			skip: { type: 'number', nullable: true, minimum: 0 },
 			limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
+			search: { type: 'string', nullable: true },
 			name: { type: 'string', nullable: true },
 			username: { type: 'string', nullable: true },
 			active: { type: 'boolean', nullable: true },
 			blocked: { type: 'boolean', nullable: true },
-			lastLoginStart: { type: 'string', nullable: true },
-            lastLoginEnd: { type: 'string', nullable: true },
+			internal: { type: 'boolean', nullable: true },
+			roles: { type: 'string', nullable: true },
+			sort: { type: 'string', nullable: true },
+            order: { type: 'string', nullable: true },
 		},
 	} satisfies JSONSchemaType<UserSearchQuery>,
 }
@@ -113,7 +116,7 @@ export const updateUserSchema: FastifySchema = {
 			name: { type: 'string', nullable: true },
 			username: { type: 'string', nullable: true },
 			active: { type: 'boolean', nullable: true },
-			blocked: { type: 'boolean', nullable: true, default: false },
+			blocked: { type: 'boolean', nullable: true },
 			roles: {
 				type: 'array',
 				nullable: true,
@@ -129,6 +132,44 @@ export const updateUserSchema: FastifySchema = {
 export const deleteUserSchema: FastifySchema = {
 	tags: ['User'],
 	description: 'Delete user',
+	consumes: ['application/json'],
+	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
+	params: {
+		type: 'object',
+		properties: {
+			id: { type: 'string' },
+		},
+		required: ['id'],
+	} satisfies JSONSchemaType<{ id: string }>,
+}
+
+export const createUserApiKeySchema: FastifySchema = {
+	tags: ['User'],
+	description: 'Create user api key',
+	consumes: ['application/json'],
+	produces: ['application/json'],
+	security: [
+		{
+			bearerAuth: [],
+		},
+	],
+	params: {
+		type: 'object',
+		properties: {
+			id: { type: 'string' },
+		},
+		required: ['id'],
+	} satisfies JSONSchemaType<{ id: string }>,
+}
+
+export const deleteUserApiKeySchema: FastifySchema = {
+	tags: ['User'],
+	description: 'Delete user api key',
 	consumes: ['application/json'],
 	produces: ['application/json'],
 	security: [

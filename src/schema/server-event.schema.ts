@@ -3,7 +3,7 @@ import { FastifySchema } from 'fastify'
 import { ServerEventCreateBody, ServerEventUpdateBody } from '../types/server-event.type.js'
 
 export const getServerEventsSchema: FastifySchema = {
-	tags: ['Server events'],
+	tags: ['Server event'],
 	description: 'Get server events',
 	consumes: ['application/json'],
 	produces: ['application/json'],
@@ -22,7 +22,7 @@ export const getServerEventsSchema: FastifySchema = {
 }
 
 export const createServerEventSchema: FastifySchema = {
-	tags: ['Server events'],
+	tags: ['Server event'],
 	description: 'Create server event',
 	consumes: ['application/json'],
 	produces: ['application/json'],
@@ -42,7 +42,7 @@ export const createServerEventSchema: FastifySchema = {
 }
 
 export const updateServerEventSchema: FastifySchema = {
-	tags: ['Server events'],
+	tags: ['Server event'],
 	description: 'Update server event',
 	consumes: ['application/json'],
 	produces: ['application/json'],
@@ -68,7 +68,7 @@ export const updateServerEventSchema: FastifySchema = {
 }
 
 export const deleteServerEventSchema: FastifySchema = {
-	tags: ['Server events'],
+	tags: ['Server event'],
 	description: 'Delete server event',
 	consumes: ['application/json'],
 	produces: ['application/json'],

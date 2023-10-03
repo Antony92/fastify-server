@@ -20,26 +20,38 @@ enum ServerEventType {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  username  String   @unique()
-  roles     Role[]   @default([GUEST])
-  active    Boolean  @default(true)
-  blocked   Boolean  @default(false)
-  created   DateTime @default(now())
-  updated   DateTime @updatedAt()
-  lastLogin DateTime?
+  id                             String                  @id @default(uuid())
+  name                           String
+  username                       String                  @unique()
+  roles                          Role[]                  @default([GUEST])
+  active                         Boolean                 @default(true)
+  blocked                        Boolean                 @default(false)
+  created                        DateTime                @default(now())
+  updated                        DateTime                @updatedAt()
+  internal                       Boolean                 @default(false)
+  lastLogin                      DateTime?
+  apiKey                         ApiKey?
+}
+
+model ApiKey {
+  id      String   @id @default(uuid())
+  jti     String   @unique()
+  jwt     String   @unique()
+  created DateTime @default(now())
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String   @unique()
 }
 
 model AuditLog {
-  id       String   @id @default(uuid())
-  username String
-  name     String
-  action   String
-  target   String
-  data     Json
-  message  String?
-  created  DateTime @default(now())
+  id           String   @id @default(uuid())
+  username     String
+  name         String
+  action       String
+  target       String
+  data         Json
+  message      String?
+  impersonated String?
+  created      DateTime @default(now())
 }
 
 model ServerEvent {
@@ -48,4 +60,13 @@ model ServerEvent {
   message String
   created DateTime        @default(now())
   updated DateTime        @updatedAt()
+}
+
+model Feedback {
+  id           String   @id @default(uuid())
+  email        String
+  name         String
+  satisfaction Int
+  message      String
+  created      DateTime @default(now())
 }

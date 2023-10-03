@@ -18,24 +18,25 @@ import { AccessToken } from './types/jwt.type.js'
 import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard.js'
 import healthRoute from './routes/health.route.js'
 import authRoute from './routes/auth.route.js'
-import serverEventsRoute from './routes/server-events.route.js'
+import serverEventsRoute from './routes/server-event.route.js'
 import auditLogRoute from './routes/audit-log.route.js'
 import userRoute from './routes/user.route.js'
 import websocketRoute from './routes/websocket.route.js'
+import feedbackRoute from './routes/feedback.route.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 process.env.NODE_ENV = config.environment
 
-// Init fastify server
+// init fastify server
 const server = fastify({
 	logger: false,
 })
 
-// Plugins
+// plugins
 await server.register(fastifyCompress)
 await server.register(fastifyCookie)
 await server.register(fastifyCors, {
-	origin: ['http://localhost:8080', 'http://localhost:5500'],
+	origin: ['http://localhost:8080', 'http://localhost:5173'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
 	credentials: true,
 })
@@ -91,10 +92,10 @@ await server.register(fastifyOauth2, {
 		}
 	},
 	startRedirectPath: '/api/v1/auth/login/microsoft',
-	callbackUri: 'http://localhost:8080/api/v1/auth/login/callback',
+	callbackUri: config.auth.loginCallbackURL,
 })
 
-// Not found handler
+// not found handler
 server.setNotFoundHandler((request, reply) => {
 	if (request.url.includes('/api')) {
 		reply.code(404).send({
@@ -107,13 +108,14 @@ server.setNotFoundHandler((request, reply) => {
 	}
 })
 
-// Routes
+// routes
 await server.register(healthRoute, { prefix: '/api/v1' })
 await server.register(authRoute, { prefix: '/api/v1' })
 await server.register(serverEventsRoute, { prefix: '/api/v1' })
 await server.register(auditLogRoute, { prefix: '/api/v1' })
 await server.register(userRoute, { prefix: '/api/v1' })
 await server.register(websocketRoute, { prefix: '/api/v1' })
+await server.register(feedbackRoute, { prefix: '/api/v1' })
 
 // testing
 export default server

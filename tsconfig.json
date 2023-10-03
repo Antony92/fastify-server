@@ -1,20 +1,22 @@
 {
   "compilerOptions": {
-      "module": "NodeNext",
-      "target": "ESNext",
-      "lib": ["ESNext"],
-      "moduleResolution": "NodeNext",
-      "sourceMap": false,
-      "rootDir": "./src",
-      "outDir": "dist",
-      "resolveJsonModule": true,
-      "strictNullChecks": true
+    "module": "NodeNext",
+    "target": "ESNext",
+    "lib": [
+      "ESNext"
+    ],
+    "moduleResolution": "NodeNext",
+    "sourceMap": false,
+    "rootDir": "./src",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
   },
   "exclude": [
     "src/**/*.test.ts",
   ],
   "include": [
-    "src/**/*", 
+    "src/**/*",
     "types/project.d.ts",
   ]
 }
