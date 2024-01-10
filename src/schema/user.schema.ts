@@ -75,8 +75,8 @@ export const createUserSchema: FastifySchema = {
 	body: {
 		type: 'object',
 		properties: {
-			name: { type: 'string' },
-			username: { type: 'string' },
+			name: { type: 'string', transform: ['trim'] },
+			username: { type: 'string', transform: ['trim'] },
 			active: { type: 'boolean', nullable: true, default: true },
 			blocked: { type: 'boolean', nullable: true, default: false },
 			roles: {
@@ -113,8 +113,8 @@ export const updateUserSchema: FastifySchema = {
 	body: {
 		type: 'object',
 		properties: {
-			name: { type: 'string', nullable: true },
-			username: { type: 'string', nullable: true },
+			name: { type: 'string', nullable: true, transform: ['trim'] },
+			username: { type: 'string', nullable: true, transform: ['trim'] },
 			active: { type: 'boolean', nullable: true },
 			blocked: { type: 'boolean', nullable: true },
 			roles: {
