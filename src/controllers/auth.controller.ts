@@ -52,7 +52,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 		path: '/api/v1/auth/refresh',
 		expires: new Date(Date.now() + config.cookies.refreshCookieExpire),
 	})
-	reply.redirect(302, `${config.auth.loginPageURL}?token=${accessToken}`)
+	reply.redirect(`${config.auth.loginPageURL}?token=${accessToken}`, 302)
 	return reply
 }
 
