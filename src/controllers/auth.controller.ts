@@ -18,7 +18,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 	})
 
 	if (user.blocked) {
-		reply.redirect(302, `${config.auth.loginPageURL}?error=User is blocked`)
+		reply.redirect(`${config.auth.loginPageURL}?error=User is blocked`, 302)
 		return reply
 	}
 
