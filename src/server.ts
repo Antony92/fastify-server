@@ -50,7 +50,7 @@ await server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
 await server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } })
 await server.register(fastifySwagger, swaggerOptions)
 await server.register(fastifySwaggerUi, { routePrefix: '/documentation' })
-await server.register(fastifyWebsocket.default)
+await server.register(fastifyWebsocket)
 await server.register(fastifyJwt, {
 	namespace: 'access',
 	secret: config.jwt.accessTokenSecret,
