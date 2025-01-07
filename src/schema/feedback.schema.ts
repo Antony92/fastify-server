@@ -16,7 +16,7 @@ export const submitFeedbackSchema: FastifySchema = {
 	body: {
 		type: 'object',
 		properties: {
-			satisfaction: { type: 'number' },
+			satisfaction: { type: 'number', minimum: 1, maximum: 5 },
 			message: { type: 'string', maxLength: 5000, transform: ['trim'] },
 		},
 		required: ['satisfaction', 'message'],
