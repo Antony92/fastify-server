@@ -1,5 +1,5 @@
 import { Role } from '../types/user.type.js'
-import type { FastifyPluginAsync } from 'fastify'
+import  { FastifyPluginAsync } from 'fastify'
 import { secured } from '../auth/auth.guard.js'
 import { getAuditLogsHandler } from '../controllers/audit.controller.js'
 import { getAuditLogsSchema } from '../schema/audit-log.schema.js'

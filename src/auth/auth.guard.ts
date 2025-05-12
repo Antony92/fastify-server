@@ -1,4 +1,4 @@
-import type { FastifyRequest } from 'fastify'
+import  { FastifyRequest } from 'fastify'
 import { RefreshToken, AccessToken } from '../types/jwt.type.js'
 import { getApiKeyByUserId } from '../services/api-key.service.js'
 import { getUserById } from '../services/user.service.js'

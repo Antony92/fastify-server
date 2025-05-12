@@ -1,4 +1,4 @@
-import type { FastifyPluginAsync } from 'fastify'
+import  { FastifyPluginAsync } from 'fastify'
 import { websocketHandler } from '../controllers/websocket.controller.js'
 
 const websocketRoute: FastifyPluginAsync = async (server) => {

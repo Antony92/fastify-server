@@ -1,4 +1,4 @@
-import type { FastifyPluginAsync } from 'fastify'
+import  { FastifyPluginAsync } from 'fastify'
 import { secured } from '../auth/auth.guard.js'
 import {
 	subscribeServerEventsHandler,
