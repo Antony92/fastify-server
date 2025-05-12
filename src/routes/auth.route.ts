@@ -1,4 +1,4 @@
-import  { FastifyPluginAsync } from 'fastify'
+import { FastifyPluginAsync } from 'fastify'
 import { logoutHandler, refreshHandler, loginCallbackHandler, impersonateHandler } from '../controllers/auth.controller.js'
 import { secured } from '../auth/auth.guard.js'
 import { Role } from '../types/user.type.js'

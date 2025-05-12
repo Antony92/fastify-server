@@ -1,4 +1,4 @@
-import  { FastifyRequest } from 'fastify'
+import { FastifyRequest } from 'fastify'
 import { WebSocket } from 'ws'
 
 export const websocketHandler = async (socket: WebSocket, request: FastifyRequest) => {

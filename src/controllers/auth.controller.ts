@@ -1,4 +1,4 @@
-import  { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyRequest, FastifyReply } from 'fastify'
 import crypto from 'crypto'
 import config from '../config.js'
 import { createUser, getUserByUsername } from '../services/user.service.js'

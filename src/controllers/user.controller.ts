@@ -1,4 +1,4 @@
-import  { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyRequest, FastifyReply } from 'fastify'
 import { auditLog } from '../services/audit-log.service.js'
 import { createUser, deleteUser, getRoles, getUsers, updateUser, getUserById, getUserProfile } from '../services/user.service.js'
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'

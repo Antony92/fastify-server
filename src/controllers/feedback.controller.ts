@@ -1,4 +1,4 @@
-import  { FastifyRequest } from 'fastify'
+import { FastifyRequest } from 'fastify'
 import { FeedbackCreateBody } from '../types/feedback.type.js'
 import { submitFeedback } from '../services/feedback.service.js'
 
