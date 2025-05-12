@@ -1,6 +1,6 @@
 import { ServerEventType } from '@prisma/client'
 import prisma from '../db/prisma.js'
-import { SSEType, ServerEventClient, ServerEventCreateInput, ServerEventUpdateInput } from '../types/server-event.type.js'
+import { type SSEType, ServerEventClient, ServerEventCreateInput, ServerEventUpdateInput } from '../types/server-event.type.js'
 
 const serverEventClients: ServerEventClient[] = []
 const retry = 10000

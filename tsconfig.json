@@ -1,22 +1,24 @@
 {
-  "compilerOptions": {
-    "module": "NodeNext",
-    "target": "ESNext",
-    "lib": [
-      "ESNext"
-    ],
-    "moduleResolution": "NodeNext",
-    "sourceMap": false,
-    "rootDir": "./src",
-    "outDir": "dist",
-    "resolveJsonModule": true,
-    "strictNullChecks": true,
-  },
-  "exclude": [
-    "src/**/*.test.ts",
-  ],
-  "include": [
-    "src/**/*",
-    "types/project.d.ts",
-  ]
+    "compilerOptions": {
+        "module": "NodeNext",
+        "target": "ESNext",
+        "lib": ["ESNext"],
+        "skipLibCheck": true,
+        "moduleResolution": "NodeNext",
+        "sourceMap": false,
+        "rootDir": "./src",
+        "outDir": "dist",
+        "resolveJsonModule": true,
+
+        /* Linting */
+        "strict": true,
+        "erasableSyntaxOnly": true,
+
+        /* Paths */
+        // "paths": {
+        //     "@src/*": ["./src/*"]
+        // }
+    },
+    "exclude": ["src/**/*.test.ts"],
+    "include": ["src/**/*", "types/project.d.ts"]
 }

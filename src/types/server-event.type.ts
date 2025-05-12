@@ -14,6 +14,8 @@ export type ServerEventClient = {
 	reply: FastifyReply
 }
 
-export enum SSEType {
-	GLOBAL_MESSAGE = 'globalmessage'
-}
+export const SSE = {
+	GLOBAL_MESSAGE: 'globalmessage'
+} as const
+
+export type SSEType = typeof SSE[keyof typeof SSE]

@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import type { FastifyRequest, FastifyReply } from 'fastify'
 import { auditLog } from '../services/audit-log.service.js'
 import { createUser, deleteUser, getRoles, getUsers, updateUser, getUserById, getUserProfile } from '../services/user.service.js'
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
@@ -6,47 +6,52 @@ import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.t
 import { createApiKey, deleteApiKeyByUserId } from '../services/api-key.service.js'
 import crypto from 'crypto'
 
-export const getRolesHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+export const getRolesHandler = async () => {
 	const roles = getRoles()
 	return { data: roles }
 }
 
-export const getUserHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const user = await getUserById(request.params.id)
+export const getUserHandler = async (request: FastifyRequest) => {
+	const { id } = request.params as { id: string }
+	const user = await getUserById(id)
 	return { data: user }
 }
 
-export const getUsersHandler = async (request: FastifyRequest<{ Querystring: UserSearchQuery }>, reply: FastifyReply) => {
-	const { users, total } = await getUsers(request.query)
+export const getUsersHandler = async (request: FastifyRequest) => {
+	const { users, total } = await getUsers(request.query as UserSearchQuery)
 	return { data: users, total }
 }
 
-export const createUserHandler = async (request: FastifyRequest<{ Body: UserCreateBody }>, reply: FastifyReply) => {
-	const user = await createUser({ ...request.body, internal: true })
-	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.USER, { body: request.body, user }, 'create user')
+export const createUserHandler = async (request: FastifyRequest) => {
+	const body = request.body as UserCreateBody
+	const user = await createUser({ ...body, internal: true })
+	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.USER, { body, user }, 'create user')
 	return { message: 'User created', data: user }
 }
 
-export const updateUserHandler = async (request: FastifyRequest<{ Params: { id: string }; Body: UserUpdateBody }>, reply: FastifyReply) => {
-	const { id } = request.params
-	const user = await updateUser({ id, ...request.body })
-	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.USER, { id, body: request.body, user }, 'update user')
+export const updateUserHandler = async (request: FastifyRequest) => {
+	const { id } = request.params as { id: string }
+	const body = request.body as UserUpdateBody
+	const user = await updateUser({ id, ...body })
+	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.USER, { id, body, user }, 'update user')
 	return { message: 'User updated', data: user }
 }
 
-export const deleteUserHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const user = await deleteUser(request.params.id)
+export const deleteUserHandler = async (request: FastifyRequest) => {
+	const { id } = request.params as { id: string }
+	const user = await deleteUser(id)
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.USER, user, 'delete user')
 	return { message: 'User deleted', data: user }
 }
 
-export const getUserProfileHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+export const getUserProfileHandler = async (request: FastifyRequest) => {
 	const profile = await getUserProfile(request.user.id)
 	return { data: profile }
 }
 
-export const createUserApiKeyHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const user = await getUserById(request.params.id)
+export const createUserApiKeyHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+	const { id } = request.params as { id: string }
+	const user = await getUserById(id)
 	const jti = crypto.randomUUID()
 	const jwt = await reply.accessJwtSign(
 		{
@@ -72,8 +77,9 @@ export const createUserApiKeyHandler = async (request: FastifyRequest<{ Params: 
 	return { message: 'API key created', data: apiKey }
 }
 
-export const deleteUserApiKeyHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const apiKey = await deleteApiKeyByUserId(request.params.id)
+export const deleteUserApiKeyHandler = async (request: FastifyRequest) => {
+	const { id } = request.params as { id: string }
+	const apiKey = await deleteApiKeyByUserId(id)
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.USER, apiKey, 'delete user api key')
 	return { message: 'API key deleted', data: apiKey.id }
 }
@@ -99,8 +105,9 @@ export const createPersonalApiKeyHandler = async (request: FastifyRequest, reply
 	return { message: 'API key created', data: apiKey }
 }
 
-export const deletePersonalApiKeyHandler = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-	const apiKey = await deleteApiKeyByUserId(request.user.id)
+export const deletePersonalApiKeyHandler = async (request: FastifyRequest) => {
+	const { id } = request.params as { id: string }
+	const apiKey = await deleteApiKeyByUserId(id)
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.USER, apiKey, 'delete personal api key')
 	return { message: 'API key deleted', data: apiKey.id }
 }

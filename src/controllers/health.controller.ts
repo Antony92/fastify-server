@@ -1,9 +1,8 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
 import os from 'os'
 import { isPrismaActive } from '../db/prisma.js'
 import { formatBytes, secondsToElapsedTime } from '../helpers/format.helper.js'
 
-export const checkHealthHandler = async (request: FastifyRequest, reply: FastifyReply) => {
+export const checkHealthHandler = async () => {
 	const { seconds, minutes, hours } = secondsToElapsedTime(os.uptime())
 	const dbActive = await isPrismaActive()
 	const serverInfo = {

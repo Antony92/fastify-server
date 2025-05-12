@@ -1,6 +1,6 @@
 import { User } from '@prisma/client'
-import { Role, UserJWT } from '../types/user.type.js'
+import { type RoleType, UserJWT } from '../types/user.type.js'
 
-export const hasUserRoles = (user: UserJWT | User, roles: Role[]) => {
-    return user.roles.some((role: Role) => roles.includes(role))
+export const hasUserRoles = (user: UserJWT | User, roles: RoleType[]) => {
+    return user.roles.some((role) => roles.includes(role as RoleType))
 }

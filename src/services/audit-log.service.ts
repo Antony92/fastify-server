@@ -1,7 +1,7 @@
 import prisma from '../db/prisma.js'
-import { AuditActor, AuditLogAction, AuditLogSearchQuery, AuditLogTarget } from '../types/audit-log.type.js'
+import { AuditActor, type AuditLogActionType, AuditLogSearchQuery, AuditLogTargetType } from '../types/audit-log.type.js'
 
-export const auditLog = async (actor: AuditActor, action: AuditLogAction, target: AuditLogTarget, data: object, message?: string) => {
+export const auditLog = async (actor: AuditActor, action: AuditLogActionType, target: AuditLogTargetType, data: object, message?: string) => {
 	const auditLog = await prisma.auditLog.create({
 		data: {
 			name: actor.name,

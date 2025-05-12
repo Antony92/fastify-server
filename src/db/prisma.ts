@@ -7,6 +7,7 @@ export const isPrismaActive = async () => {
         await prisma.$queryRaw`SELECT now()`
         return true
     } catch (error) {
+        console.log(error)
         return false
     }
 }

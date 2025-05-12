@@ -1,10 +1,10 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import type { FastifyRequest } from 'fastify'
 import { RefreshToken, AccessToken } from '../types/jwt.type.js'
 import { getApiKeyByUserId } from '../services/api-key.service.js'
 import { getUserById } from '../services/user.service.js'
 
 export const secured = (roles?: string[]) => {
-	return async (request: FastifyRequest, reply: FastifyReply) => {
+	return async (request: FastifyRequest) => {
 		await request.accessJwtVerify()
 		const user = await getUserById(request.user.id)
 		if (user.blocked) {
@@ -24,16 +24,18 @@ export const secured = (roles?: string[]) => {
 	}
 }
 
-export const trustedAccessTokens = async (request: FastifyRequest, decodedToken: AccessToken) => {
-	if (decodedToken.api) {
-		const apiKeyExist = await getApiKeyByUserId(decodedToken.user.id)
+export const trustedAccessTokens = async (request: FastifyRequest, decodedToken: unknown) => {
+	const token = decodedToken as AccessToken
+	if (token.api) {
+		const apiKeyExist = await getApiKeyByUserId(token.user.id)
 		return apiKeyExist ? decodedToken : false
 	}
 	return decodedToken
 }
 
-export const trustedRefreshTokens = async (request: FastifyRequest, decodedToken: RefreshToken) => {
+export const trustedRefreshTokens = async (request: FastifyRequest, decodedToken: unknown) => {
+	const token = decodedToken as RefreshToken
 	return decodedToken
 	const allowed = ['token1', 'token2']
-	return allowed.includes(decodedToken.jti) ? decodedToken : false
+	return allowed.includes(token.jti) ? decodedToken : false
 }

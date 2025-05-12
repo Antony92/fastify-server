@@ -61,7 +61,7 @@ await server.register(fastifyJwt, {
 	verify: {
 		allowedIss: config.jwt.issuer,
 	},
-	formatUser: (token: AccessToken) => token.user,
+	formatUser: (token) => (token as AccessToken).user,
 	trusted: trustedAccessTokens,
 })
 await server.register(fastifyJwt, {

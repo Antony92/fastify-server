@@ -8,10 +8,12 @@ export type UserJWT = {
 	impersonated?: string
 }
 
-export enum Role {
-    GUEST = 'GUEST',
-    ADMIN = 'ADMIN',
-}
+export const Role = {
+    GUEST: 'GUEST',
+    ADMIN: 'ADMIN',
+} as const
+
+export type RoleType = typeof Role[keyof typeof Role]
 
 export type UserCreateBody = Pick<Prisma.UserCreateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>
 

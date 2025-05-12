@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import type { FastifyRequest, FastifyReply } from 'fastify'
 import crypto from 'crypto'
 import config from '../config.js'
 import { createUser, getUserByUsername } from '../services/user.service.js'
@@ -100,7 +100,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 }
 
 export const impersonateHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	const { username } = request.body as any
+	const { username } = request.body as { username: string }
 	const user = await getUserByUsername(username)
 	
 	if (!user) {
