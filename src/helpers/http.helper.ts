@@ -1,7 +1,7 @@
 export const searchParamsToQuery = (searchParams: { [key: string]: string | boolean | number }) => {
 	const search = new URLSearchParams()
 	Object.keys(searchParams)
-		.filter((key) => searchParams[key] != null && searchParams[key] != undefined && searchParams[key] !== '')
+		.filter((key) => searchParams[key] !== null && searchParams[key] !== undefined && searchParams[key] !== '')
 		.map((key) => search.append(key, searchParams[key].toString()))
 	const query = search.toString()
 	return query ? `?${query}` : ``
