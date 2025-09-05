@@ -17,8 +17,8 @@ export const getServerEventsSchema: FastifySchema = {
 		properties: {
 			skip: { type: 'number', nullable: true, minimum: 0 },
 			limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
-		}
-	} satisfies JSONSchemaType<{ skip?: number, limit?: number }>
+		},
+	} satisfies JSONSchemaType<{ skip?: number; limit?: number }>,
 }
 
 export const createServerEventSchema: FastifySchema = {
@@ -37,8 +37,8 @@ export const createServerEventSchema: FastifySchema = {
 			type: { type: 'string', nullable: true, enum: ['info', 'warning', 'error'] },
 			message: { type: 'string', maxLength: 500, transform: ['trim'] },
 		},
-		required: ['message']
-	} satisfies JSONSchemaType<ServerEventCreateBody>
+		required: ['message'],
+	} satisfies JSONSchemaType<ServerEventCreateBody>,
 }
 
 export const updateServerEventSchema: FastifySchema = {
@@ -54,17 +54,17 @@ export const updateServerEventSchema: FastifySchema = {
 	params: {
 		type: 'object',
 		properties: {
-			id: { type: 'string' }
+			id: { type: 'string' },
 		},
-		required: ['id']
+		required: ['id'],
 	} satisfies JSONSchemaType<{ id: string }>,
 	body: {
 		type: 'object',
 		properties: {
 			type: { type: 'string', nullable: true, enum: ['info', 'warning', 'error'] },
 			message: { type: 'string', nullable: true, maxLength: 500, transform: ['trim'] },
-		}
-	} satisfies JSONSchemaType<ServerEventUpdateBody>
+		},
+	} satisfies JSONSchemaType<ServerEventUpdateBody>,
 }
 
 export const deleteServerEventSchema: FastifySchema = {
@@ -80,8 +80,8 @@ export const deleteServerEventSchema: FastifySchema = {
 	params: {
 		type: 'object',
 		properties: {
-			id: { type: 'string' }
+			id: { type: 'string' },
 		},
-		required: ['id']
-	} satisfies JSONSchemaType<{ id: string }>
+		required: ['id'],
+	} satisfies JSONSchemaType<{ id: string }>,
 }

@@ -15,7 +15,7 @@ export type ServerEventClient = {
 }
 
 export const SSE = {
-	GLOBAL_MESSAGE: 'globalmessage'
+	GLOBAL_MESSAGE: 'globalmessage',
 } as const
 
-export type SSEType = typeof SSE[keyof typeof SSE]
+export type SSEType = (typeof SSE)[keyof typeof SSE]

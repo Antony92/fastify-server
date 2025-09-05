@@ -22,7 +22,7 @@ const swaggerOptions: SwaggerOptions = {
 				bearerAuth: {
 					type: 'http',
 					scheme: 'bearer',
-					bearerFormat: 'JWT'
+					bearerFormat: 'JWT',
 				},
 			},
 		},

@@ -57,7 +57,7 @@ export const getUsersSchema: FastifySchema = {
 			internal: { type: 'boolean', nullable: true },
 			roles: { type: 'string', nullable: true },
 			sort: { type: 'string', nullable: true },
-            order: { type: 'string', nullable: true },
+			order: { type: 'string', nullable: true },
 		},
 	} satisfies JSONSchemaType<UserSearchQuery>,
 }

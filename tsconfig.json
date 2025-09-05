@@ -13,11 +13,6 @@
         /* Linting */
         "strict": true,
         "erasableSyntaxOnly": true,
-
-        /* Paths */
-        // "paths": {
-        //     "@src/*": ["./src/*"]
-        // }
     },
     "exclude": ["src/**/*.test.ts"],
     "include": ["src/**/*", "types/project.d.ts"]

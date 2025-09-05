@@ -7,7 +7,7 @@ const config = {
 	server: {
 		port: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT) : 8080,
 		rateLimit: process.env.SERVER_RATE_LIMIT ? parseInt(process.env.SERVER_RATE_LIMIT) : 10000,
-		url: process.env.SERVER_URL || 'https://www.dns.com'
+		url: process.env.SERVER_URL || 'https://www.dns.com',
 	},
 	microsoft: {
 		clientId: process.env.MICROSOFT_CLIENT_ID || '',
@@ -25,11 +25,11 @@ const config = {
 	},
 	cookies: {
 		refreshCookieName: process.env.COOKIE_REFRESH_NAME || 'refreshToken',
-		refreshCookieExpire: process.env.COOKIE_REFRESH_EXPIRE ? parseInt(process.env.COOKIE_REFRESH_EXPIRE) : 24 * 60 * 1000 * 60 // 24 hours
+		refreshCookieExpire: process.env.COOKIE_REFRESH_EXPIRE ? parseInt(process.env.COOKIE_REFRESH_EXPIRE) : 24 * 60 * 1000 * 60, // 24 hours
 	},
 	auth: {
 		loginCallbackURL: process.env.LOGIN_CALLBACK_URL || 'http://localhost:8080/api/v1/auth/login/callback',
-		loginPageURL: process.env.LOGIN_PAGE_URL || 'http://localhost:5173/login'
+		loginPageURL: process.env.LOGIN_PAGE_URL || 'http://localhost:5173/login',
 	},
 }
 

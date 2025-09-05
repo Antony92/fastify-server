@@ -49,7 +49,7 @@ await server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWind
 await server.register(fastifyStatic, { root: path.join(__dirname, 'public') })
 await server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } })
 await server.register(fastifySwagger, swaggerOptions)
-await server.register(fastifySwaggerUi, { routePrefix: '/documentation' })
+await server.register(fastifySwaggerUi, { routePrefix: '/swagger' })
 await server.register(fastifyWebsocket)
 await server.register(fastifyJwt, {
 	namespace: 'access',

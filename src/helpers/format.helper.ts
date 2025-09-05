@@ -11,12 +11,12 @@ export const formatBytes = (bytes: number, decimals = 2) => {
 }
 
 export const secondsToElapsedTime = (sec: number) => {
-    const seconds = Math.floor(sec)
-    const minutes = Math.floor(sec / 60)
-    const hours = Math.floor(minutes / 60)
-    return {
-        seconds: seconds % 60,
-        minutes: minutes % 60,
-        hours: hours % 60
-    }
+	const seconds = Math.floor(sec)
+	const minutes = Math.floor(sec / 60)
+	const hours = Math.floor(minutes / 60)
+	return {
+		seconds: seconds % 60,
+		minutes: minutes % 60,
+		hours: hours % 60,
+	}
 }

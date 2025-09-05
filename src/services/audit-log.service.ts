@@ -43,7 +43,7 @@ export const getAuditLogs = async (query?: AuditLogSearchQuery) => {
 					lte: query?.endDate,
 					gte: query?.startDate,
 				},
-				...searchFilter
+				...searchFilter,
 			},
 			orderBy: {
 				[query?.sort || 'created']: query?.order || 'desc',
@@ -61,7 +61,7 @@ export const getAuditLogs = async (query?: AuditLogSearchQuery) => {
 					lte: query?.endDate,
 					gte: query?.startDate,
 				},
-				...searchFilter
+				...searchFilter,
 			},
 		}),
 	])

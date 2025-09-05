@@ -14,7 +14,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 		username,
 		name,
 		active: true,
-		lastLogin: new Date()
+		lastLogin: new Date(),
 	})
 
 	if (user.blocked) {
@@ -44,7 +44,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 			jti: crypto.randomUUID(),
 		}
 	)
-	
+
 	reply.cookie(config.cookies.refreshCookieName, refreshToken, {
 		httpOnly: true,
 		secure: true,
@@ -65,7 +65,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 	await request.refreshJwtVerify({ onlyCookie: true })
 	const { username } = request.refreshToken
 	const user = await getUserByUsername(username)
-	
+
 	if (!user) {
 		throw {
 			message: `User does not exist`,
@@ -95,14 +95,14 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			jti: crypto.randomUUID(),
 		}
 	)
-	
+
 	return { accessToken }
 }
 
 export const impersonateHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	const { username } = request.body as { username: string }
 	const user = await getUserByUsername(username)
-	
+
 	if (!user) {
 		throw {
 			message: `User does not exist`,
@@ -126,7 +126,7 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
 				name: user.name,
 				username: user.username,
 				roles: user.roles,
-				impersonated: `${request.user.name} - ${request.user.username}`
+				impersonated: `${request.user.name} - ${request.user.username}`,
 			},
 		},
 		{
@@ -137,6 +137,6 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
 	reply.clearCookie(config.cookies.refreshCookieName, { path: '/api/v1/auth/refresh' })
 
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.USER, { user, username }, `impersonated user ${user.name}`)
-	
+
 	return { accessToken }
 }

@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client'
+import { PaginationQuery } from './request.type.js'
 
 export type UserJWT = {
 	id: string
@@ -9,11 +10,11 @@ export type UserJWT = {
 }
 
 export const Role = {
-    GUEST: 'GUEST',
-    ADMIN: 'ADMIN',
+	GUEST: 'GUEST',
+	ADMIN: 'ADMIN',
 } as const
 
-export type RoleType = typeof Role[keyof typeof Role]
+export type RoleType = (typeof Role)[keyof typeof Role]
 
 export type UserCreateBody = Pick<Prisma.UserCreateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>
 
@@ -23,16 +24,11 @@ export type UserCreateInput = Pick<Prisma.UserCreateInput, 'name' | 'username' |
 
 export type UserUpdateInput = { id: string } & Pick<Prisma.UserUpdateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>
 
-export type UserSearchQuery = {
-	skip?: number
-	limit?: number
-	search?: string
+export type UserSearchQuery = PaginationQuery & {
 	name?: string
 	username?: string
 	active?: boolean
 	blocked?: boolean
 	internal?: boolean
 	roles?: string
-	order?: string
-	sort?: string
 }

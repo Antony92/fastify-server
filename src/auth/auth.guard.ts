@@ -14,7 +14,7 @@ export const secured = (roles?: string[]) => {
 				statusCode: 403,
 			}
 		}
-		if (roles && !user.roles.some(role => roles.includes(role))) {
+		if (roles && !user.roles.some((role) => roles.includes(role))) {
 			throw {
 				message: `Insufficient roles`,
 				error: 'Access',

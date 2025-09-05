@@ -1,4 +1,5 @@
-import { expect, describe, it } from 'vitest'
+import { describe, it } from 'node:test'
+import assert from 'node:assert'
 import server from '../../server.js'
 
 describe('Health check route', () => {
@@ -6,8 +7,8 @@ describe('Health check route', () => {
 		it(`it should return status 200 and contain server info`, async () => {
 			const req = await server.inject({ method: 'GET', url: '/api/v1/health' })
             const body = req.json()
-            expect(req.statusCode).toBe(200)
-            expect(body).toHaveProperty('uptime')
+            assert.strictEqual(req.statusCode, 200)
+            assert.ok(!!body.uptime)
 		})
 	})
 })

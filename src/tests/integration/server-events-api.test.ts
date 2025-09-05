@@ -1,8 +1,9 @@
-import { JWT } from '@fastify/jwt'
 import { Role } from '@prisma/client'
-import { expect, describe, it } from 'vitest'
 import server from '../../server.js'
 import { UserJWT } from '../../types/user.type.js'
+import { describe, it } from 'node:test'
+import assert from 'node:assert'
+import { JWT } from '@fastify/jwt'
 
 const admin: UserJWT = {
     id: 'admin',
@@ -24,9 +25,9 @@ describe('Server events route', () => {
                 }
             )
             const body = req.json()
-            expect(req.statusCode).toBe(200)
-            expect(body).toHaveProperty('data')
-            expect(body.data).toBeInstanceOf(Array)
+            assert.strictEqual(req.statusCode, 200)
+            assert.ok(!!body.uptime)
+            assert.ok(Array.isArray(body.data))
 		})
 	})
 })
