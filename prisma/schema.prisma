@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["metrics", "fullTextSearch", "multiSchema"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -20,17 +19,17 @@ enum ServerEventType {
 }
 
 model User {
-  id                             String                  @id @default(uuid())
-  name                           String
-  username                       String                  @unique()
-  roles                          Role[]                  @default([GUEST])
-  active                         Boolean                 @default(true)
-  blocked                        Boolean                 @default(false)
-  created                        DateTime                @default(now())
-  updated                        DateTime                @updatedAt()
-  internal                       Boolean                 @default(false)
-  lastLogin                      DateTime?
-  apiKey                         ApiKey?
+  id        String    @id @default(uuid())
+  name      String
+  username  String    @unique()
+  roles     Role[]    @default([GUEST])
+  active    Boolean   @default(true)
+  blocked   Boolean   @default(false)
+  created   DateTime  @default(now())
+  updated   DateTime  @updatedAt()
+  internal  Boolean   @default(false)
+  lastLogin DateTime?
+  apiKey    ApiKey?
 }
 
 model ApiKey {
