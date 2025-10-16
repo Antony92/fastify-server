@@ -17,12 +17,6 @@ import sanitizeHtml from 'sanitize-html'
 import { IdParam, PaginationQuery } from '../types/request.type.js'
 
 export const subscribeServerEventsHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	reply.raw.setHeader('Content-Type', 'text/event-stream')
-	reply.raw.setHeader('Cache-Control', 'no-cache')
-	reply.raw.setHeader('Connection', 'keep-alive')
-	reply.raw.setHeader('Access-Control-Allow-Origin', '*')
-	reply.raw.setHeader('X-Accel-Buffering', 'no')
-
 	const id = request.ip
 	addServerEventClient({ id, reply })
 
@@ -30,12 +24,11 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 	if (event) {
 		sendServerEventToClient(id, SSE.GLOBAL_MESSAGE, event)
 	} else {
-		reply.raw.write(`retry: 10000\ndata: connected\n\n`)
+	  await reply.sse.send({ data: 'connected' })
 	}
 
-	reply.raw.on('close', () => {
+	reply.sse.onClose(() => {
 		removeServerEventClient(id)
-		reply.raw.end()
 	})
 }
 

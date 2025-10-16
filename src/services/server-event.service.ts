@@ -12,13 +12,17 @@ export const addServerEventClient = (client: ServerEventClient) => {
 export const removeServerEventClient = (clientId: string) => {
 	serverEventClients.splice(
 		serverEventClients.findIndex((client) => client.id === clientId),
-		1
+		1,
 	)
 }
 
 export const sendServerEventToAllClients = (sseType: SSEType, event: { type: ServerEventType; message: string }) => {
 	serverEventClients.forEach((client) => {
-		client.reply.raw.write(`event: ${sseType}\nretry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`)
+		client.reply.sse.send({
+			event: sseType,
+			data: event,
+			retry,
+		})
 	})
 }
 
@@ -26,7 +30,11 @@ export const sendServerEventToClient = (clientId: string, sseType: SSEType, even
 	serverEventClients
 		.filter((client) => client.id === clientId)
 		.forEach((client) => {
-			client.reply.raw.write(`event: ${sseType}\nretry: ${retry}\ndata: ${JSON.stringify(event)}\n\n`)
+			client.reply.sse.send({
+				event: sseType,
+				data: event,
+				retry,
+			})
 		})
 }
 

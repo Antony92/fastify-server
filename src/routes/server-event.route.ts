@@ -13,8 +13,8 @@ import { IdParam, PaginationQuery } from '../types/request.type.js'
 import { ServerEventCreateBody, ServerEventUpdateBody } from '../types/server-event.type.js'
 
 const serverEventsRoute: FastifyPluginAsync = async (server) => {
-	server.get('/sse', { schema: { hide: true } }, subscribeServerEventsHandler)
-	server.get<{ Querystring: PaginationQuery }>(	
+	server.get('/sse', { sse: true, schema: { hide: true } }, subscribeServerEventsHandler)
+	server.get<{ Querystring: PaginationQuery }>(
 		'/server-events',
 		{ onRequest: secured([Role.ADMIN]), schema: getServerEventsSchema },
 		getServerEventsHandler

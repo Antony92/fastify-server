@@ -24,6 +24,7 @@ import userRoute from './routes/user.route.js'
 import websocketRoute from './routes/websocket.route.js'
 import feedbackRoute from './routes/feedback.route.js'
 import ajvKeywords from 'ajv-keywords'
+import fastifySSE from '@fastify/sse'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 process.env.NODE_ENV = config.environment
@@ -51,6 +52,7 @@ await server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } 
 await server.register(fastifySwagger, swaggerOptions)
 await server.register(fastifySwaggerUi, { routePrefix: '/swagger' })
 await server.register(fastifyWebsocket)
+await server.register(fastifySSE.default)
 await server.register(fastifyJwt, {
 	namespace: 'access',
 	secret: config.jwt.accessTokenSecret,
