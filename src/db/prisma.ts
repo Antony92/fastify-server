@@ -1,6 +1,13 @@
 import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-const prisma = new PrismaClient()
+const adapter = new PrismaPg({
+	connectionString: process.env.DATABASE_URL!,
+})
+
+const prisma = new PrismaClient({
+	adapter,
+})
 
 export const isPrismaActive = async () => {
 	try {
@@ -10,11 +17,6 @@ export const isPrismaActive = async () => {
 		console.log(error)
 		return false
 	}
-}
-
-export const getPrismaMetrics = async () => {
-	const metrics = await prisma.$metrics.json()
-	return metrics
 }
 
 export default prisma
