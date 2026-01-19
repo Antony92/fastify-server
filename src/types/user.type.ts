@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '../db/prisma/client.js'
 import { PaginationQuery } from './request.type.js'
 
 export type UserJWT = {

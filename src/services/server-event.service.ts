@@ -1,4 +1,4 @@
-import { ServerEventType } from '@prisma/client'
+import { ServerEventType } from '../db/prisma/client.js'
 import prisma from '../db/prisma.js'
 import { SSEType, ServerEventClient, ServerEventCreateInput, ServerEventUpdateInput } from '../types/server-event.type.js'
 

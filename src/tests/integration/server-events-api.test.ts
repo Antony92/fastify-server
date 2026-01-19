@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client'
+import { Role } from '../../db/prisma/client.js'
 import server from '../../server.js'
 import { UserJWT } from '../../types/user.type.js'
 import { describe, it } from 'node:test'
@@ -18,10 +18,10 @@ describe('Server events route', () => {
 	describe('GET /api/v1/server-events', () => {
 		it(`it should return status 200 and contain data array object`, async () => {
 			const req = await server.inject(
-                { 
-                    method: 'GET', 
-                    url: '/api/v1/server-events', 
-                    headers: { authorization: `Bearer ${jwt}`} 
+                {
+                    method: 'GET',
+                    url: '/api/v1/server-events',
+                    headers: { authorization: `Bearer ${jwt}`}
                 }
             )
             const body = req.json()
@@ -31,4 +31,3 @@ describe('Server events route', () => {
 		})
 	})
 })
-

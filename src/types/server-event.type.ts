@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '../db/prisma/client.js'
 import { FastifyReply } from 'fastify'
 
 export type ServerEventCreateBody = Pick<Prisma.ServerEventCreateInput, 'type' | 'message'>

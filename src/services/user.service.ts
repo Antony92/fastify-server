@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client'
+import { Role } from '../db/prisma/client.js'
 import prisma from '../db/prisma.js'
 import { UserCreateInput, UserSearchQuery, UserUpdateInput } from '../types/user.type.js'
 

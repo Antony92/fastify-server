@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { User } from '../db/prisma/client.js'
 import { RoleType, UserJWT } from '../types/user.type.js'
 
 export const hasUserRoles = (user: UserJWT | User, roles: RoleType[]) => {
