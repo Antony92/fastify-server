@@ -1,9 +1,7 @@
-import { JSONSchemaType } from 'ajv'
-import { FastifySchema } from 'fastify'
 import { getRoles } from '../services/user.service.js'
-import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
+import { ServerSchema } from '../types/server.type.js'
 
-export const getUserSchema: FastifySchema = {
+export const getUserSchema: ServerSchema = {
 	tags: ['User'],
 	description: 'Get user',
 	consumes: ['application/json'],
@@ -19,10 +17,10 @@ export const getUserSchema: FastifySchema = {
 			id: { type: 'string' },
 		},
 		required: ['id'],
-	} satisfies JSONSchemaType<{ id: string }>,
+	},
 }
 
-export const getRolesSchema: FastifySchema = {
+export const getRolesSchema: ServerSchema = {
 	tags: ['User'],
 	description: 'Get roles',
 	consumes: ['application/json'],
@@ -34,7 +32,7 @@ export const getRolesSchema: FastifySchema = {
 	],
 }
 
-export const getUsersSchema: FastifySchema = {
+export const getUsersSchema: ServerSchema = {
 	tags: ['User'],
 	description: 'Get users',
 	consumes: ['application/json'],
@@ -59,10 +57,10 @@ export const getUsersSchema: FastifySchema = {
 			sort: { type: 'string', nullable: true },
 			order: { type: 'string', nullable: true },
 		},
-	} satisfies JSONSchemaType<UserSearchQuery>,
+	},
 }
 
-export const createUserSchema: FastifySchema = {
+export const createUserSchema: ServerSchema = {
 	tags: ['User'],
 	description: 'Create user',
 	consumes: ['application/json'],
@@ -75,8 +73,8 @@ export const createUserSchema: FastifySchema = {
 	body: {
 		type: 'object',
 		properties: {
-			name: { type: 'string', transform: ['trim'] },
-			username: { type: 'string', transform: ['trim'] },
+			name: { type: 'string' },
+			username: { type: 'string' },
 			active: { type: 'boolean', nullable: true, default: true },
 			blocked: { type: 'boolean', nullable: true, default: false },
 			roles: {
@@ -90,10 +88,10 @@ export const createUserSchema: FastifySchema = {
 			},
 		},
 		required: ['name', 'username'],
-	} satisfies JSONSchemaType<UserCreateBody>,
+	},
 }
 
-export const updateUserSchema: FastifySchema = {
+export const updateUserSchema: ServerSchema = {
 	tags: ['User'],
 	description: 'Update user',
 	consumes: ['application/json'],
@@ -109,12 +107,12 @@ export const updateUserSchema: FastifySchema = {
 			id: { type: 'string' },
 		},
 		required: ['id'],
-	} satisfies JSONSchemaType<{ id: string }>,
+	},
 	body: {
 		type: 'object',
 		properties: {
-			name: { type: 'string', nullable: true, transform: ['trim'] },
-			username: { type: 'string', nullable: true, transform: ['trim'] },
+			name: { type: 'string', nullable: true },
+			username: { type: 'string', nullable: true },
 			active: { type: 'boolean', nullable: true },
 			blocked: { type: 'boolean', nullable: true },
 			roles: {
@@ -126,10 +124,10 @@ export const updateUserSchema: FastifySchema = {
 				},
 			},
 		},
-	} satisfies JSONSchemaType<UserUpdateBody>,
+	},
 }
 
-export const deleteUserSchema: FastifySchema = {
+export const deleteUserSchema: ServerSchema = {
 	tags: ['User'],
 	description: 'Delete user',
 	consumes: ['application/json'],
@@ -145,10 +143,10 @@ export const deleteUserSchema: FastifySchema = {
 			id: { type: 'string' },
 		},
 		required: ['id'],
-	} satisfies JSONSchemaType<{ id: string }>,
+	},
 }
 
-export const createUserApiKeySchema: FastifySchema = {
+export const createUserApiKeySchema: ServerSchema = {
 	tags: ['User'],
 	description: 'Create user api key',
 	consumes: ['application/json'],
@@ -164,10 +162,10 @@ export const createUserApiKeySchema: FastifySchema = {
 			id: { type: 'string' },
 		},
 		required: ['id'],
-	} satisfies JSONSchemaType<{ id: string }>,
+	},
 }
 
-export const deleteUserApiKeySchema: FastifySchema = {
+export const deleteUserApiKeySchema: ServerSchema = {
 	tags: ['User'],
 	description: 'Delete user api key',
 	consumes: ['application/json'],
@@ -183,5 +181,5 @@ export const deleteUserApiKeySchema: FastifySchema = {
 			id: { type: 'string' },
 		},
 		required: ['id'],
-	} satisfies JSONSchemaType<{ id: string }>,
+	},
 }

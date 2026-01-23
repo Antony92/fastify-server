@@ -1,8 +1,6 @@
-import { JSONSchemaType } from 'ajv'
-import { FastifySchema } from 'fastify'
-import { ServerEventCreateBody, ServerEventUpdateBody } from '../types/server-event.type.js'
+import { ServerSchema } from '../types/server.type.js'
 
-export const getServerEventsSchema: FastifySchema = {
+export const getServerEventsSchema: ServerSchema = {
 	tags: ['Server event'],
 	description: 'Get server events',
 	consumes: ['application/json'],
@@ -18,10 +16,10 @@ export const getServerEventsSchema: FastifySchema = {
 			skip: { type: 'number', nullable: true, minimum: 0 },
 			limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
 		},
-	} satisfies JSONSchemaType<{ skip?: number; limit?: number }>,
+	},
 }
 
-export const createServerEventSchema: FastifySchema = {
+export const createServerEventSchema: ServerSchema = {
 	tags: ['Server event'],
 	description: 'Create server event',
 	consumes: ['application/json'],
@@ -35,13 +33,13 @@ export const createServerEventSchema: FastifySchema = {
 		type: 'object',
 		properties: {
 			type: { type: 'string', nullable: true, enum: ['info', 'warning', 'error'] },
-			message: { type: 'string', maxLength: 500, transform: ['trim'] },
+			message: { type: 'string', maxLength: 500 },
 		},
 		required: ['message'],
-	} satisfies JSONSchemaType<ServerEventCreateBody>,
+	},
 }
 
-export const updateServerEventSchema: FastifySchema = {
+export const updateServerEventSchema: ServerSchema = {
 	tags: ['Server event'],
 	description: 'Update server event',
 	consumes: ['application/json'],
@@ -57,17 +55,17 @@ export const updateServerEventSchema: FastifySchema = {
 			id: { type: 'string' },
 		},
 		required: ['id'],
-	} satisfies JSONSchemaType<{ id: string }>,
+	},
 	body: {
 		type: 'object',
 		properties: {
 			type: { type: 'string', nullable: true, enum: ['info', 'warning', 'error'] },
-			message: { type: 'string', nullable: true, maxLength: 500, transform: ['trim'] },
+			message: { type: 'string', nullable: true, maxLength: 500 },
 		},
-	} satisfies JSONSchemaType<ServerEventUpdateBody>,
+	},
 }
 
-export const deleteServerEventSchema: FastifySchema = {
+export const deleteServerEventSchema: ServerSchema = {
 	tags: ['Server event'],
 	description: 'Delete server event',
 	consumes: ['application/json'],
@@ -83,5 +81,5 @@ export const deleteServerEventSchema: FastifySchema = {
 			id: { type: 'string' },
 		},
 		required: ['id'],
-	} satisfies JSONSchemaType<{ id: string }>,
+	},
 }

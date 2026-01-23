@@ -1,8 +1,6 @@
-import { JSONSchemaType } from 'ajv'
-import { FastifySchema } from 'fastify'
-import { AuditLogSearchQuery } from '../types/audit-log.type.js'
+import { ServerSchema } from '../types/server.type.js'
 
-export const getAuditLogsSchema: FastifySchema = {
+export const getAuditLogsSchema: ServerSchema = {
 	tags: ['Audit logs'],
 	description: 'Get audit logs',
 	consumes: ['application/json'],
@@ -29,5 +27,5 @@ export const getAuditLogsSchema: FastifySchema = {
 			startDate: { type: 'string', nullable: true },
 			endDate: { type: 'string', nullable: true },
 		},
-	} satisfies JSONSchemaType<AuditLogSearchQuery>,
+	},
 }

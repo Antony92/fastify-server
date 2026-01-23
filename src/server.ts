@@ -23,7 +23,6 @@ import auditLogRoute from './routes/audit-log.route.js'
 import userRoute from './routes/user.route.js'
 import websocketRoute from './routes/websocket.route.js'
 import feedbackRoute from './routes/feedback.route.js'
-import ajvKeywords from 'ajv-keywords'
 import fastifySSE from '@fastify/sse'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -33,9 +32,6 @@ process.env.NODE_ENV = config.environment
 const server = fastify({
 	logger: true,
 	disableRequestLogging: true,
-	ajv: {
-		plugins: [ajvKeywords.default]
-	}
 })
 
 // plugins

@@ -1,8 +1,6 @@
-import { FastifySchema } from 'fastify'
-import { FeedbackCreateBody } from '../types/feedback.type.js'
-import { JSONSchemaType } from 'ajv'
+import { ServerSchema } from '../types/server.type.js'
 
-export const submitFeedbackSchema: FastifySchema = {
+export const submitFeedbackSchema: ServerSchema = {
 	tags: ['Feedback'],
 	hide: true,
 	description: 'Submit feedback',
@@ -17,8 +15,8 @@ export const submitFeedbackSchema: FastifySchema = {
 		type: 'object',
 		properties: {
 			satisfaction: { type: 'number', minimum: 1, maximum: 5 },
-			message: { type: 'string', maxLength: 5000, transform: ['trim'] },
+			message: { type: 'string', maxLength: 5000 },
 		},
 		required: ['satisfaction', 'message'],
-	} satisfies JSONSchemaType<FeedbackCreateBody>,
+	},
 }
