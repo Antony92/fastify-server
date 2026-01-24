@@ -24,6 +24,7 @@ import userRoute from './routes/user.route.js'
 import websocketRoute from './routes/websocket.route.js'
 import feedbackRoute from './routes/feedback.route.js'
 import fastifySSE from '@fastify/sse'
+import fastifySchedule from '@fastify/schedule'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 process.env.NODE_ENV = config.environment
@@ -49,6 +50,7 @@ await server.register(fastifySwagger, swaggerOptions)
 await server.register(fastifySwaggerUi, { routePrefix: '/swagger' })
 await server.register(fastifyWebsocket)
 await server.register(fastifySSE.default)
+await server.register(fastifySchedule)
 await server.register(fastifyJwt, {
 	namespace: 'access',
 	secret: config.jwt.accessTokenSecret,
