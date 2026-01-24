@@ -1,19 +1,19 @@
 {
-    "compilerOptions": {
-        "module": "NodeNext",
-        "target": "ESNext",
-        "lib": ["ESNext"],
-        "skipLibCheck": true,
-        "moduleResolution": "NodeNext",
-        "sourceMap": false,
-        "rootDir": "./src",
-        "outDir": "dist",
-        "resolveJsonModule": true,
+	"compilerOptions": {
+		"module": "NodeNext",
+		"target": "ESNext",
+		"lib": ["ESNext"],
+		"skipLibCheck": true,
+		"moduleResolution": "NodeNext",
+		"sourceMap": false,
+		"rootDir": "./src",
+		"outDir": "dist",
+		"resolveJsonModule": true,
 
-        /* Linting */
-        "strict": true,
-        "erasableSyntaxOnly": true,
-    },
-    "exclude": ["src/**/*.test.ts"],
-    "include": ["src/**/*", "types/project.d.ts"]
+		/* Linting */
+		"strict": true,
+		"erasableSyntaxOnly": true,
+	},
+	"include": ["src/**/*", "types/**/*"],
+	"exclude": ["node_modules", "dist"],
 }

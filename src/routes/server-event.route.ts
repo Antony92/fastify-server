@@ -17,22 +17,22 @@ const serverEventsRoute: FastifyPluginAsync = async (server) => {
 	server.get<{ Querystring: PaginationQuery }>(
 		'/server-events',
 		{ onRequest: secured([Role.ADMIN]), schema: getServerEventsSchema },
-		getServerEventsHandler
+		getServerEventsHandler,
 	)
 	server.post<{ Body: ServerEventCreateBody }>(
 		'/server-event',
 		{ onRequest: secured([Role.ADMIN]), schema: createServerEventSchema },
-		createServerEventHandler
+		createServerEventHandler,
 	)
 	server.patch<{ Params: IdParam; Body: ServerEventUpdateBody }>(
 		'/server-event/:id',
 		{ onRequest: secured([Role.ADMIN]), schema: updateServerEventSchema },
-		updateServerEventHandler
+		updateServerEventHandler,
 	)
 	server.delete<{ Params: IdParam }>(
 		'/server-event/:id',
 		{ onRequest: secured([Role.ADMIN]), schema: deleteServerEventSchema },
-		deleteServerEventHandler
+		deleteServerEventHandler,
 	)
 }
 

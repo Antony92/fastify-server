@@ -9,7 +9,7 @@ export const checkHealthHandler = async () => {
 		uptime: `${hours}:${minutes}:${seconds}`,
 		totalmem: formatBytes(os.totalmem()),
 		freemem: formatBytes(os.freemem()),
-		database: dbActive
+		database: dbActive,
 	}
 	return serverInfo
 }

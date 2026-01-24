@@ -34,18 +34,18 @@ const userRoute: FastifyPluginAsync = async (server) => {
 	server.patch<{ Params: IdParam; Body: UserUpdateBody }>(
 		'/user/:id',
 		{ onRequest: secured([Role.ADMIN]), schema: updateUserSchema },
-		updateUserHandler
+		updateUserHandler,
 	)
 	server.delete<{ Params: IdParam }>('/user/:id', { onRequest: secured([Role.ADMIN]), schema: deleteUserSchema }, deleteUserHandler)
 	server.post<{ Params: IdParam }>(
 		'/user/:id/api-key',
 		{ onRequest: secured([Role.ADMIN]), schema: createUserApiKeySchema },
-		createUserApiKeyHandler
+		createUserApiKeyHandler,
 	)
 	server.delete<{ Params: IdParam }>(
 		'/user/:id/api-key',
 		{ onRequest: secured([Role.ADMIN]), schema: deleteUserApiKeySchema },
-		deleteUserApiKeyHandler
+		deleteUserApiKeyHandler,
 	)
 	// logged user
 	server.get('/me', { onRequest: secured(), schema: { hide: true } }, getUserProfileHandler)

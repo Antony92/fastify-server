@@ -8,8 +8,8 @@
 		"dev": "node --watch-path ./src --import tsx/esm ./src/app.ts",
 		"build": "tsc -p .",
 		"lint": "npx eslint .",
-		"test:run": "node --import tsx/esm --test",
-		"test:main": "node --import tsx/esm src/tests/main.ts",
+		"tests": "node --import tsx/esm --test",
+		"test:main": "node --import tsx/esm tests/main.ts",
 		"prisma:generate": "npx prisma generate",
 		"prisma:studio": "npx prisma studio",
 		"prisma:push": "npx prisma db push",
@@ -23,7 +23,6 @@
 	"author": "aasenov",
 	"license": "MIT",
 	"dependencies": {
-		"@azure/msal-node": "~5.0.2",
 		"@fastify/compress": "~8.3.1",
 		"@fastify/cookie": "~11.0.2",
 		"@fastify/cors": "~11.2.0",

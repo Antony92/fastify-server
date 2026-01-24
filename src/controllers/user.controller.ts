@@ -4,8 +4,8 @@ import { createUser, deleteUser, getRoles, getUsers, updateUser, getUserById, ge
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
 import { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js'
 import { createApiKey, deleteApiKeyByUserId } from '../services/api-key.service.js'
-import crypto from 'crypto'
 import { IdParam } from '../types/request.type.js'
+import crypto from 'crypto'
 
 export const getRolesHandler = async () => {
 	const roles = getRoles()
@@ -62,12 +62,11 @@ export const createUserApiKeyHandler = async (request: FastifyRequest<{ Params: 
 				username: user.username,
 				roles: user.roles,
 			},
-			api: true,
 		},
 		{
 			jti,
 			expiresIn: 0,
-		}
+		},
 	)
 	const apiKey = await createApiKey({
 		jwt,
@@ -90,12 +89,11 @@ export const createPersonalApiKeyHandler = async (request: FastifyRequest, reply
 	const jwt = await reply.accessJwtSign(
 		{
 			user: request.user,
-			api: true,
 		},
 		{
 			jti,
 			expiresIn: 0,
-		}
+		},
 	)
 	const apiKey = await createApiKey({
 		jwt,

@@ -6,7 +6,7 @@ import { auditLog } from '../services/audit-log.service.js'
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js'
 
 export const loginCallbackHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	const token = await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
+  const token = await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
 
 	const { upn: username, name } = JSON.parse(Buffer.from(token.token.access_token.split('.')[1], 'base64').toString())
 

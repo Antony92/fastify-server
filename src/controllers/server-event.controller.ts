@@ -24,7 +24,7 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 	if (event) {
 		sendServerEventToClient(id, SSE.GLOBAL_MESSAGE, event)
 	} else {
-	  await reply.sse.send({ data: 'connected' })
+		await reply.sse.send({ data: 'connected' })
 	}
 
 	reply.sse.onClose(() => {

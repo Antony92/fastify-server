@@ -1,4 +1,4 @@
-import { Role } from '../db/prisma/client.js'
+import { Prisma, Role } from '../db/prisma/client.js'
 import prisma from '../db/prisma.js'
 import { UserCreateInput, UserSearchQuery, UserUpdateInput } from '../types/user.type.js'
 
@@ -24,50 +24,36 @@ export const getUserById = async (id: string) => {
 	return user
 }
 
-export const getUsers = async (query?: UserSearchQuery) => {
-	const roles = query?.roles?.split(',') || getRoles()
-	const searchFilter = {}
-	if (query?.search) {
-		Object.assign(searchFilter, {
-			OR: [{ name: { contains: query?.search, mode: 'insensitive' } }, { username: { contains: query?.search, mode: 'insensitive' } }],
-		})
+export const getUsers = async (query: UserSearchQuery = {}) => {
+	const roles = query.roles?.split(',') || getRoles()
+
+	const { skip = 0, limit = 10, sort = 'created', order = 'desc', search, ...filters } = query
+
+	const where: Prisma.UserWhereInput = {
+		name: { startsWith: filters?.name, mode: 'insensitive' },
+		username: { startsWith: filters?.username, mode: 'insensitive' },
+		active: filters?.active,
+		blocked: filters?.blocked,
+		internal: filters?.internal,
+		roles: {
+			hasSome: roles as Role[],
+		},
 	}
+
+	if (search) {
+		where.OR = [{ name: { contains: query?.search, mode: 'insensitive' } }, { username: { contains: query?.search, mode: 'insensitive' } }]
+	}
+
 	const [users, total] = await prisma.$transaction([
 		prisma.user.findMany({
-			skip: query?.skip || 0,
-			take: query?.limit || 10,
-			where: {
-				name: { startsWith: query?.name, mode: 'insensitive' },
-				username: { startsWith: query?.username, mode: 'insensitive' },
-				active: query?.active,
-				blocked: query?.blocked,
-				internal: query?.internal,
-				roles: {
-					hasSome: roles as Role[],
-				},
-				...searchFilter,
-			},
-			orderBy: {
-				[query?.sort || 'name']: query?.order || 'asc',
-			},
-			include: {
-				apiKey: true,
-			},
+			where,
+			skip,
+			take: limit,
+			orderBy: { [sort]: order },
 		}),
-		prisma.user.count({
-			where: {
-				name: { startsWith: query?.name, mode: 'insensitive' },
-				username: { startsWith: query?.username, mode: 'insensitive' },
-				active: query?.active,
-				blocked: query?.blocked,
-				internal: query?.internal,
-				roles: {
-					hasSome: roles as Role[],
-				},
-				...searchFilter,
-			},
-		}),
+		prisma.user.count({ where }),
 	])
+
 	return { users, total }
 }
 

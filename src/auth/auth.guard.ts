@@ -1,6 +1,5 @@
 import { FastifyRequest } from 'fastify'
 import { RefreshToken, AccessToken } from '../types/jwt.type.js'
-import { getApiKeyByUserId } from '../services/api-key.service.js'
 import { getUserById } from '../services/user.service.js'
 
 export const secured = (roles?: string[]) => {
@@ -26,11 +25,9 @@ export const secured = (roles?: string[]) => {
 
 export const trustedAccessTokens = async (request: FastifyRequest, decodedToken: unknown) => {
 	const token = decodedToken as AccessToken
-	if (token.api) {
-		const apiKeyExist = await getApiKeyByUserId(token.user.id)
-		return apiKeyExist ? decodedToken : false
-	}
 	return decodedToken
+	const allowed = ['token1', 'token2']
+	return allowed.includes(token.jti) ? decodedToken : false
 }
 
 export const trustedRefreshTokens = async (request: FastifyRequest, decodedToken: unknown) => {

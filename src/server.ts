@@ -72,7 +72,7 @@ await server.register(fastifyJwt, {
 	},
 	sign: {
 		iss: config.jwt.issuer,
-		expiresIn: config.jwt.refreshTokenExpire
+		expiresIn: config.jwt.refreshTokenExpire,
 	},
 	verify: {
 		allowedIss: config.jwt.issuer,
@@ -91,8 +91,8 @@ await server.register(fastifyOauth2, {
 			authorizeHost: 'https://login.microsoftonline.com',
 			authorizePath: `/${config.microsoft.tenantId}/oauth2/v2.0/authorize`,
 			tokenHost: 'https://login.microsoftonline.com',
-			tokenPath: `/${config.microsoft.tenantId}/oauth2/v2.0/token`
-		}
+			tokenPath: `/${config.microsoft.tenantId}/oauth2/v2.0/token`,
+		},
 	},
 	startRedirectPath: '/api/v1/auth/login/microsoft',
 	callbackUri: config.auth.loginCallbackURL,
