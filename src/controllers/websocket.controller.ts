@@ -15,4 +15,7 @@ export const websocketHandler = async (socket: WebSocket, request: FastifyReques
 	const client = request.ip
 	console.log(`Client ${client} connected.`)
 	socket.send(`Hello ${client}!`)
+
+	// set to all clients
+	request.server.websocketServer.clients.forEach((client) => client.send('1'))
 }
