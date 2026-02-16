@@ -2,22 +2,22 @@ import { ServerEventType } from '../db/prisma/client.js'
 import prisma from '../db/prisma.js'
 import { SSEType, ServerEventClient, ServerEventCreateInput, ServerEventUpdateInput } from '../types/server-event.type.js'
 
-const serverEventClients: ServerEventClient[] = []
+const clients: ServerEventClient[] = []
 const retry = 10000
 
 export const addServerEventClient = (client: ServerEventClient) => {
-	serverEventClients.push(client)
+	clients.push(client)
 }
 
 export const removeServerEventClient = (clientId: string) => {
-	serverEventClients.splice(
-		serverEventClients.findIndex((client) => client.id === clientId),
+	clients.splice(
+		clients.findIndex((client) => client.id === clientId),
 		1,
 	)
 }
 
 export const sendServerEventToAllClients = (sseType: SSEType, event: { type: ServerEventType; message: string }) => {
-	serverEventClients.forEach((client) => {
+	clients.forEach((client) => {
 		client.reply.sse.send({
 			event: sseType,
 			data: event,
@@ -27,7 +27,7 @@ export const sendServerEventToAllClients = (sseType: SSEType, event: { type: Ser
 }
 
 export const sendServerEventToClient = (clientId: string, sseType: SSEType, event: { type: ServerEventType; message: string }) => {
-	serverEventClients
+	clients
 		.filter((client) => client.id === clientId)
 		.forEach((client) => {
 			client.reply.sse.send({

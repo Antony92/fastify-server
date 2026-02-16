@@ -22,7 +22,7 @@ export const subscribeServerEventsHandler = async (request: FastifyRequest, repl
 
 	const event = await getLastServerEvent()
 	if (event) {
-		sendServerEventToClient(id, SSE.GLOBAL_MESSAGE, event)
+		sendServerEventToClient(id, SSE.GLOBAL, event)
 	} else {
 		await reply.sse.send({ data: 'connected' })
 	}
@@ -47,7 +47,7 @@ export const createServerEventHandler = async (request: FastifyRequest<{ Body: S
 		},
 	})
 	const event = await createServerEvent(body)
-	sendServerEventToAllClients(SSE.GLOBAL_MESSAGE, event)
+	sendServerEventToAllClients(SSE.GLOBAL, event)
 	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.SERVER_EVENT, { body, event }, 'server event created')
 	return { data: event, message: 'Server event created' }
 }
@@ -62,7 +62,7 @@ export const updateServerEventHandler = async (request: FastifyRequest<{ Params:
 		},
 	})
 	const event = await updateServerEvent({ id, ...body })
-	sendServerEventToAllClients(SSE.GLOBAL_MESSAGE, { type: event.type, message: event.message })
+	sendServerEventToAllClients(SSE.GLOBAL, { type: event.type, message: event.message })
 	await auditLog(request.user, AuditLogAction.UPDATE, AuditLogTarget.SERVER_EVENT, { id, body, event }, 'server event updated')
 	return { data: event, message: 'Server event updated' }
 }
@@ -72,7 +72,7 @@ export const deleteServerEventHandler = async (request: FastifyRequest<{ Params:
 	const event = await deleteServerEvent(id)
 	const lastEvent = await getLastServerEvent()
 	if (lastEvent) {
-		sendServerEventToAllClients(SSE.GLOBAL_MESSAGE, { type: lastEvent.type, message: lastEvent.message })
+		sendServerEventToAllClients(SSE.GLOBAL, { type: lastEvent.type, message: lastEvent.message })
 	}
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.SERVER_EVENT, event, 'server event deleted')
 	return { data: event, message: 'Server event deleted' }
