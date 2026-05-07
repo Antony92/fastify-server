@@ -27,7 +27,7 @@ const config = {
 	},
 	auth: {
 		loginCallbackURL: process.env.LOGIN_CALLBACK_URL || 'http://localhost:8080/api/v1/auth/login/callback',
-		loginPageURL: process.env.LOGIN_PAGE_URL || 'http://localhost:5173/login',
+		loginRedirect: process.env.LOGIN_REDIRECT || 'http://localhost:5173',
 	},
 }
 

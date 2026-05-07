@@ -18,23 +18,9 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 	})
 
 	if (user.blocked) {
-		reply.redirect(`${config.auth.loginPageURL}?error=User is blocked`, 302)
+		reply.redirect(`${config.auth.loginRedirect}?error=User is blocked`, 302)
 		return reply
 	}
-
-	const accessToken = await reply.accessJwtSign(
-		{
-			user: {
-				id: user.id,
-				name: user.name,
-				username: user.username,
-				roles: user.roles,
-			},
-		},
-		{
-			jti: crypto.randomUUID(),
-		}
-	)
 
 	const refreshToken = await reply.refreshJwtSign(
 		{
@@ -52,7 +38,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 		path: '/api/v1/auth/refresh',
 		expires: new Date(Date.now() + config.cookies.refreshCookieExpire),
 	})
-	reply.redirect(`${config.auth.loginPageURL}?token=${accessToken}`, 302)
+	reply.redirect(`${config.auth.loginRedirect}`, 302)
 	return reply
 }
 
