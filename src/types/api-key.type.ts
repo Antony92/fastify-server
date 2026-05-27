@@ -1,3 +1,3 @@
-import { Prisma } from '../db/prisma/client.js'
+import type { Prisma } from '../db/prisma/client.js';
 
-export type ApiKeyCreateInput = { userId: string } & Pick<Prisma.ApiKeyCreateInput, 'jwt' | 'jti'>
+export type ApiKeyCreateInput = { userId: string } & Pick<Prisma.ApiKeyCreateInput, 'jwt' | 'jti'>;

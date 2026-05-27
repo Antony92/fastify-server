@@ -1,34 +1,34 @@
-import { Prisma } from '../db/prisma/client.js'
-import { PaginationQuery } from './request.type.js'
+import type { Prisma } from '../db/prisma/client.js';
+import type { PaginationQuery } from './request.type.js';
 
 export type UserJWT = {
-	id: string
-	name: string
-	username: string
-	roles: string[]
-	impersonated?: string
-}
+	id: string;
+	name: string;
+	username: string;
+	roles: string[];
+	impersonated?: string;
+};
 
 export const Role = {
 	GUEST: 'GUEST',
 	ADMIN: 'ADMIN',
-} as const
+} as const;
 
-export type RoleType = (typeof Role)[keyof typeof Role]
+export type RoleType = (typeof Role)[keyof typeof Role];
 
-export type UserCreateBody = Pick<Prisma.UserCreateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>
+export type UserCreateBody = Pick<Prisma.UserCreateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>;
 
-export type UserUpdateBody = Pick<Prisma.UserUpdateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>
+export type UserUpdateBody = Pick<Prisma.UserUpdateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>;
 
-export type UserCreateInput = Pick<Prisma.UserCreateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked' | 'lastLogin' | 'internal'>
+export type UserCreateInput = Pick<Prisma.UserCreateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked' | 'lastLogin' | 'internal'>;
 
-export type UserUpdateInput = { id: string } & Pick<Prisma.UserUpdateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>
+export type UserUpdateInput = { id: string } & Pick<Prisma.UserUpdateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>;
 
 export type UserSearchQuery = PaginationQuery & {
-	name?: string
-	username?: string
-	active?: boolean
-	blocked?: boolean
-	internal?: boolean
-	roles?: string
-}
+	name?: string;
+	username?: string;
+	active?: boolean;
+	blocked?: boolean;
+	internal?: boolean;
+	roles?: string;
+};

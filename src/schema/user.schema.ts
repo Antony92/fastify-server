@@ -1,5 +1,5 @@
-import { getRoles } from '../services/user.service.js'
-import { ServerSchema } from '../types/server.type.js'
+import { getRoles } from '../services/user.service.js';
+import type { ServerSchema } from '../types/server.type.js';
 
 export const getUserSchema: ServerSchema = {
 	tags: ['User'],
@@ -18,7 +18,7 @@ export const getUserSchema: ServerSchema = {
 		},
 		required: ['id'],
 	},
-}
+};
 
 export const getRolesSchema: ServerSchema = {
 	tags: ['User'],
@@ -30,7 +30,7 @@ export const getRolesSchema: ServerSchema = {
 			bearerAuth: [],
 		},
 	],
-}
+};
 
 export const getUsersSchema: ServerSchema = {
 	tags: ['User'],
@@ -58,7 +58,7 @@ export const getUsersSchema: ServerSchema = {
 			order: { type: 'string', nullable: true },
 		},
 	},
-}
+};
 
 export const createUserSchema: ServerSchema = {
 	tags: ['User'],
@@ -89,7 +89,7 @@ export const createUserSchema: ServerSchema = {
 		},
 		required: ['name', 'username'],
 	},
-}
+};
 
 export const updateUserSchema: ServerSchema = {
 	tags: ['User'],
@@ -125,7 +125,7 @@ export const updateUserSchema: ServerSchema = {
 			},
 		},
 	},
-}
+};
 
 export const deleteUserSchema: ServerSchema = {
 	tags: ['User'],
@@ -144,7 +144,7 @@ export const deleteUserSchema: ServerSchema = {
 		},
 		required: ['id'],
 	},
-}
+};
 
 export const createUserApiKeySchema: ServerSchema = {
 	tags: ['User'],
@@ -163,7 +163,7 @@ export const createUserApiKeySchema: ServerSchema = {
 		},
 		required: ['id'],
 	},
-}
+};
 
 export const deleteUserApiKeySchema: ServerSchema = {
 	tags: ['User'],
@@ -182,4 +182,4 @@ export const deleteUserApiKeySchema: ServerSchema = {
 		},
 		required: ['id'],
 	},
-}
+};

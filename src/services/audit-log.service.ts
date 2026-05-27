@@ -1,6 +1,6 @@
-import prisma from '../db/prisma.js'
-import { Prisma } from '../db/prisma/client.js'
-import { AuditActor, type AuditLogActionType, AuditLogSearchQuery, AuditLogTargetType } from '../types/audit-log.type.js'
+import type { Prisma } from '../db/prisma/client.js';
+import prisma from '../db/prisma.js';
+import type { AuditActor, AuditLogActionType, AuditLogSearchQuery, AuditLogTargetType } from '../types/audit-log.type.js';
 
 export const auditLog = async (actor: AuditActor, action: AuditLogActionType, target: AuditLogTargetType, data: object, message?: string) => {
 	const auditLog = await prisma.auditLog.create({
@@ -13,12 +13,12 @@ export const auditLog = async (actor: AuditActor, action: AuditLogActionType, ta
 			data,
 			message,
 		},
-	})
-	return auditLog
-}
+	});
+	return auditLog;
+};
 
 export const getAuditLogs = async (query: AuditLogSearchQuery = {}) => {
-	const { skip = 0, limit = 10, sort = 'created', order = 'desc', search, ...filters } = query
+	const { skip = 0, limit = 10, sort = 'created', order = 'desc', search, ...filters } = query;
 
 	const where: Prisma.AuditLogWhereInput = {
 		name: { startsWith: filters?.name },
@@ -31,7 +31,7 @@ export const getAuditLogs = async (query: AuditLogSearchQuery = {}) => {
 			lte: filters?.endDate,
 			gte: filters?.startDate,
 		},
-	}
+	};
 
 	if (search) {
 		where.OR = [
@@ -39,7 +39,7 @@ export const getAuditLogs = async (query: AuditLogSearchQuery = {}) => {
 			{ username: { contains: search, mode: 'insensitive' } },
 			{ impersonated: { contains: search, mode: 'insensitive' } },
 			{ message: { contains: search, mode: 'insensitive' } },
-		]
+		];
 	}
 
 	const [auditLogs, total] = await prisma.$transaction([
@@ -50,6 +50,6 @@ export const getAuditLogs = async (query: AuditLogSearchQuery = {}) => {
 			orderBy: { [sort]: order },
 		}),
 		prisma.auditLog.count({ where }),
-	])
-	return { auditLogs, total }
-}
+	]);
+	return { auditLogs, total };
+};

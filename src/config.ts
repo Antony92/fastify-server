@@ -1,10 +1,10 @@
-import 'dotenv/config'
+import 'dotenv/config';
 
 const config = {
 	environment: process.env.ENVIRONMENT || 'development',
 	server: {
-		port: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT) : 8080,
-		rateLimit: process.env.SERVER_RATE_LIMIT ? parseInt(process.env.SERVER_RATE_LIMIT) : 10000,
+		port: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT, 10) : 8080,
+		rateLimit: process.env.SERVER_RATE_LIMIT ? parseInt(process.env.SERVER_RATE_LIMIT, 10) : 10000,
 		url: process.env.SERVER_URL || 'https://www.dns.com',
 	},
 	microsoft: {
@@ -23,12 +23,12 @@ const config = {
 	},
 	cookies: {
 		refreshCookieName: process.env.COOKIE_REFRESH_NAME || 'refreshToken',
-		refreshCookieExpire: process.env.COOKIE_REFRESH_EXPIRE ? parseInt(process.env.COOKIE_REFRESH_EXPIRE) : 24 * 60 * 1000 * 60, // 24 hours
+		refreshCookieExpire: process.env.COOKIE_REFRESH_EXPIRE ? parseInt(process.env.COOKIE_REFRESH_EXPIRE, 10) : 24 * 60 * 1000 * 60, // 24 hours
 	},
 	auth: {
 		loginCallbackURL: process.env.LOGIN_CALLBACK_URL || 'http://localhost:8080/api/v1/auth/login/callback',
 		loginRedirect: process.env.LOGIN_REDIRECT || 'http://localhost:5173',
 	},
-}
+};
 
-export default config
+export default config;

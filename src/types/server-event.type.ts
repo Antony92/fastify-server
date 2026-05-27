@@ -1,21 +1,21 @@
-import { Prisma } from '../db/prisma/client.js'
-import { FastifyReply } from 'fastify'
+import type { FastifyReply } from 'fastify';
+import type { Prisma } from '../db/prisma/client.js';
 
-export type ServerEventCreateBody = Pick<Prisma.ServerEventCreateInput, 'type' | 'message'>
+export type ServerEventCreateBody = Pick<Prisma.ServerEventCreateInput, 'type' | 'message'>;
 
-export type ServerEventUpdateBody = Pick<Prisma.ServerEventUpdateInput, 'type' | 'message'>
+export type ServerEventUpdateBody = Pick<Prisma.ServerEventUpdateInput, 'type' | 'message'>;
 
-export type ServerEventCreateInput = Pick<Prisma.ServerEventCreateInput, 'type' | 'message'>
+export type ServerEventCreateInput = Pick<Prisma.ServerEventCreateInput, 'type' | 'message'>;
 
-export type ServerEventUpdateInput = { id: string } & Pick<Prisma.ServerEventUpdateInput, 'type' | 'message'>
+export type ServerEventUpdateInput = { id: string } & Pick<Prisma.ServerEventUpdateInput, 'type' | 'message'>;
 
 export type ServerEventClient = {
-	id: string
-	reply: FastifyReply
-}
+	id: string;
+	reply: FastifyReply;
+};
 
 export const SSE = {
 	GLOBAL: 'global',
-} as const
+} as const;
 
-export type SSEType = (typeof SSE)[keyof typeof SSE]
+export type SSEType = (typeof SSE)[keyof typeof SSE];

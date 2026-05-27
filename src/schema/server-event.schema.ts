@@ -1,4 +1,4 @@
-import { ServerSchema } from '../types/server.type.js'
+import type { ServerSchema } from '../types/server.type.js';
 
 export const getServerEventsSchema: ServerSchema = {
 	tags: ['Server event'],
@@ -17,7 +17,7 @@ export const getServerEventsSchema: ServerSchema = {
 			limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
 		},
 	},
-}
+};
 
 export const createServerEventSchema: ServerSchema = {
 	tags: ['Server event'],
@@ -37,7 +37,7 @@ export const createServerEventSchema: ServerSchema = {
 		},
 		required: ['message'],
 	},
-}
+};
 
 export const updateServerEventSchema: ServerSchema = {
 	tags: ['Server event'],
@@ -63,7 +63,7 @@ export const updateServerEventSchema: ServerSchema = {
 			message: { type: 'string', nullable: true, maxLength: 500 },
 		},
 	},
-}
+};
 
 export const deleteServerEventSchema: ServerSchema = {
 	tags: ['Server event'],
@@ -82,4 +82,4 @@ export const deleteServerEventSchema: ServerSchema = {
 		},
 		required: ['id'],
 	},
-}
+};

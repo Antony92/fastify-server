@@ -1,33 +1,33 @@
-import { Prisma, Role } from '../db/prisma/client.js'
-import prisma from '../db/prisma.js'
-import { UserCreateInput, UserSearchQuery, UserUpdateInput } from '../types/user.type.js'
+import { type Prisma, Role } from '../db/prisma/client.js';
+import prisma from '../db/prisma.js';
+import type { UserCreateInput, UserSearchQuery, UserUpdateInput } from '../types/user.type.js';
 
 export const getRoles = () => {
-	return Object.values(Role)
-}
+	return Object.values(Role);
+};
 
 export const getUserByUsername = async (username: string) => {
 	const user = await prisma.user.findUniqueOrThrow({
 		where: {
 			username,
 		},
-	})
-	return user
-}
+	});
+	return user;
+};
 
 export const getUserById = async (id: string) => {
 	const user = await prisma.user.findUniqueOrThrow({
 		where: {
 			id,
 		},
-	})
-	return user
-}
+	});
+	return user;
+};
 
 export const getUsers = async (query: UserSearchQuery = {}) => {
-	const roles = query.roles?.split(',') || getRoles()
+	const roles = query.roles?.split(',') || getRoles();
 
-	const { skip = 0, limit = 10, sort = 'created', order = 'desc', search, ...filters } = query
+	const { skip = 0, limit = 10, sort = 'created', order = 'desc', search, ...filters } = query;
 
 	const where: Prisma.UserWhereInput = {
 		name: { startsWith: filters?.name, mode: 'insensitive' },
@@ -38,10 +38,10 @@ export const getUsers = async (query: UserSearchQuery = {}) => {
 		roles: {
 			hasSome: roles as Role[],
 		},
-	}
+	};
 
 	if (search) {
-		where.OR = [{ name: { contains: query?.search, mode: 'insensitive' } }, { username: { contains: query?.search, mode: 'insensitive' } }]
+		where.OR = [{ name: { contains: query?.search, mode: 'insensitive' } }, { username: { contains: query?.search, mode: 'insensitive' } }];
 	}
 
 	const [users, total] = await prisma.$transaction([
@@ -52,10 +52,10 @@ export const getUsers = async (query: UserSearchQuery = {}) => {
 			orderBy: { [sort]: order },
 		}),
 		prisma.user.count({ where }),
-	])
+	]);
 
-	return { users, total }
-}
+	return { users, total };
+};
 
 export const createUser = async (user: UserCreateInput) => {
 	const createdUser = await prisma.user.upsert({
@@ -68,9 +68,9 @@ export const createUser = async (user: UserCreateInput) => {
 		where: {
 			username: user.username,
 		},
-	})
-	return createdUser
-}
+	});
+	return createdUser;
+};
 
 export const updateUser = async (user: UserUpdateInput) => {
 	const updatedUser = await prisma.user.update({
@@ -80,18 +80,18 @@ export const updateUser = async (user: UserUpdateInput) => {
 		where: {
 			id: user.id,
 		},
-	})
-	return updatedUser
-}
+	});
+	return updatedUser;
+};
 
 export const deleteUser = async (id: string) => {
 	const deletedUser = await prisma.user.delete({
 		where: {
 			id,
 		},
-	})
-	return deletedUser
-}
+	});
+	return deletedUser;
+};
 
 export const getUserProfile = async (id: string) => {
 	const profile = await prisma.user.findFirstOrThrow({
@@ -101,6 +101,6 @@ export const getUserProfile = async (id: string) => {
 		include: {
 			apiKey: true,
 		},
-	})
-	return profile
-}
+	});
+	return profile;
+};

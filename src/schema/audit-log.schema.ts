@@ -1,4 +1,4 @@
-import { ServerSchema } from '../types/server.type.js'
+import type { ServerSchema } from '../types/server.type.js';
 
 export const getAuditLogsSchema: ServerSchema = {
 	tags: ['Audit logs'],
@@ -28,4 +28,4 @@ export const getAuditLogsSchema: ServerSchema = {
 			endDate: { type: 'string', nullable: true },
 		},
 	},
-}
+};

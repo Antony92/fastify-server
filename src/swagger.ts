@@ -1,4 +1,4 @@
-import { SwaggerOptions } from '@fastify/swagger'
+import type { SwaggerOptions } from '@fastify/swagger';
 
 const swaggerOptions: SwaggerOptions = {
 	openapi: {
@@ -27,6 +27,6 @@ const swaggerOptions: SwaggerOptions = {
 			},
 		},
 	},
-}
+};
 
-export default swaggerOptions
+export default swaggerOptions;

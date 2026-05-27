@@ -1,4 +1,4 @@
-import { ServerSchema } from '../types/server.type.js'
+import type { ServerSchema } from '../types/server.type.js';
 
 export const submitFeedbackSchema: ServerSchema = {
 	tags: ['Feedback'],
@@ -19,4 +19,4 @@ export const submitFeedbackSchema: ServerSchema = {
 		},
 		required: ['satisfaction', 'message'],
 	},
-}
+};
