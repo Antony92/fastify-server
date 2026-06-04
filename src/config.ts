@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 const config = {
 	environment: process.env.ENVIRONMENT || 'development',
 	server: {

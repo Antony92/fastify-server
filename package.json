@@ -7,7 +7,8 @@
 	"scripts": {
 		"dev": "node --watch-path ./src --import tsx ./src/app.ts",
 		"build": "tsc -p .",
-		"lint": "npx @biomejs/biome lint",
+		"lint": "npx @biomejs/biome check",
+		"lint-write": "npx @biomejs/biome check --write",
 		"tests": "node --import tsx --test",
 		"test:main": "node --import tsx tests/main.ts",
 		"prisma:generate": "npx prisma generate",

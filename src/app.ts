@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import config from './config.js';
 import { simpleJob } from './jobs/simple.job.js';
 import server from './server.js';
