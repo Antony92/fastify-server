@@ -39,7 +39,7 @@ export const updateUserHandler = async (request: FastifyRequest<{ Params: IdPara
 };
 
 export const deleteUserHandler = async (request: FastifyRequest<{ Params: IdParam }>) => {
-	const { id } = request.params as { id: string };
+	const { id } = request.params
 	const user = await deleteUser(id);
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.USER, user, 'delete user');
 	return { message: 'User deleted', data: user };

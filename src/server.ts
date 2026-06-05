@@ -27,7 +27,6 @@ import swaggerOptions from './swagger.js';
 import type { AccessToken } from './types/jwt.type.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-process.env.NODE_ENV = config.environment;
 
 // init fastify server
 const server = fastify({
@@ -45,7 +44,7 @@ await server.register(fastifyCors, {
 });
 await server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' });
 await server.register(fastifyStatic, { root: path.join(__dirname, 'public') });
-await server.register(fastifyMultipart, { limits: { fileSize: 2 * 1024 * 1024 } });
+await server.register(fastifyMultipart, { limits: { fileSize: 5 * 1024 * 1024 }, attachFieldsToBody: 'keyValues' }); // max file size is set to 5MB
 await server.register(fastifySwagger, swaggerOptions);
 await server.register(fastifySwaggerUi, { routePrefix: '/swagger' });
 await server.register(fastifyWebsocket);
