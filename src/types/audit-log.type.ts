@@ -1,16 +1,16 @@
 import type { PaginationQuery } from './request.type.js';
 
 export const AuditLogAction = {
-	CREATE: 'CREATE',
-	UPDATE: 'UPDATE',
-	DELETE: 'DELETE',
+	CREATE: 'create',
+	UPDATE: 'update',
+	DELETE: 'delete',
 } as const;
 
 export type AuditLogActionType = (typeof AuditLogAction)[keyof typeof AuditLogAction];
 
 export const AuditLogTarget = {
-	USER: 'USER',
-	SERVER_EVENT: 'SERVER_EVENT',
+	USER: 'user',
+	SERVER_EVENT: 'server_event',
 } as const;
 
 export type AuditLogTargetType = (typeof AuditLogTarget)[keyof typeof AuditLogTarget];

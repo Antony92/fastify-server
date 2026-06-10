@@ -1,6 +1,6 @@
+import fs from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import fs from 'fs';
 import handlebars from 'handlebars';
 import nodemailer from 'nodemailer';
 

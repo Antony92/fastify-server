@@ -24,14 +24,14 @@ import {
 	updateUserSchema,
 } from '../schema/user.schema.js';
 import type { IdParam } from '../types/request.type.js';
-import { Role, type UserCreateBody, type UserSearchQuery, type UserUpdateBody } from '../types/user.type.js';
+import { type CreateUserBody, Role, type UpdateUserBody, type UserSearchQuery } from '../types/user.type.js';
 
 const userRoute: FastifyPluginAsync = async (server) => {
 	server.get<{ Querystring: UserSearchQuery }>('/users', { onRequest: secured(), schema: getUsersSchema }, getUsersHandler);
 	server.get('/roles', { onRequest: secured([Role.ADMIN]), schema: getRolesSchema }, getRolesHandler);
 	server.get<{ Params: IdParam }>('/user/:id', { onRequest: secured([Role.ADMIN]), schema: getUserSchema }, getUserHandler);
-	server.post<{ Body: UserCreateBody }>('/user', { onRequest: secured([Role.ADMIN]), schema: createUserSchema }, createUserHandler);
-	server.patch<{ Params: IdParam; Body: UserUpdateBody }>(
+	server.post<{ Body: CreateUserBody }>('/user', { onRequest: secured([Role.ADMIN]), schema: createUserSchema }, createUserHandler);
+	server.patch<{ Params: IdParam; Body: UpdateUserBody }>(
 		'/user/:id',
 		{ onRequest: secured([Role.ADMIN]), schema: updateUserSchema },
 		updateUserHandler,

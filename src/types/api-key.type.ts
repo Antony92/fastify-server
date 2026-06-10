@@ -1,3 +1,6 @@
-import type { Prisma } from '../db/prisma/client.js';
+import type { InferSelectModel } from 'drizzle-orm';
+import type { apiKeysTable } from '../db/schema.js';
 
-export type ApiKeyCreateInput = { userId: string } & Pick<Prisma.ApiKeyCreateInput, 'jwt' | 'jti'>;
+export type ApiKey = InferSelectModel<typeof apiKeysTable>;
+
+export type CreateApiKey = { userId: string } & Pick<ApiKey, 'jwt' | 'jti'>;

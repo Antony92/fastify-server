@@ -66,18 +66,18 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
 			error: 'Auth',
 			statusCode: 403,
 		};
-  }
+	}
 
-  const user = {
-   	id: dbUser.id,
+	const user = {
+		id: dbUser.id,
 		name: dbUser.name,
 		username: dbUser.username,
 		roles: dbUser.roles,
-  }
+	};
 
 	const accessToken = await reply.accessJwtSign(
 		{
-			user
+			user,
 		},
 		{
 			jti: crypto.randomUUID(),
@@ -105,15 +105,15 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
 			error: 'Auth',
 			statusCode: 403,
 		};
-  }
+	}
 
-  const user = {
-   	id: dbUser.id,
+	const user = {
+		id: dbUser.id,
 		name: dbUser.name,
 		username: dbUser.username,
 		roles: dbUser.roles,
-		impersonated: `${request.user.name} - ${request.user.username}`
-  }
+		impersonated: `${request.user.name} - ${request.user.username}`,
+	};
 
 	const accessToken = await reply.accessJwtSign(
 		{

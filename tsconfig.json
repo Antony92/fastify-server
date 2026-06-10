@@ -6,7 +6,7 @@
 		"skipLibCheck": true,
 		"moduleResolution": "NodeNext",
 		"sourceMap": false,
-		"rootDir": "./src",
+		"rootDir": ".",
 		"outDir": "dist",
 		"resolveJsonModule": true,
 
@@ -14,6 +14,6 @@
 		"strict": true,
 		"erasableSyntaxOnly": true
 	},
-	"include": ["src/**/*", "types/**/*"],
+	"include": ["src/**/*", "types/**/*", "*.config.ts"],
 	"exclude": ["node_modules", "dist"]
 }

@@ -14,7 +14,7 @@ import {
 } from '../services/server-event.service.js';
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js';
 import type { IdParam, PaginationQuery } from '../types/request.type.js';
-import { type ServerEventCreateBody, type ServerEventUpdateBody, SSE } from '../types/server-event.type.js';
+import { type CreateServerEventBody, SSE, type UpdateServerEventBody } from '../types/server-event.type.js';
 
 export const subscribeServerEventsHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	const id = request.ip;
@@ -38,7 +38,7 @@ export const getServerEventsHandler = async (request: FastifyRequest<{ Querystri
 	return { data: events, total };
 };
 
-export const createServerEventHandler = async (request: FastifyRequest<{ Body: ServerEventCreateBody }>) => {
+export const createServerEventHandler = async (request: FastifyRequest<{ Body: CreateServerEventBody }>) => {
 	const body = request.body;
 	body.message = sanitizeHtml(body.message, {
 		allowedTags: ['a'],
@@ -52,7 +52,7 @@ export const createServerEventHandler = async (request: FastifyRequest<{ Body: S
 	return { data: event, message: 'Server event created' };
 };
 
-export const updateServerEventHandler = async (request: FastifyRequest<{ Params: IdParam; Body: ServerEventUpdateBody }>) => {
+export const updateServerEventHandler = async (request: FastifyRequest<{ Params: IdParam; Body: UpdateServerEventBody }>) => {
 	const { id } = request.params;
 	const body = request.body;
 	body.message = sanitizeHtml(body.message as string, {

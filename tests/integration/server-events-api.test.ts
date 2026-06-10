@@ -1,9 +1,8 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import type { JWT } from '@fastify/jwt';
-import { Role } from '../../src/db/prisma/client.js';
 import server from '../../src/server.js';
-import type { UserJWT } from '../../src/types/user.type.js';
+import { Role, type UserJWT } from '../../src/types/user.type.js';
 
 const admin: UserJWT = {
 	id: 'admin',

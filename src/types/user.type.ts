@@ -1,4 +1,5 @@
-import type { Prisma } from '../db/prisma/client.js';
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import type { usersTable } from '../db/schema.js';
 import type { PaginationQuery } from './request.type.js';
 
 export type UserJWT = {
@@ -10,19 +11,21 @@ export type UserJWT = {
 };
 
 export const Role = {
-	GUEST: 'GUEST',
-	ADMIN: 'ADMIN',
+	GUEST: 'guest',
+	ADMIN: 'admin',
 } as const;
 
 export type RoleType = (typeof Role)[keyof typeof Role];
 
-export type UserCreateBody = Pick<Prisma.UserCreateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>;
+export type User = InferSelectModel<typeof usersTable>;
 
-export type UserUpdateBody = Pick<Prisma.UserUpdateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>;
+export type CreateUser = InferInsertModel<typeof usersTable>;
 
-export type UserCreateInput = Pick<Prisma.UserCreateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked' | 'lastLogin' | 'internal'>;
+export type UpdateUser = { id: string } & InferInsertModel<typeof usersTable>;
 
-export type UserUpdateInput = { id: string } & Pick<Prisma.UserUpdateInput, 'name' | 'username' | 'roles' | 'active' | 'blocked'>;
+export type CreateUserBody = Pick<CreateUser, 'name' | 'username' | 'roles' | 'active' | 'blocked'>;
+
+export type UpdateUserBody = Pick<UpdateUser, 'name' | 'username' | 'roles' | 'active' | 'blocked'>;
 
 export type UserSearchQuery = PaginationQuery & {
 	name?: string;

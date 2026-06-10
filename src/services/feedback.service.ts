@@ -1,10 +1,8 @@
-import type { Prisma } from '../db/prisma/client.js';
-import prisma from '../db/prisma.js';
+import db from '../db/index.js';
+import { feedbackTable } from '../db/schema.js';
+import type { CreateFeedback } from '../types/feedback.type.js';
 
-export const submitFeedback = async (feedback: Prisma.FeedbackCreateInput) => {
-	await prisma.feedback.create({
-		data: {
-			...feedback,
-		},
-	});
+export const submitFeedback = async (feedback: CreateFeedback) => {
+	const [submittedFeedback] = await db.insert(feedbackTable).values(feedback).returning();
+	return submittedFeedback;
 };

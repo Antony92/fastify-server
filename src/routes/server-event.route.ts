@@ -9,7 +9,7 @@ import {
 } from '../controllers/server-event.controller.js';
 import { createServerEventSchema, deleteServerEventSchema, getServerEventsSchema, updateServerEventSchema } from '../schema/server-event.schema.js';
 import type { IdParam, PaginationQuery } from '../types/request.type.js';
-import type { ServerEventCreateBody, ServerEventUpdateBody } from '../types/server-event.type.js';
+import type { CreateServerEventBody, UpdateServerEventBody } from '../types/server-event.type.js';
 import { Role } from '../types/user.type.js';
 
 const serverEventsRoute: FastifyPluginAsync = async (server) => {
@@ -19,12 +19,12 @@ const serverEventsRoute: FastifyPluginAsync = async (server) => {
 		{ onRequest: secured([Role.ADMIN]), schema: getServerEventsSchema },
 		getServerEventsHandler,
 	);
-	server.post<{ Body: ServerEventCreateBody }>(
+	server.post<{ Body: CreateServerEventBody }>(
 		'/server-event',
 		{ onRequest: secured([Role.ADMIN]), schema: createServerEventSchema },
 		createServerEventHandler,
 	);
-	server.patch<{ Params: IdParam; Body: ServerEventUpdateBody }>(
+	server.patch<{ Params: IdParam; Body: UpdateServerEventBody }>(
 		'/server-event/:id',
 		{ onRequest: secured([Role.ADMIN]), schema: updateServerEventSchema },
 		updateServerEventHandler,

@@ -5,7 +5,7 @@ import { auditLog } from '../services/audit-log.service.js';
 import { createUser, deleteUser, getRoles, getUserById, getUserProfile, getUsers, updateUser } from '../services/user.service.js';
 import { AuditLogAction, AuditLogTarget } from '../types/audit-log.type.js';
 import type { IdParam } from '../types/request.type.js';
-import type { UserCreateBody, UserSearchQuery, UserUpdateBody } from '../types/user.type.js';
+import type { CreateUserBody, UpdateUserBody, UserSearchQuery } from '../types/user.type.js';
 
 export const getRolesHandler = async () => {
 	const roles = getRoles();
@@ -23,14 +23,14 @@ export const getUsersHandler = async (request: FastifyRequest<{ Querystring: Use
 	return { data: users, total };
 };
 
-export const createUserHandler = async (request: FastifyRequest<{ Body: UserCreateBody }>) => {
+export const createUserHandler = async (request: FastifyRequest<{ Body: CreateUserBody }>) => {
 	const body = request.body;
 	const user = await createUser({ ...body, internal: true });
 	await auditLog(request.user, AuditLogAction.CREATE, AuditLogTarget.USER, { body, user }, 'create user');
 	return { message: 'User created', data: user };
 };
 
-export const updateUserHandler = async (request: FastifyRequest<{ Params: IdParam; Body: UserUpdateBody }>) => {
+export const updateUserHandler = async (request: FastifyRequest<{ Params: IdParam; Body: UpdateUserBody }>) => {
 	const { id } = request.params;
 	const body = request.body;
 	const user = await updateUser({ id, ...body });
@@ -39,7 +39,7 @@ export const updateUserHandler = async (request: FastifyRequest<{ Params: IdPara
 };
 
 export const deleteUserHandler = async (request: FastifyRequest<{ Params: IdParam }>) => {
-	const { id } = request.params
+	const { id } = request.params;
 	const user = await deleteUser(id);
 	await auditLog(request.user, AuditLogAction.DELETE, AuditLogTarget.USER, user, 'delete user');
 	return { message: 'User deleted', data: user };

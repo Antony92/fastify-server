@@ -1,6 +1,7 @@
-import type { ServerEventType } from '../db/prisma/client.js';
-import prisma from '../db/prisma.js';
-import type { ServerEventClient, ServerEventCreateInput, ServerEventUpdateInput, SSEType } from '../types/server-event.type.js';
+import { count, eq } from 'drizzle-orm';
+import db from '../db/index.js';
+import { serverEventsTable } from '../db/schema.js';
+import type { CreateServerEvent, ServerEventClient, ServerEventType, SSEType, UpdateServerEvent } from '../types/server-event.type.js';
 
 const clients: ServerEventClient[] = [];
 const retry = 10000;
@@ -39,43 +40,31 @@ export const sendServerEventToClient = (clientId: string, sseType: SSEType, even
 };
 
 export const getServerEvents = async (skip = 0, limit = 10) => {
-	const [events, total] = await prisma.$transaction([prisma.serverEvent.findMany({ skip, take: limit }), prisma.serverEvent.count()]);
+	const [events, total] = await Promise.all([
+		db.select().from(serverEventsTable).limit(limit).offset(skip),
+		db.select({ value: count() }).from(serverEventsTable),
+	]);
 	return { events, total };
 };
 
 export const getLastServerEvent = async () => {
-	const event = await prisma.serverEvent.findFirst({
+	const event = await db.query.serverEventsTable.findFirst({
 		orderBy: { created: 'desc' },
 	});
 	return event;
 };
 
-export const createServerEvent = async (event: ServerEventCreateInput) => {
-	const createdEvent = await prisma.serverEvent.create({
-		data: {
-			...event,
-		},
-	});
+export const createServerEvent = async (event: CreateServerEvent) => {
+	const [createdEvent] = await db.insert(serverEventsTable).values(event).returning();
 	return createdEvent;
 };
 
-export const updateServerEvent = async (event: ServerEventUpdateInput) => {
-	const updatedEvent = await prisma.serverEvent.update({
-		data: {
-			...event,
-		},
-		where: {
-			id: event.id,
-		},
-	});
+export const updateServerEvent = async (event: UpdateServerEvent) => {
+	const [updatedEvent] = await db.update(serverEventsTable).set(event).where(eq(serverEventsTable.id, event.id)).returning();
 	return updatedEvent;
 };
 
 export const deleteServerEvent = async (id: string) => {
-	const deletedEvent = await prisma.serverEvent.delete({
-		where: {
-			id,
-		},
-	});
+	const [deletedEvent] = await db.delete(serverEventsTable).where(eq(serverEventsTable.id, id)).returning();
 	return deletedEvent;
 };

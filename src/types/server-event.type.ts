@@ -1,18 +1,23 @@
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import type { FastifyReply } from 'fastify';
-import type { Prisma } from '../db/prisma/client.js';
+import type { serverEventsTable } from '../db/schema.js';
 
-export type ServerEventCreateBody = Pick<Prisma.ServerEventCreateInput, 'type' | 'message'>;
+export type ServerEvent = InferSelectModel<typeof serverEventsTable>;
 
-export type ServerEventUpdateBody = Pick<Prisma.ServerEventUpdateInput, 'type' | 'message'>;
+export type CreateServerEvent = InferInsertModel<typeof serverEventsTable>;
 
-export type ServerEventCreateInput = Pick<Prisma.ServerEventCreateInput, 'type' | 'message'>;
+export type UpdateServerEvent = { id: string } & InferInsertModel<typeof serverEventsTable>;
 
-export type ServerEventUpdateInput = { id: string } & Pick<Prisma.ServerEventUpdateInput, 'type' | 'message'>;
+export type CreateServerEventBody = Pick<CreateServerEvent, 'type' | 'message'>;
+
+export type UpdateServerEventBody = Pick<UpdateServerEvent, 'type' | 'message'>;
 
 export type ServerEventClient = {
 	id: string;
 	reply: FastifyReply;
 };
+
+export type ServerEventType = 'info' | 'warning' | 'error';
 
 export const SSE = {
 	GLOBAL: 'global',
