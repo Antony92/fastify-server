@@ -11,10 +11,8 @@ export const addServerEventClient = (client: ServerEventClient) => {
 };
 
 export const removeServerEventClient = (clientId: string) => {
-	clients.splice(
-		clients.findIndex((client) => client.id === clientId),
-		1,
-	);
+	const toDeleteIndex = clients.findIndex((client) => client.id === clientId);
+	clients.splice(toDeleteIndex, 1);
 };
 
 export const sendServerEventToAllClients = (sseType: SSEType, event: { type: ServerEventType; message: string }) => {
