@@ -6,9 +6,3 @@
 
 # env
 .env
-
-# api test
-api.http
-
-# prisma
-/src/db/prisma
