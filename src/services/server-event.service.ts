@@ -3,21 +3,20 @@ import db from '../db/index.js';
 import { serverEventsTable } from '../db/schema.js';
 import type { CreateServerEvent, ServerEventClient, ServerEventType, SSEType, UpdateServerEvent } from '../types/server-event.type.js';
 
-const clients: ServerEventClient[] = [];
+const clients = new Map<string, ServerEventClient['reply']>();
 const retry = 10000;
 
 export const addServerEventClient = (client: ServerEventClient) => {
-	clients.push(client);
+	clients.set(client.id, client.reply);
 };
 
 export const removeServerEventClient = (clientId: string) => {
-	const toDeleteIndex = clients.findIndex((client) => client.id === clientId);
-	clients.splice(toDeleteIndex, 1);
+	clients.delete(clientId);
 };
 
 export const sendServerEventToAllClients = (sseType: SSEType, event: { type: ServerEventType; message: string }) => {
-	clients.forEach((client) => {
-		client.reply.sse.send({
+	clients.forEach((reply) => {
+		reply.sse.send({
 			event: sseType,
 			data: event,
 			retry,
@@ -26,23 +25,19 @@ export const sendServerEventToAllClients = (sseType: SSEType, event: { type: Ser
 };
 
 export const sendServerEventToClient = (clientId: string, sseType: SSEType, event: { type: ServerEventType; message: string }) => {
-	clients
-		.filter((client) => client.id === clientId)
-		.forEach((client) => {
-			client.reply.sse.send({
-				event: sseType,
-				data: event,
-				retry,
-			});
-		});
+	clients.get(clientId)?.sse.send({
+		event: sseType,
+		data: event,
+		retry,
+	});
 };
 
 export const getServerEvents = async (skip = 0, limit = 10) => {
-	const [events, total] = await Promise.all([
+	const [events, [results]] = await Promise.all([
 		db.select().from(serverEventsTable).limit(limit).offset(skip),
-		db.select({ value: count() }).from(serverEventsTable),
+		db.select({ total: count() }).from(serverEventsTable),
 	]);
-	return { events, total };
+	return { events, total: results.total };
 };
 
 export const getLastServerEvent = async () => {

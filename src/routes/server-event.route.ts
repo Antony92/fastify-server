@@ -7,7 +7,12 @@ import {
 	subscribeServerEventsHandler,
 	updateServerEventHandler,
 } from '../controllers/server-event.controller.js';
-import { createServerEventSchema, deleteServerEventSchema, getServerEventsSchema, updateServerEventSchema } from '../schema/server-event.schema.js';
+import {
+	createServerEventSchema,
+	deleteServerEventSchema,
+	getServerEventsSchema,
+	updateServerEventSchema,
+} from '../schema/server-event.schema.js';
 import type { IdParam, PaginationQuery } from '../types/request.type.js';
 import type { CreateServerEventBody, UpdateServerEventBody } from '../types/server-event.type.js';
 import { Role } from '../types/user.type.js';

@@ -29,7 +29,12 @@ export const sendEmail = async (options: { from: string; to: string | string[]; 
 	}
 };
 
-export const sendEmailFromTemplate = async (options: { to: string | string[]; subject: string; templateName: string; context: unknown }) => {
+export const sendEmailFromTemplate = async (options: {
+	to: string | string[];
+	subject: string;
+	templateName: string;
+	context: unknown;
+}) => {
 	try {
 		const { to, subject, templateName, context } = options;
 		const file = fs.readFileSync(`${__dirname}/templates/${templateName}`, 'utf8');

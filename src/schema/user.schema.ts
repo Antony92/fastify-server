@@ -80,7 +80,7 @@ export const createUserSchema: ServerSchema = {
 			roles: {
 				type: 'array',
 				nullable: true,
-				default: ['GUEST'],
+				default: ['guest'],
 				items: {
 					type: 'string',
 					enum: getRoles(),

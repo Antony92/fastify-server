@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import type { usersTable } from '../db/schema.js';
+import type { rolesEnum, usersTable } from '../db/schema.js';
 import type { PaginationQuery } from './request.type.js';
 
 export type UserJWT = {
@@ -10,12 +10,12 @@ export type UserJWT = {
 	impersonated?: string;
 };
 
+export type RoleType = (typeof rolesEnum.enumValues)[number];
+
 export const Role = {
 	GUEST: 'guest',
 	ADMIN: 'admin',
-} as const;
-
-export type RoleType = (typeof Role)[keyof typeof Role];
+} as const satisfies Record<string, RoleType>;
 
 export type User = InferSelectModel<typeof usersTable>;
 

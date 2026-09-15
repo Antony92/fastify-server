@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import sanitizeHtml from 'sanitize-html';
 import { auditLog } from '../services/audit-log.service.js';
@@ -17,7 +18,7 @@ import type { IdParam, PaginationQuery } from '../types/request.type.js';
 import { type CreateServerEventBody, SSE, type UpdateServerEventBody } from '../types/server-event.type.js';
 
 export const subscribeServerEventsHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-	const id = request.ip;
+	const id = crypto.randomUUID();
 	addServerEventClient({ id, reply });
 
 	const event = await getLastServerEvent();

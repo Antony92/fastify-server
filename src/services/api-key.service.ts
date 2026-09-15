@@ -4,7 +4,11 @@ import { apiKeysTable } from '../db/schema.js';
 import type { CreateApiKey } from '../types/api-key.type.js';
 
 export const createApiKey = async (apiKey: CreateApiKey) => {
-	const [createdApiKey] = await db.insert(apiKeysTable).values(apiKey).returning();
+	const [createdApiKey] = await db
+		.insert(apiKeysTable)
+		.values(apiKey)
+		.onConflictDoUpdate({ target: apiKeysTable.userId, set: apiKey })
+		.returning();
 	return createdApiKey;
 };
 

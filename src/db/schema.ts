@@ -8,7 +8,7 @@ export const usersTable = pgTable('users', {
 	id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
 	name: text().notNull(),
 	username: text().notNull().unique(),
-	roles: text('roles').array().default(['guest']).notNull(),
+	roles: rolesEnum('roles').array().default(['guest']).notNull(),
 	active: boolean().default(true),
 	blocked: boolean().default(false),
 	internal: boolean().default(false),
@@ -22,7 +22,9 @@ export const apiKeysTable = pgTable('api_keys', {
 	jti: text().notNull().unique(),
 	jwt: text().unique(),
 	created: timestamp().defaultNow(),
-	userId: uuid('user_id').references(() => usersTable.id, { onDelete: 'cascade' }),
+	userId: uuid('user_id')
+		.unique()
+		.references(() => usersTable.id, { onDelete: 'cascade' }),
 });
 
 export const auditLogsTable = pgTable('audit_logs', {

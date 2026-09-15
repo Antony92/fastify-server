@@ -13,7 +13,7 @@ import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyWebsocket from '@fastify/websocket';
-import fastify from 'fastify';
+import fastify, { LogController } from 'fastify';
 import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard.js';
 import config from './config.js';
 import auditLogRoute from './routes/audit-log.route.js';
@@ -31,7 +31,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // init fastify server
 const server = fastify({
 	logger: true,
-	disableRequestLogging: true,
+	logController: new LogController({ disableRequestLogging: true }),
 });
 
 // plugins
