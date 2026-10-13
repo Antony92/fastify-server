@@ -1,4 +1,4 @@
-import { and, arrayOverlaps, asc, count, desc, eq, getColumns, ilike, or, type SQL, sql } from 'drizzle-orm';
+import { and, arrayOverlaps, asc, count, desc, eq, getColumns, ilike, or, type SQL } from 'drizzle-orm';
 import db from '../db/index.js';
 import { usersTable } from '../db/schema.js';
 import { type CreateUser, Role, type RoleType, type UpdateUser, type UserSearchQuery } from '../types/user.type.js';
