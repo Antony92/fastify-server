@@ -52,7 +52,7 @@ const userRoute: FastifyPluginAsync = async (server) => {
     { onRequest: secured([Role.ADMIN]), schema: createUserSchema },
     createUserHandler,
   );
-  server.patch<{ Params: IdParam; Body: UpdateUserBody }>(
+  server.put<{ Params: IdParam; Body: UpdateUserBody }>(
     '/user/:id',
     { onRequest: secured([Role.ADMIN]), schema: updateUserSchema },
     updateUserHandler,
@@ -72,7 +72,6 @@ const userRoute: FastifyPluginAsync = async (server) => {
     { onRequest: secured([Role.ADMIN]), schema: deleteUserApiKeySchema },
     deleteUserApiKeyHandler,
   );
-  // logged user
   server.get('/me', { onRequest: secured(), schema: { hide: true } }, getUserProfileHandler);
   server.post(
     '/me/api-key',

@@ -29,7 +29,7 @@ const serverEventsRoute: FastifyPluginAsync = async (server) => {
     { onRequest: secured([Role.ADMIN]), schema: createServerEventSchema },
     createServerEventHandler,
   );
-  server.patch<{ Params: IdParam; Body: UpdateServerEventBody }>(
+  server.put<{ Params: IdParam; Body: UpdateServerEventBody }>(
     '/server-event/:id',
     { onRequest: secured([Role.ADMIN]), schema: updateServerEventSchema },
     updateServerEventHandler,
