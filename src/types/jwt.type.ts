@@ -1,4 +1,4 @@
-import type { UserJWT } from './user.type.js';
+import type { UserJWT } from '../modules/user/user.type.js';
 
 export type AccessToken = {
   jti: string;

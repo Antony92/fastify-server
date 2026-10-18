@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "node --watch-path ./src --import tsx ./src/app.ts",
     "build": "tsc -p .",
-    "lint": "oxfmt --write && oxlint --fix",
+    "lint": "tsc --noEmit && oxfmt --write && oxlint --fix",
     "tests": "node --import tsx --test",
     "test:main": "node --import tsx tests/main.ts",
     "db:generate": "npx drizzle-kit generate",

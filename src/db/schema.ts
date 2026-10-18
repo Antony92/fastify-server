@@ -33,10 +33,10 @@ export const apiKeysTable = pgTable('api_keys', {
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   jti: text().notNull().unique(),
-  jwt: text().unique(),
+  jwt: text().notNull().unique(),
   created: timestamp().defaultNow(),
   userId: uuid('user_id')
-    .unique()
+    .notNull()
     .references(() => usersTable.id, { onDelete: 'cascade' }),
 });
 
@@ -70,7 +70,7 @@ export const feedbackTable = pgTable('feedback', {
     .default(sql`gen_random_uuid()`),
   email: text().notNull(),
   name: text().notNull(),
-  satisfaction: integer(),
+  satisfaction: integer().notNull(),
   message: text().notNull(),
   created: timestamp().defaultNow(),
 });

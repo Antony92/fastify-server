@@ -14,17 +14,18 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyWebsocket from '@fastify/websocket';
 import fastify, { LogController } from 'fastify';
-import { trustedAccessTokens, trustedRefreshTokens } from './auth/auth.guard.js';
+import { trustedAccessTokens, trustedRefreshTokens } from './modules/auth/auth.guard.js';
 import config from './config.js';
-import auditLogRoute from './routes/audit-log.route.js';
-import authRoute from './routes/auth.route.js';
-import feedbackRoute from './routes/feedback.route.js';
-import healthRoute from './routes/health.route.js';
-import serverEventsRoute from './routes/server-event.route.js';
-import userRoute from './routes/user.route.js';
-import websocketRoute from './routes/websocket.route.js';
+import auditLogRoute from './modules/audit-logs/audit-logs.route.js';
+import authRoute from './modules/auth/auth.route.js';
+import feedbackRoute from './modules/feedback/feedback.route.js';
+import healthRoute from './modules/health/health.route.js';
+import serverEventsRoute from './modules/server-events/server-events.route.js';
+import userRoute from './modules/user/user.route.js';
+import websocketRoute from './modules/websocket/websocket.route.js';
 import swaggerOptions from './swagger.js';
 import type { AccessToken } from './types/jwt.type.js';
+import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -32,7 +33,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const server = fastify({
   logger: true,
   logController: new LogController({ disableRequestLogging: true }),
-});
+}).withTypeProvider<TypeBoxTypeProvider>();
 
 // plugins
 await server.register(fastifyCompress);
