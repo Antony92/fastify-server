@@ -1,22 +1,22 @@
-import type { ServerSchema } from '../types/server.type.js';
+import type { FastifySchema } from 'fastify';
 
-export const submitFeedbackSchema: ServerSchema = {
-	tags: ['Feedback'],
-	hide: true,
-	description: 'Submit feedback',
-	consumes: ['application/json'],
-	produces: ['application/json'],
-	security: [
-		{
-			bearerAuth: [],
-		},
-	],
-	body: {
-		type: 'object',
-		properties: {
-			satisfaction: { type: 'number', minimum: 1, maximum: 5 },
-			message: { type: 'string', maxLength: 5000 },
-		},
-		required: ['satisfaction', 'message'],
-	},
+export const submitFeedbackSchema: FastifySchema = {
+  tags: ['Feedback'],
+  hide: true,
+  description: 'Submit feedback',
+  consumes: ['application/json'],
+  produces: ['application/json'],
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  body: {
+    type: 'object',
+    properties: {
+      satisfaction: { type: 'number', minimum: 1, maximum: 5 },
+      message: { type: 'string', maxLength: 5000 },
+    },
+    required: ['satisfaction', 'message'],
+  },
 };

@@ -6,11 +6,11 @@ import type { AuditLogSearchQuery } from '../types/audit-log.type.js';
 import { Role } from '../types/user.type.js';
 
 const auditLogRoute: FastifyPluginAsync = async (server) => {
-	server.get<{ Querystring: AuditLogSearchQuery }>(
-		'/audit-logs',
-		{ onRequest: secured([Role.ADMIN]), schema: getAuditLogsSchema },
-		getAuditLogsHandler,
-	);
+  server.get<{ Querystring: AuditLogSearchQuery }>(
+    '/audit-logs',
+    { onRequest: secured([Role.ADMIN]), schema: getAuditLogsSchema },
+    getAuditLogsHandler,
+  );
 };
 
 export default auditLogRoute;

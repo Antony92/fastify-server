@@ -13,14 +13,14 @@ export type CreateServerEventBody = Pick<CreateServerEvent, 'type' | 'message'>;
 export type UpdateServerEventBody = Pick<UpdateServerEvent, 'type' | 'message'>;
 
 export type ServerEventClient = {
-	id: string;
-	reply: FastifyReply;
+  id: string;
+  reply: FastifyReply;
 };
 
 export type ServerEventType = 'info' | 'warning' | 'error';
 
 export const SSE = {
-	GLOBAL: 'global',
+  GLOBAL: 'global',
 } as const;
 
 export type SSEType = (typeof SSE)[keyof typeof SSE];

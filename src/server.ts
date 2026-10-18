@@ -30,86 +30,89 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // init fastify server
 const server = fastify({
-	logger: true,
-	logController: new LogController({ disableRequestLogging: true }),
+  logger: true,
+  logController: new LogController({ disableRequestLogging: true }),
 });
 
 // plugins
 await server.register(fastifyCompress);
 await server.register(fastifyCookie);
 await server.register(fastifyCors, {
-	origin: ['http://localhost:8080', 'http://localhost:5173'],
-	allowedHeaders: ['Content-Type', 'Authorization'],
-	credentials: true,
+  origin: ['http://localhost:8080', 'http://localhost:5173'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 });
 await server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' });
 await server.register(fastifyStatic, { root: path.join(__dirname, 'public') });
-await server.register(fastifyMultipart, { limits: { fileSize: 5 * 1024 * 1024 }, attachFieldsToBody: 'keyValues' }); // max file size is set to 5MB
+await server.register(fastifyMultipart, {
+  limits: { fileSize: 5 * 1024 * 1024 },
+  attachFieldsToBody: 'keyValues',
+}); // max file size is set to 5MB
 await server.register(fastifySwagger, swaggerOptions);
 await server.register(fastifySwaggerUi, { routePrefix: '/swagger' });
 await server.register(fastifyWebsocket);
 await server.register(fastifySSE.default);
 await server.register(fastifySchedule);
 await server.register(fastifyJwt, {
-	namespace: 'access',
-	secret: config.jwt.accessTokenSecret,
-	sign: {
-		iss: config.jwt.issuer,
-		expiresIn: config.jwt.accessTokenExpire,
-	},
-	verify: {
-		allowedIss: config.jwt.issuer,
-	},
-	formatUser: (token) => (token as AccessToken).user,
-	trusted: trustedAccessTokens,
+  namespace: 'access',
+  secret: config.jwt.accessTokenSecret,
+  sign: {
+    iss: config.jwt.issuer,
+    expiresIn: config.jwt.accessTokenExpire,
+  },
+  verify: {
+    allowedIss: config.jwt.issuer,
+  },
+  formatUser: (token) => (token as AccessToken).user,
+  trusted: trustedAccessTokens,
 });
 await server.register(fastifyJwt, {
-	namespace: 'refresh',
-	decoratorName: 'refreshToken',
-	secret: config.jwt.refreshTokenSecret,
-	cookie: {
-		signed: false,
-		cookieName: config.cookies.refreshCookieName,
-	},
-	sign: {
-		iss: config.jwt.issuer,
-		expiresIn: config.jwt.refreshTokenExpire,
-	},
-	verify: {
-		allowedIss: config.jwt.issuer,
-	},
-	trusted: trustedRefreshTokens,
+  namespace: 'refresh',
+  decoratorName: 'refreshToken',
+  secret: config.jwt.refreshTokenSecret,
+  cookie: {
+    signed: false,
+    cookieName: config.cookies.refreshCookieName,
+  },
+  sign: {
+    iss: config.jwt.issuer,
+    expiresIn: config.jwt.refreshTokenExpire,
+  },
+  verify: {
+    allowedIss: config.jwt.issuer,
+  },
+  trusted: trustedRefreshTokens,
 });
 await server.register(fastifyOauth2, {
-	name: 'microsoftOAuth2',
-	scope: ['user.read'],
-	credentials: {
-		client: {
-			id: config.microsoft.clientId,
-			secret: config.microsoft.clientSecret,
-		},
-		auth: {
-			authorizeHost: 'https://login.microsoftonline.com',
-			authorizePath: `/${config.microsoft.tenantId}/oauth2/v2.0/authorize`,
-			tokenHost: 'https://login.microsoftonline.com',
-			tokenPath: `/${config.microsoft.tenantId}/oauth2/v2.0/token`,
-		},
-	},
-	startRedirectPath: '/api/v1/auth/login/microsoft',
-	callbackUri: config.auth.loginCallbackURL,
+  name: 'microsoftOAuth2',
+  scope: ['user.read'],
+  credentials: {
+    client: {
+      id: config.microsoft.clientId,
+      secret: config.microsoft.clientSecret,
+    },
+    auth: {
+      authorizeHost: 'https://login.microsoftonline.com',
+      authorizePath: `/${config.microsoft.tenantId}/oauth2/v2.0/authorize`,
+      tokenHost: 'https://login.microsoftonline.com',
+      tokenPath: `/${config.microsoft.tenantId}/oauth2/v2.0/token`,
+    },
+  },
+  startRedirectPath: '/api/v1/auth/login/microsoft',
+  callbackUri: config.auth.loginCallbackURL,
 });
 
 // not found handler
 server.setNotFoundHandler((request, reply) => {
-	if (request.url.includes('/api')) {
-		reply.code(404).send({
-			message: `Route ${request.method}:${request.url} not found`,
-			error: 'Not Found',
-			statusCode: 404,
-		});
-	} else {
-		reply.sendFile('index.html');
-	}
+  if (request.url.includes('/api')) {
+    reply.code(404).send({
+      message: `Route ${request.method}:${request.url} not found`,
+      error: 'Not Found',
+      statusCode: 404,
+    });
+  } else {
+    reply.sendFile('index.html');
+  }
 });
 
 // routes

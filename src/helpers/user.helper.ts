@@ -1,5 +1,5 @@
 import type { RoleType, User, UserJWT } from '../types/user.type.js';
 
 export const hasUserRoles = (user: UserJWT | User, roles: RoleType[]) => {
-	return user.roles.some((role) => roles.includes(role as RoleType));
+  return user.roles.some((role) => roles.includes(role as RoleType));
 };
