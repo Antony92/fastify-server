@@ -10,7 +10,7 @@
     "dev": "node --watch-path ./src --import tsx ./src/app.ts",
     "build": "tsc -p .",
     "lint": "tsc --noEmit && oxfmt --write && oxlint --fix",
-    "tests": "node --import tsx --test",
+    "test": "node --import tsx --test",
     "test:main": "node --import tsx tests/main.ts",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "npx drizzle-kit migrate",
