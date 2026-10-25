@@ -64,7 +64,7 @@ export const createServerEventHandler = async (
     request.user,
     AuditLogsAction.CREATE,
     AuditLogsTarget.SERVER_EVENT,
-    { body, event },
+    event,
     'server event created',
   );
   return { data: event, message: 'Server event created' };
@@ -87,7 +87,7 @@ export const updateServerEventHandler = async (
     request.user,
     AuditLogsAction.UPDATE,
     AuditLogsTarget.SERVER_EVENT,
-    { id, body, event },
+    event,
     'server event updated',
   );
   return { data: event, message: 'Server event updated' };

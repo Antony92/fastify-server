@@ -7,14 +7,16 @@ import type {
   AuditLogsSearchQuery,
   AuditLogsTargetType,
 } from './audit-logs.type.js';
+import diff from 'microdiff';
 
 export const auditLogs = async (
   actor: AuditActor,
   action: AuditLogsActionType,
   target: AuditLogsTargetType,
-  data: object,
+  data: { before: object; after: object } | object,
   message?: string,
 ) => {
+  const change = 'before' in data && 'after' in data ? diff(data.before, data.after) : data;
   const [auditLog] = await db
     .insert(auditLogsTable)
     .values({
@@ -23,7 +25,7 @@ export const auditLogs = async (
       impersonated: actor.impersonated,
       action,
       target,
-      data,
+      data: change,
       message,
     })
     .returning();

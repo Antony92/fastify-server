@@ -1,5 +1,6 @@
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import fastifyEnv from '@fastify/env';
 import fastifyCompress from '@fastify/compress';
 import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
@@ -15,7 +16,6 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyWebsocket from '@fastify/websocket';
 import fastify, { LogController } from 'fastify';
 import { trustedAccessTokens, trustedRefreshTokens } from './modules/auth/auth.guard.js';
-import config from './config.js';
 import auditLogRoute from './modules/audit-logs/audit-logs.route.js';
 import authRoute from './modules/auth/auth.route.js';
 import feedbackRoute from './modules/feedback/feedback.route.js';
@@ -26,6 +26,7 @@ import websocketRoute from './modules/websocket/websocket.route.js';
 import swaggerOptions from './swagger.js';
 import type { AccessToken } from './types/jwt.type.js';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
+import { configSchema } from './config.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -36,6 +37,7 @@ const server = fastify({
 }).withTypeProvider<TypeBoxTypeProvider>();
 
 // plugins
+await server.register(fastifyEnv, { schema: configSchema });
 await server.register(fastifyCompress);
 await server.register(fastifyCookie);
 await server.register(fastifyCors, {
@@ -43,7 +45,10 @@ await server.register(fastifyCors, {
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 });
-await server.register(fastifyRateLimit, { max: config.server.rateLimit, timeWindow: '15 minutes' });
+await server.register(fastifyRateLimit, {
+  max: server.config.SERVER_RATE_LIMIT,
+  timeWindow: '15 minutes',
+});
 await server.register(fastifyStatic, { root: path.join(__dirname, 'public') });
 await server.register(fastifyMultipart, {
   limits: { fileSize: 5 * 1024 * 1024 },
@@ -56,13 +61,13 @@ await server.register(fastifySSE.default);
 await server.register(fastifySchedule);
 await server.register(fastifyJwt, {
   namespace: 'access',
-  secret: config.jwt.accessTokenSecret,
+  secret: server.config.JWT_ACCESS_TOKEN_SECRET,
   sign: {
-    iss: config.jwt.issuer,
-    expiresIn: config.jwt.accessTokenExpire,
+    iss: server.config.JWT_ISSUER,
+    expiresIn: server.config.JWT_ACCESS_TOKEN_EXPIRE,
   },
   verify: {
-    allowedIss: config.jwt.issuer,
+    allowedIss: server.config.JWT_ISSUER,
   },
   formatUser: (token) => (token as AccessToken).user,
   trusted: trustedAccessTokens,
@@ -70,17 +75,17 @@ await server.register(fastifyJwt, {
 await server.register(fastifyJwt, {
   namespace: 'refresh',
   decoratorName: 'refreshToken',
-  secret: config.jwt.refreshTokenSecret,
+  secret: server.config.JWT_REFRESH_TOKEN_SECRET,
   cookie: {
     signed: false,
-    cookieName: config.cookies.refreshCookieName,
+    cookieName: server.config.COOKIE_REFRESH_NAME,
   },
   sign: {
-    iss: config.jwt.issuer,
-    expiresIn: config.jwt.refreshTokenExpire,
+    iss: server.config.JWT_ISSUER,
+    expiresIn: server.config.JWT_REFRESH_TOKEN_EXPIRE,
   },
   verify: {
-    allowedIss: config.jwt.issuer,
+    allowedIss: server.config.JWT_ISSUER,
   },
   trusted: trustedRefreshTokens,
 });
@@ -89,18 +94,18 @@ await server.register(fastifyOauth2, {
   scope: ['user.read'],
   credentials: {
     client: {
-      id: config.microsoft.clientId,
-      secret: config.microsoft.clientSecret,
+      id: server.config.MICROSOFT_CLIENT_ID,
+      secret: server.config.MICROSOFT_CLIENT_SECRET,
     },
     auth: {
       authorizeHost: 'https://login.microsoftonline.com',
-      authorizePath: `/${config.microsoft.tenantId}/oauth2/v2.0/authorize`,
+      authorizePath: `/${server.config.MICROSOFT_TENANT_ID}/oauth2/v2.0/authorize`,
       tokenHost: 'https://login.microsoftonline.com',
-      tokenPath: `/${config.microsoft.tenantId}/oauth2/v2.0/token`,
+      tokenPath: `/${server.config.MICROSOFT_TENANT_ID}/oauth2/v2.0/token`,
     },
   },
   startRedirectPath: '/api/v1/auth/login/microsoft',
-  callbackUri: config.auth.loginCallbackURL,
+  callbackUri: server.config.LOGIN_CALLBACK_URL,
 });
 
 // not found handler

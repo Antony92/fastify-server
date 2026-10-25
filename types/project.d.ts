@@ -1,6 +1,7 @@
 import type { OAuth2Namespace } from '@fastify/oauth2';
 import type { RefreshToken } from '../src/types/jwt.type.js';
 import type { UserJWT } from '../src/types/user.type.js';
+import type { Config } from '../src/config.js';
 
 declare module '@fastify/jwt' {
   interface FastifyJWT {
@@ -11,6 +12,7 @@ declare module '@fastify/jwt' {
 declare module 'fastify' {
   interface FastifyInstance {
     microsoftOAuth2: OAuth2Namespace;
+    config: Config;
   }
 
   interface FastifyRequest {

@@ -1,6 +1,5 @@
-import { Static } from 'typebox';
 import { paginationQuerySchema } from '../../types/request.type.js';
-import Type from 'typebox';
+import { type Static, Type } from 'typebox';
 
 export const auditLogsSearchQueryShema = Type.Intersect([
   paginationQuerySchema,

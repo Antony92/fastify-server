@@ -1,6 +1,5 @@
 import crypto from 'node:crypto';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import config from '../../config.js';
 import { auditLogs } from '../audit-logs/audit-logs.service.js';
 import { createUser, getUserByUsername } from '../user/user.service.js';
 import { AuditLogsAction, AuditLogsTarget } from '../audit-logs/audit-logs.type.js';
@@ -21,7 +20,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
   });
 
   if (user.blocked) {
-    reply.redirect(`${config.auth.loginRedirect}?error=User is blocked`, 302);
+    reply.redirect(`${request.server.config.LOGIN_REDIRECT}?error=User is blocked`, 302);
     return reply;
   }
 
@@ -34,19 +33,19 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
     },
   );
 
-  reply.cookie(config.cookies.refreshCookieName, refreshToken, {
+  reply.cookie(request.server.config.COOKIE_REFRESH_NAME, refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
     path: '/api/v1/auth/refresh',
-    expires: new Date(Date.now() + config.cookies.refreshCookieExpire),
+    expires: new Date(Date.now() + request.server.config.COOKIE_REFRESH_EXPIRE),
   });
-  reply.redirect(`${config.auth.loginRedirect}`, 302);
+  reply.redirect(`${request.server.config.LOGIN_REDIRECT}`, 302);
   return reply;
 };
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-  reply.clearCookie(config.cookies.refreshCookieName, { path: '/api/v1/auth/refresh' });
+  reply.clearCookie(request.server.config.COOKIE_REFRESH_NAME, { path: '/api/v1/auth/refresh' });
   return { message: 'Logout successful' };
 };
 
@@ -127,7 +126,7 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     },
   );
 
-  reply.clearCookie(config.cookies.refreshCookieName, { path: '/api/v1/auth/refresh' });
+  reply.clearCookie(request.server.config.COOKIE_REFRESH_NAME, { path: '/api/v1/auth/refresh' });
 
   await auditLogs(
     request.user,

@@ -1,7 +1,6 @@
 import { InferInsertModel } from 'drizzle-orm';
 import { feedbackTable } from '../../db/schema.js';
-import { Static } from 'typebox';
-import Type from 'typebox';
+import { type Static, Type } from 'typebox';
 import { createInsertSchema } from 'drizzle-orm/typebox';
 
 export const createFeedbackBodySchema = Type.Pick(

@@ -1,5 +1,4 @@
-import { Static } from 'typebox';
-import Type from 'typebox';
+import { type Static, Type } from 'typebox';
 
 export const paginationQuerySchema = Type.Object({
   skip: Type.Optional(Type.Number({ minimum: 0 })),

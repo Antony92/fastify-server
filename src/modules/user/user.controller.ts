@@ -36,13 +36,7 @@ export const getUsersHandler = async (
 export const createUserHandler = async (request: FastifyRequest<{ Body: CreateUserBody }>) => {
   const body = request.body;
   const user = await createUser({ ...body, internal: true });
-  await auditLogs(
-    request.user,
-    AuditLogsAction.CREATE,
-    AuditLogsTarget.USER,
-    { body, user },
-    'create user',
-  );
+  await auditLogs(request.user, AuditLogsAction.CREATE, AuditLogsTarget.USER, user, 'create user');
   return { message: 'User created', data: user };
 };
 
@@ -52,13 +46,7 @@ export const updateUserHandler = async (
   const { id } = request.params;
   const body = request.body;
   const user = await updateUser({ id, ...body });
-  await auditLogs(
-    request.user,
-    AuditLogsAction.UPDATE,
-    AuditLogsTarget.USER,
-    { id, body, user },
-    'update user',
-  );
+  await auditLogs(request.user, AuditLogsAction.UPDATE, AuditLogsTarget.USER, user, 'update user');
   return { message: 'User updated', data: user };
 };
 
@@ -104,7 +92,7 @@ export const createUserApiKeyHandler = async (
     request.user,
     AuditLogsAction.CREATE,
     AuditLogsTarget.USER,
-    { user },
+    { user, jti: apiKey.jti },
     'create user api key',
   );
   return { message: 'API key created', data: apiKey };
@@ -117,7 +105,7 @@ export const deleteUserApiKeyHandler = async (request: FastifyRequest<{ Params: 
     request.user,
     AuditLogsAction.DELETE,
     AuditLogsTarget.USER,
-    apiKey,
+    { jti: apiKey.jti },
     'delete user api key',
   );
   return { message: 'API key deleted', data: apiKey.id };

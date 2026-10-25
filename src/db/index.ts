@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { relations } from './schema.js';
@@ -10,7 +9,7 @@ export const isDatabaseActive = async () => {
     await db.execute(sql`SELECT now()`);
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 };

@@ -1,7 +1,7 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { rolesEnum, usersTable } from '../../db/schema.js';
 import { createInsertSchema, createUpdateSchema } from 'drizzle-orm/typebox';
-import Type, { Static } from 'typebox';
+import { type Static, Type } from 'typebox';
 import { paginationQuerySchema } from '../../types/request.type.js';
 
 export const createUserBodySchema = Type.Pick(createInsertSchema(usersTable), [
