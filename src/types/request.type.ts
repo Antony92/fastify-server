@@ -16,3 +16,7 @@ export const idParamSchema = Type.Object({
 export type PaginationQuery = Static<typeof paginationQuerySchema>;
 
 export type IdParam = Static<typeof idParamSchema>;
+
+export type SearchParams = {
+  [key: string]: string | number | boolean | undefined | null;
+};
