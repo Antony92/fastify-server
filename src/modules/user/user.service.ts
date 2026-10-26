@@ -111,7 +111,11 @@ export const getUserProfile = async (id: string) => {
       id,
     },
     with: {
-      apiKeys: true,
+      apiKeys: {
+        columns: {
+          jwt: false,
+        },
+      },
     },
   });
   return profile;

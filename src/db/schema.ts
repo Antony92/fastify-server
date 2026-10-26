@@ -37,6 +37,7 @@ export const apiKeysTable = pgTable('api_keys', {
   created: timestamp().defaultNow(),
   userId: uuid('user_id')
     .notNull()
+    .unique()
     .references(() => usersTable.id, { onDelete: 'cascade' }),
 });
 

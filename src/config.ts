@@ -7,7 +7,7 @@ export const configSchema = Type.Object({
   ),
 
   SERVER_PORT: Type.Integer({ default: 8080 }),
-  SERVER_RATE_LIMIT: Type.Integer({ default: 3000 }),
+  SERVER_RATE_LIMIT: Type.Integer({ default: 6000 }),
   SERVER_URL: Type.String({ default: 'https://www.dns.com' }),
 
   MICROSOFT_CLIENT_ID: Type.String({ default: '' }),

@@ -119,7 +119,7 @@ export const createPersonalApiKeyHandler = async (request: FastifyRequest, reply
     },
     {
       jti,
-      expiresIn: 0,
+      expiresIn: '360d',
     },
   );
   const apiKey = await createApiKey({
