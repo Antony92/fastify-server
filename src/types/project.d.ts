@@ -1,7 +1,7 @@
 import type { OAuth2Namespace } from '@fastify/oauth2';
-import type { RefreshToken } from '../src/types/jwt.type.js';
+import type { RefreshToken } from './jwt.type.ts';
 import type { UserJWT } from '../src/types/user.type.js';
-import type { Config } from '../src/config.js';
+import type { Config } from '../config.ts';
 
 declare module '@fastify/jwt' {
   interface FastifyJWT {

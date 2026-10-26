@@ -1,7 +1,7 @@
 # ----------------------------------------------------
 # 1. Base stage
 # ----------------------------------------------------
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 WORKDIR /app
 
 # Build-time argument with a default fallback to 8080
@@ -34,9 +34,9 @@ RUN npm ci --omit=dev
 # Copy compiled JavaScript output
 COPY --from=builder /app/dist ./dist
 
-# If you use static files, handlebars templates, or drizzle migrations:
-COPY public ./public
-COPY templates ./templates
+# Copy static files
+COPY src/templates ./dist/templates
+COPY src/public ./dist/public
 COPY drizzle ./drizzle
 
 EXPOSE ${SERVER_PORT}

@@ -8,4 +8,4 @@
 .env
 
 # main test
-/tests/main.ts
+/src/tests/main.ts
