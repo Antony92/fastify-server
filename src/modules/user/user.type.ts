@@ -1,36 +1,11 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { rolesEnum, usersTable } from '../../db/schema.js';
-import { createInsertSchema, createUpdateSchema } from 'drizzle-orm/typebox';
-import { type Static, Type } from 'typebox';
-import { paginationQuerySchema } from '../../types/request.type.js';
-
-export const createUserBodySchema = Type.Pick(createInsertSchema(usersTable), [
-  'name',
-  'username',
-  'roles',
-  'active',
-  'blocked',
-]);
-
-export const updateUserBodySchema = Type.Pick(createUpdateSchema(usersTable), [
-  'name',
-  'username',
-  'roles',
-  'active',
-  'blocked',
-]);
-
-export const userSearchQuerySchema = Type.Intersect([
-  paginationQuerySchema,
-  Type.Object({
-    name: Type.Optional(Type.String()),
-    username: Type.Optional(Type.String()),
-    active: Type.Optional(Type.Boolean()),
-    blocked: Type.Optional(Type.Boolean()),
-    internal: Type.Optional(Type.Boolean()),
-    roles: Type.Optional(Type.String()),
-  }),
-]);
+import { type Static } from 'typebox';
+import {
+  createUserBodySchema,
+  updateUserBodySchema,
+  userSearchQuerySchema,
+} from './user.schema.js';
 
 export type UserJWT = {
   id: string;

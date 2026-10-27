@@ -1,6 +1,22 @@
 import type { FastifySchema } from 'fastify';
 import { idParamSchema, paginationQuerySchema } from '../../types/request.type.js';
-import { createServerEventBodySchema, updateServerEventBodySchema } from './server-events.type.js';
+import { createInsertSchema, createUpdateSchema } from 'drizzle-orm/typebox';
+import Type from 'typebox';
+import { serverEventsTable } from '../../db/schema.js';
+
+export const createServerEventBodySchema = Type.Pick(
+  createInsertSchema(serverEventsTable, {
+    message: (schema) => Type.String({ ...schema, maxLength: 500 }),
+  }),
+  ['type', 'message'],
+);
+
+export const updateServerEventBodySchema = Type.Pick(
+  createUpdateSchema(serverEventsTable, {
+    message: (schema) => Type.String({ ...schema, maxLength: 500 }),
+  }),
+  ['type', 'message'],
+);
 
 export const getServerEventsSchema: FastifySchema = {
   tags: ['Server event'],

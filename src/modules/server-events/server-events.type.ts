@@ -1,22 +1,11 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import type { FastifyReply } from 'fastify';
 import { serverEventsTable } from '../../db/schema.js';
-import { Type, type Static } from 'typebox';
-import { createInsertSchema, createUpdateSchema } from 'drizzle-orm/typebox';
-
-export const createServerEventBodySchema = Type.Pick(
-  createInsertSchema(serverEventsTable, {
-    message: (schema) => Type.String({ ...schema, maxLength: 500 }),
-  }),
-  ['type', 'message'],
-);
-
-export const updateServerEventBodySchema = Type.Pick(
-  createUpdateSchema(serverEventsTable, {
-    message: (schema) => Type.String({ ...schema, maxLength: 500 }),
-  }),
-  ['type', 'message'],
-);
+import { type Static } from 'typebox';
+import {
+  createServerEventBodySchema,
+  updateServerEventBodySchema,
+} from './server-events.schema.js';
 
 export type ServerEvent = InferSelectModel<typeof serverEventsTable>;
 

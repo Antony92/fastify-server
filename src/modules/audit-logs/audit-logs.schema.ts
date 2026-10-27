@@ -1,5 +1,20 @@
 import type { FastifySchema } from 'fastify';
-import { auditLogsSearchQueryShema } from './audit-logs.type.js';
+import { Type } from 'typebox';
+import { paginationQuerySchema } from '../../types/request.type.js';
+
+export const auditLogsSearchQueryShema = Type.Intersect([
+  paginationQuerySchema,
+  Type.Object({
+    name: Type.Optional(Type.String()),
+    username: Type.Optional(Type.String()),
+    impersonated: Type.Optional(Type.String()),
+    action: Type.Optional(Type.String()),
+    target: Type.Optional(Type.String()),
+    message: Type.Optional(Type.String()),
+    startDate: Type.Optional(Type.String()),
+    endDate: Type.Optional(Type.String()),
+  }),
+]);
 
 export const getAuditLogsSchema: FastifySchema = {
   tags: ['Audit logs'],

@@ -1,5 +1,36 @@
-import { getRoles } from './user.service.js';
+import { createInsertSchema, createUpdateSchema } from 'drizzle-orm/typebox';
+import Type from 'typebox';
+import { usersTable } from '../../db/schema.js';
+import { idParamSchema, paginationQuerySchema } from '../../types/request.type.js';
 import type { FastifySchema } from 'fastify';
+
+export const createUserBodySchema = Type.Pick(createInsertSchema(usersTable), [
+  'name',
+  'username',
+  'roles',
+  'active',
+  'blocked',
+]);
+
+export const updateUserBodySchema = Type.Pick(createUpdateSchema(usersTable), [
+  'name',
+  'username',
+  'roles',
+  'active',
+  'blocked',
+]);
+
+export const userSearchQuerySchema = Type.Intersect([
+  paginationQuerySchema,
+  Type.Object({
+    name: Type.Optional(Type.String()),
+    username: Type.Optional(Type.String()),
+    active: Type.Optional(Type.Boolean()),
+    blocked: Type.Optional(Type.Boolean()),
+    internal: Type.Optional(Type.Boolean()),
+    roles: Type.Optional(Type.String()),
+  }),
+]);
 
 export const getUserSchema: FastifySchema = {
   tags: ['User'],
@@ -11,13 +42,7 @@ export const getUserSchema: FastifySchema = {
       bearerAuth: [],
     },
   ],
-  params: {
-    type: 'object',
-    properties: {
-      id: { type: 'string' },
-    },
-    required: ['id'],
-  },
+  params: idParamSchema,
 };
 
 export const getRolesSchema: FastifySchema = {
@@ -42,22 +67,7 @@ export const getUsersSchema: FastifySchema = {
       bearerAuth: [],
     },
   ],
-  querystring: {
-    type: 'object',
-    properties: {
-      skip: { type: 'number', nullable: true, minimum: 0 },
-      limit: { type: 'number', nullable: true, default: 10, maximum: 50 },
-      search: { type: 'string', nullable: true },
-      name: { type: 'string', nullable: true },
-      username: { type: 'string', nullable: true },
-      active: { type: 'boolean', nullable: true },
-      blocked: { type: 'boolean', nullable: true },
-      internal: { type: 'boolean', nullable: true },
-      roles: { type: 'string', nullable: true },
-      sort: { type: 'string', nullable: true },
-      order: { type: 'string', nullable: true },
-    },
-  },
+  querystring: userSearchQuerySchema,
 };
 
 export const createUserSchema: FastifySchema = {
@@ -70,25 +80,7 @@ export const createUserSchema: FastifySchema = {
       bearerAuth: [],
     },
   ],
-  body: {
-    type: 'object',
-    properties: {
-      name: { type: 'string' },
-      username: { type: 'string' },
-      active: { type: 'boolean', nullable: true, default: true },
-      blocked: { type: 'boolean', nullable: true, default: false },
-      roles: {
-        type: 'array',
-        nullable: true,
-        default: ['guest'],
-        items: {
-          type: 'string',
-          enum: getRoles(),
-        },
-      },
-    },
-    required: ['name', 'username'],
-  },
+  body: createUserBodySchema,
 };
 
 export const updateUserSchema: FastifySchema = {
@@ -101,30 +93,8 @@ export const updateUserSchema: FastifySchema = {
       bearerAuth: [],
     },
   ],
-  params: {
-    type: 'object',
-    properties: {
-      id: { type: 'string' },
-    },
-    required: ['id'],
-  },
-  body: {
-    type: 'object',
-    properties: {
-      name: { type: 'string', nullable: true },
-      username: { type: 'string', nullable: true },
-      active: { type: 'boolean', nullable: true },
-      blocked: { type: 'boolean', nullable: true },
-      roles: {
-        type: 'array',
-        nullable: true,
-        items: {
-          type: 'string',
-          enum: getRoles(),
-        },
-      },
-    },
-  },
+  params: idParamSchema,
+  body: updateUserBodySchema,
 };
 
 export const deleteUserSchema: FastifySchema = {
@@ -137,13 +107,7 @@ export const deleteUserSchema: FastifySchema = {
       bearerAuth: [],
     },
   ],
-  params: {
-    type: 'object',
-    properties: {
-      id: { type: 'string' },
-    },
-    required: ['id'],
-  },
+  params: idParamSchema,
 };
 
 export const createUserApiKeySchema: FastifySchema = {
@@ -156,13 +120,7 @@ export const createUserApiKeySchema: FastifySchema = {
       bearerAuth: [],
     },
   ],
-  params: {
-    type: 'object',
-    properties: {
-      id: { type: 'string' },
-    },
-    required: ['id'],
-  },
+  params: idParamSchema,
 };
 
 export const deleteUserApiKeySchema: FastifySchema = {
@@ -175,11 +133,5 @@ export const deleteUserApiKeySchema: FastifySchema = {
       bearerAuth: [],
     },
   ],
-  params: {
-    type: 'object',
-    properties: {
-      id: { type: 'string' },
-    },
-    required: ['id'],
-  },
+  params: idParamSchema,
 };

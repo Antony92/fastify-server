@@ -1,19 +1,5 @@
-import { paginationQuerySchema } from '../../types/request.type.js';
-import { type Static, Type } from 'typebox';
-
-export const auditLogsSearchQueryShema = Type.Intersect([
-  paginationQuerySchema,
-  Type.Object({
-    name: Type.Optional(Type.String()),
-    username: Type.Optional(Type.String()),
-    impersonated: Type.Optional(Type.String()),
-    action: Type.Optional(Type.String()),
-    target: Type.Optional(Type.String()),
-    message: Type.Optional(Type.String()),
-    startDate: Type.Optional(Type.String()),
-    endDate: Type.Optional(Type.String()),
-  }),
-]);
+import { type Static } from 'typebox';
+import { auditLogsSearchQueryShema } from './audit-logs.schema.js';
 
 export const AuditLogsAction = {
   CREATE: 'create',
