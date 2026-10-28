@@ -3,16 +3,16 @@ import db from '../../db/index.js';
 import { auditLogsTable } from '../../db/schema.js';
 import type {
   AuditActor,
-  AuditLogsActionType,
+  AuditLogsAction,
   AuditLogsSearchQuery,
-  AuditLogsTargetType,
+  AuditLogsTarget,
 } from './audit-logs.type.js';
 import diff from 'microdiff';
 
 export const auditLogs = async (
   actor: AuditActor,
-  action: AuditLogsActionType,
-  target: AuditLogsTargetType,
+  action: AuditLogsAction,
+  target: AuditLogsTarget,
   data: { before: object; after: object } | object,
   message?: string,
 ) => {

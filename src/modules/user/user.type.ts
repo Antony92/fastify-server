@@ -15,12 +15,12 @@ export type UserJWT = {
   impersonated?: string;
 };
 
-export type RoleType = (typeof rolesEnum.enumValues)[number];
+export type Role = (typeof rolesEnum.enumValues)[number];
 
 export const Role = {
   GUEST: 'guest',
   ADMIN: 'admin',
-} as const satisfies Record<string, RoleType>;
+} as const satisfies Record<string, Role>;
 
 export type User = InferSelectModel<typeof usersTable>;
 

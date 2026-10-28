@@ -7,14 +7,14 @@ export const AuditLogsAction = {
   DELETE: 'delete',
 } as const;
 
-export type AuditLogsActionType = (typeof AuditLogsAction)[keyof typeof AuditLogsAction];
+export type AuditLogsAction = (typeof AuditLogsAction)[keyof typeof AuditLogsAction];
 
 export const AuditLogsTarget = {
   USER: 'user',
   SERVER_EVENT: 'server_event',
 } as const;
 
-export type AuditLogsTargetType = (typeof AuditLogsTarget)[keyof typeof AuditLogsTarget];
+export type AuditLogsTarget = (typeof AuditLogsTarget)[keyof typeof AuditLogsTarget];
 
 export type AuditActor = {
   username: string;

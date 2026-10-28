@@ -12,13 +12,7 @@ import {
 } from 'drizzle-orm';
 import db from '../../db/index.js';
 import { usersTable } from '../../db/schema.js';
-import {
-  type CreateUser,
-  Role,
-  type RoleType,
-  type UpdateUser,
-  type UserSearchQuery,
-} from './user.type.js';
+import { type CreateUser, Role, type UpdateUser, type UserSearchQuery } from './user.type.js';
 
 export const getRoles = () => {
   return Object.values(Role);
@@ -57,7 +51,7 @@ export const getUsers = async (query: UserSearchQuery = {}) => {
   if (query.name) conditions.push(ilike(usersTable.name, `${query.name}%`));
   if (query.username) conditions.push(ilike(usersTable.username, `${query.username}%`));
   if (query.roles)
-    conditions.push(arrayOverlaps(usersTable.roles, query.roles.split(',') as RoleType[]));
+    conditions.push(arrayOverlaps(usersTable.roles, query.roles.split(',') as Role[]));
   if (query.search)
     conditions.push(
       or(
