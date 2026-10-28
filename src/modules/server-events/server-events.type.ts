@@ -24,10 +24,10 @@ export type ServerEventClient = {
   reply: FastifyReply;
 };
 
-export type ServerEventType = 'info' | 'warning' | 'error';
+export type ServerEventSeverity = 'info' | 'warning' | 'error';
 
-export const SSE = {
+export const ServerEventScope = {
   GLOBAL: 'global',
 } as const;
 
-export type SSEType = (typeof SSE)[keyof typeof SSE];
+export type ServerEventScope = (typeof ServerEventScope)[keyof typeof ServerEventScope];

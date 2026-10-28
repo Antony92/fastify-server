@@ -9,3 +9,6 @@
 
 # main test
 /src/tests/main.ts
+
+# agent
+/skills/system/

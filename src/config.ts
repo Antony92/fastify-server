@@ -6,6 +6,7 @@ export const configSchema = Type.Object({
     { default: 'development' },
   ),
 
+  SERVER_HOST: Type.Optional(Type.String()),
   SERVER_PORT: Type.Integer({ default: 8080 }),
   SERVER_RATE_LIMIT: Type.Integer({ default: 6000 }),
   SERVER_URL: Type.String({ default: 'https://www.dns.com' }),

@@ -6,7 +6,6 @@ import {
   addServerEventClient,
   createServerEvent,
   deleteServerEvent,
-  getLastServerEvent,
   getServerEvents,
   removeServerEventClient,
   sendServerEventToAllClients,
@@ -16,8 +15,8 @@ import {
 import { AuditLogsAction, AuditLogsTarget } from '../audit-logs/audit-logs.type.js';
 import type { IdParam, PaginationQuery } from '../../types/request.type.js';
 import {
+  ServerEventScope,
   type CreateServerEventBody,
-  SSE,
   type UpdateServerEventBody,
 } from './server-events.type.js';
 
@@ -25,12 +24,15 @@ export const subscribeServerEventsHandler = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const id = crypto.randomUUID();
+  console.log(request.user);
+  let id = request.user?.id || crypto.randomUUID();
   addServerEventClient({ id, reply });
 
-  const event = await getLastServerEvent();
+  const {
+    events: [event],
+  } = await getServerEvents(ServerEventScope.GLOBAL);
   if (event) {
-    sendServerEventToClient(id, SSE.GLOBAL, event);
+    sendServerEventToClient(id, event.severity as ServerEventScope, event);
   } else {
     await reply.sse.send({ data: 'connected' });
   }
@@ -43,8 +45,8 @@ export const subscribeServerEventsHandler = async (
 export const getServerEventsHandler = async (
   request: FastifyRequest<{ Querystring: PaginationQuery }>,
 ) => {
-  const { skip, limit } = request.query;
-  const { events, total } = await getServerEvents(skip, limit);
+  const { search, skip, limit } = request.query;
+  const { events, total } = await getServerEvents(search as ServerEventScope, skip, limit);
   return { data: events, total };
 };
 
@@ -59,7 +61,7 @@ export const createServerEventHandler = async (
     },
   });
   const event = await createServerEvent(body);
-  sendServerEventToAllClients(SSE.GLOBAL, event);
+  sendServerEventToAllClients(event.scope as ServerEventScope, event);
   await auditLogs(
     request.user,
     AuditLogsAction.CREATE,
@@ -82,7 +84,10 @@ export const updateServerEventHandler = async (
     },
   });
   const event = await updateServerEvent({ id, ...body });
-  sendServerEventToAllClients(SSE.GLOBAL, { type: event.type, message: event.message });
+  sendServerEventToAllClients(event.scope as ServerEventScope, {
+    severity: event.severity,
+    message: event.message,
+  });
   await auditLogs(
     request.user,
     AuditLogsAction.UPDATE,
@@ -96,10 +101,6 @@ export const updateServerEventHandler = async (
 export const deleteServerEventHandler = async (request: FastifyRequest<{ Params: IdParam }>) => {
   const { id } = request.params;
   const event = await deleteServerEvent(id);
-  const lastEvent = await getLastServerEvent();
-  if (lastEvent) {
-    sendServerEventToAllClients(SSE.GLOBAL, { type: lastEvent.type, message: lastEvent.message });
-  }
   await auditLogs(
     request.user,
     AuditLogsAction.DELETE,

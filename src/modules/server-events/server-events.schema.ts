@@ -8,14 +8,14 @@ export const createServerEventBodySchema = Type.Pick(
   createInsertSchema(serverEventsTable, {
     message: (schema) => Type.String({ ...schema, maxLength: 500 }),
   }),
-  ['type', 'message'],
+  ['scope', 'severity', 'message'],
 );
 
 export const updateServerEventBodySchema = Type.Pick(
   createUpdateSchema(serverEventsTable, {
     message: (schema) => Type.String({ ...schema, maxLength: 500 }),
   }),
-  ['type', 'message'],
+  ['scope', 'severity', 'message'],
 );
 
 export const getServerEventsSchema: FastifySchema = {

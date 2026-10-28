@@ -1,11 +1,11 @@
-import { count, eq } from 'drizzle-orm';
+import { count, eq, desc, and, SQL } from 'drizzle-orm';
 import db from '../../db/index.js';
 import { serverEventsTable } from '../../db/schema.js';
 import type {
   CreateServerEvent,
   ServerEventClient,
-  ServerEventType,
-  SSEType,
+  ServerEventScope,
+  ServerEventSeverity,
   UpdateServerEvent,
 } from './server-events.type.js';
 
@@ -21,12 +21,12 @@ export const removeServerEventClient = (clientId: string) => {
 };
 
 export const sendServerEventToAllClients = (
-  sseType: SSEType,
-  event: { type: ServerEventType; message: string },
+  scope: ServerEventScope,
+  event: { severity: ServerEventSeverity; message: string },
 ) => {
   clients.forEach((reply) => {
     reply.sse.send({
-      event: sseType,
+      event: scope,
       data: event,
       retry,
     });
@@ -35,29 +35,31 @@ export const sendServerEventToAllClients = (
 
 export const sendServerEventToClient = (
   clientId: string,
-  sseType: SSEType,
-  event: { type: ServerEventType; message: string },
+  scope: ServerEventScope,
+  event: { severity: ServerEventSeverity; message: string },
 ) => {
   clients.get(clientId)?.sse.send({
-    event: sseType,
+    event: scope,
     data: event,
     retry,
   });
 };
 
-export const getServerEvents = async (skip = 0, limit = 10) => {
+export const getServerEvents = async (scope?: ServerEventScope, skip = 0, limit = 10) => {
+  const conditions: (SQL | undefined)[] = [];
+  if (scope) conditions.push(eq(serverEventsTable.scope, scope));
+  const where = and(...conditions);
   const [events, [results]] = await Promise.all([
-    db.select().from(serverEventsTable).limit(limit).offset(skip),
+    db
+      .select()
+      .from(serverEventsTable)
+      .where(where)
+      .limit(limit)
+      .offset(skip)
+      .orderBy(desc(serverEventsTable.created)),
     db.select({ total: count() }).from(serverEventsTable),
   ]);
   return { events, total: results.total };
-};
-
-export const getLastServerEvent = async () => {
-  const event = await db.query.serverEventsTable.findFirst({
-    orderBy: { created: 'desc' },
-  });
-  return event;
 };
 
 export const createServerEvent = async (event: CreateServerEvent) => {
