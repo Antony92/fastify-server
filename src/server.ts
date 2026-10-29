@@ -67,6 +67,12 @@ await server.register(fastifyJwt, {
   verify: {
     allowedIss: server.config.JWT_ISSUER,
   },
+  trusted: trustedAccessTokens,
+});
+await server.register(fastifyJwt, {
+  namespace: 'refresh',
+  decoratorName: 'refreshToken',
+  secret: server.config.JWT_REFRESH_TOKEN_SECRET,
   cookie: {
     signed: false,
     cookieName: server.config.COOKIE_REFRESH_NAME,

@@ -53,15 +53,7 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
   await request.jwtVerify({ onlyCookie: true });
-  const { username, type } = request.user;
-
-  if (type !== 'refresh') {
-    throw {
-      message: `Invalid token type`,
-      error: 'Auth',
-      statusCode: 401,
-    };
-  }
+  const { username } = request.user;
 
   const dbUser = await getUserByUsername(username);
 
@@ -91,7 +83,6 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
   const accessToken = await reply.jwtSign(
     {
       ...user,
-      type: 'access',
     },
     {
       jti: crypto.randomUUID(),
@@ -131,7 +122,6 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
   const accessToken = await reply.jwtSign(
     {
       ...user,
-      type: 'access',
       impersonated: request.user.username,
     },
     {

@@ -2,16 +2,16 @@ import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import type { JWT } from '@fastify/jwt';
 import server from '../../server.js';
-import { Role, type UserJWT } from '../user/user.type.js';
+import { Role } from '../user/user.type.js';
 
-const admin: UserJWT = {
+const admin = {
   id: 'admin',
   name: 'admin',
   username: 'admin@test.com',
   roles: [Role.ADMIN],
 };
 
-const jwt = (server.jwt as JWT & { access: JWT }).access.sign({ user: admin });
+const jwt = (server.jwt as JWT & { access: JWT }).access.sign({ ...admin });
 
 describe('Server events route', () => {
   describe('GET /api/v1/server-events', () => {
