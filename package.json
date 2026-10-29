@@ -11,7 +11,7 @@
     "build": "tsc -p .",
     "lint": "tsc --noEmit && oxfmt --write && oxlint --fix",
     "test": "node --env-file=.env --import tsx --test",
-    "test:main": "node --env-file=.env --import tsx tests/main.ts",
+    "test:main": "node --env-file=.env --import tsx ./src/tests/main.ts",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "npx drizzle-kit migrate",
     "db:studio": "npx drizzle-kit studio",

@@ -1,10 +1,10 @@
 import type { FastifyRequest } from 'fastify';
 import { getUserById } from '../user/user.service.js';
-import type { AccessToken, RefreshToken } from '../../types/jwt.type.js';
+import type { AccessToken } from '../../types/jwt.type.js';
 
 export const secured = (roles?: string[]) => {
   return async (request: FastifyRequest) => {
-    await request.accessJwtVerify();
+    await request.jwtVerify();
     const user = await getUserById(request.user.id);
     if (user.blocked) {
       throw {
@@ -25,13 +25,7 @@ export const secured = (roles?: string[]) => {
 
 export const trustedAccessTokens = async (request: FastifyRequest, decodedToken: unknown) => {
   const token = decodedToken as AccessToken;
-  return decodedToken;
-  // const allowed = ['token1', 'token2'];
-  // return allowed.includes(token.jti) ? decodedToken : false;
-};
-
-export const trustedRefreshTokens = async (request: FastifyRequest, decodedToken: unknown) => {
-  const token = decodedToken as RefreshToken;
+  console.log(token);
   return decodedToken;
   // const allowed = ['token1', 'token2'];
   // return allowed.includes(token.jti) ? decodedToken : false;

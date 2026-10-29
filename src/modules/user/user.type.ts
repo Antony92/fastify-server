@@ -7,14 +7,6 @@ import {
   userSearchQuerySchema,
 } from './user.schema.js';
 
-export type UserJWT = {
-  id: string;
-  name: string;
-  username: string;
-  roles: string[];
-  impersonated?: string;
-};
-
 export type Role = (typeof rolesEnum.enumValues)[number];
 
 export const Role = {

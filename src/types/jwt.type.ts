@@ -1,12 +1,9 @@
-import type { UserJWT } from '../modules/user/user.type.js';
-
 export type AccessToken = {
   jti: string;
-  api: boolean;
-  user: UserJWT;
-};
-
-export type RefreshToken = {
-  jti: string;
+  id: string;
+  name: string;
   username: string;
+  type: 'access' | 'refresh';
+  roles: string[];
+  impersonated?: string;
 };

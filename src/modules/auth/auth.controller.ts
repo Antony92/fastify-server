@@ -24,12 +24,14 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
     return reply;
   }
 
-  const refreshToken = await reply.refreshJwtSign(
+  const refreshToken = await reply.jwtSign(
     {
-      username,
+      username: user.username,
+      type: 'refresh',
     },
     {
       jti: crypto.randomUUID(),
+      expiresIn: request.server.config.JWT_REFRESH_TOKEN_EXPIRE,
     },
   );
 
@@ -50,8 +52,17 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 };
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-  await request.refreshJwtVerify({ onlyCookie: true });
-  const { username } = request.refreshToken;
+  await request.jwtVerify({ onlyCookie: true });
+  const { username, type } = request.user;
+
+  if (type !== 'refresh') {
+    throw {
+      message: `Invalid token type`,
+      error: 'Auth',
+      statusCode: 401,
+    };
+  }
+
   const dbUser = await getUserByUsername(username);
 
   if (!dbUser) {
@@ -77,9 +88,10 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
     roles: dbUser.roles,
   };
 
-  const accessToken = await reply.accessJwtSign(
+  const accessToken = await reply.jwtSign(
     {
-      user,
+      ...user,
+      type: 'access',
     },
     {
       jti: crypto.randomUUID(),
@@ -114,12 +126,13 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     name: dbUser.name,
     username: dbUser.username,
     roles: dbUser.roles,
-    impersonated: `${request.user.name} - ${request.user.username}`,
   };
 
-  const accessToken = await reply.accessJwtSign(
+  const accessToken = await reply.jwtSign(
     {
-      user,
+      ...user,
+      type: 'access',
+      impersonated: request.user.username,
     },
     {
       jti: crypto.randomUUID(),

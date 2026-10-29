@@ -15,7 +15,7 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyWebsocket from '@fastify/websocket';
 import fastify, { LogController } from 'fastify';
-import { trustedAccessTokens, trustedRefreshTokens } from './modules/auth/auth.guard.js';
+import { trustedAccessTokens } from './modules/auth/auth.guard.js';
 import auditLogRoute from './modules/audit-logs/audit-logs.route.js';
 import authRoute from './modules/auth/auth.route.js';
 import feedbackRoute from './modules/feedback/feedback.route.js';
@@ -24,7 +24,6 @@ import serverEventsRoute from './modules/server-events/server-events.route.js';
 import userRoute from './modules/user/user.route.js';
 import websocketRoute from './modules/websocket/websocket.route.js';
 import swaggerOptions from './swagger.js';
-import type { AccessToken } from './types/jwt.type.js';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { configSchema } from './config.js';
 
@@ -60,7 +59,6 @@ await server.register(fastifyWebsocket);
 await server.register(fastifySSE.default);
 await server.register(fastifySchedule);
 await server.register(fastifyJwt, {
-  namespace: 'access',
   secret: server.config.JWT_ACCESS_TOKEN_SECRET,
   sign: {
     iss: server.config.JWT_ISSUER,
@@ -69,25 +67,11 @@ await server.register(fastifyJwt, {
   verify: {
     allowedIss: server.config.JWT_ISSUER,
   },
-  formatUser: (token) => (token as AccessToken).user,
-  trusted: trustedAccessTokens,
-});
-await server.register(fastifyJwt, {
-  namespace: 'refresh',
-  decoratorName: 'refreshToken',
-  secret: server.config.JWT_REFRESH_TOKEN_SECRET,
   cookie: {
     signed: false,
     cookieName: server.config.COOKIE_REFRESH_NAME,
   },
-  sign: {
-    iss: server.config.JWT_ISSUER,
-    expiresIn: server.config.JWT_REFRESH_TOKEN_EXPIRE,
-  },
-  verify: {
-    allowedIss: server.config.JWT_ISSUER,
-  },
-  trusted: trustedRefreshTokens,
+  trusted: trustedAccessTokens,
 });
 await server.register(fastifyOauth2, {
   name: 'microsoftOAuth2',
