@@ -7,7 +7,6 @@ import { serverEventsTable } from '../../db/schema.js';
 export const createServerEventBodySchema = Type.Pick(
   createInsertSchema(serverEventsTable, {
     message: (schema) => Type.String({ ...schema, maxLength: 500 }),
-    severity: (schema) => Type.String({ ...schema, enum: ['info', 'warning', 'error'] }),
   }),
   ['scope', 'severity', 'message'],
 );
@@ -15,7 +14,6 @@ export const createServerEventBodySchema = Type.Pick(
 export const updateServerEventBodySchema = Type.Pick(
   createUpdateSchema(serverEventsTable, {
     message: (schema) => Type.String({ ...schema, maxLength: 500 }),
-    severity: (schema) => Type.String({ ...schema, enum: ['info', 'warning', 'error'] }),
   }),
   ['scope', 'severity', 'message'],
 );

@@ -26,8 +26,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 
   const refreshToken = await reply.jwtSign(
     {
-      username: user.username,
-      type: 'refresh',
+      username,
     },
     {
       jti: crypto.randomUUID(),

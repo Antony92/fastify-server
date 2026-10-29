@@ -1,4 +1,5 @@
 export type AccessToken = {
+  jti: string;
   id: string;
   name: string;
   username: string;
@@ -7,8 +8,6 @@ export type AccessToken = {
 };
 
 export type RefreshToken = {
+  jti: string;
   username: string;
-  type: 'access' | 'refresh';
-  roles: string[];
-  impersonated?: string;
 };

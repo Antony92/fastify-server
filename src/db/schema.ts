@@ -11,6 +11,11 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const rolesEnum = pgEnum('user_role', ['admin', 'guest']);
+export const serverEventSeverityEnum = pgEnum('server_event_severity', [
+  'info',
+  'warning',
+  'error',
+]);
 
 export const usersTable = pgTable('users', {
   id: uuid('id')
@@ -59,7 +64,7 @@ export const serverEventsTable = pgTable('server_events', {
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   scope: text().default('global').notNull(),
-  severity: text().default('info').notNull(),
+  severity: serverEventSeverityEnum('severity').default('info').notNull(),
   message: text().notNull(),
   created: timestamp().defaultNow(),
   updated: timestamp(),
