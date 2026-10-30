@@ -1,7 +1,7 @@
 # ----------------------------------------------------
 # 1. Base stage
 # ----------------------------------------------------
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 WORKDIR /app
 
 # Build-time argument with a default fallback to 8080
