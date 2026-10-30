@@ -52,11 +52,11 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
   await request.refreshJwtVerify({ onlyCookie: true });
-  const { username } = request.user;
+  const { username } = request.refreshToken;
 
-  const dbUser = await getUserByUsername(username);
+  const user = await getUserByUsername(username);
 
-  if (!dbUser) {
+  if (!user) {
     throw {
       message: `User does not exist`,
       error: 'Auth',
@@ -64,7 +64,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
     };
   }
 
-  if (dbUser.blocked) {
+  if (user.blocked) {
     throw {
       message: `User is blocked`,
       error: 'Auth',
@@ -72,30 +72,26 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
     };
   }
 
-  const user = {
-    id: dbUser.id,
-    name: dbUser.name,
-    username: dbUser.username,
-    roles: dbUser.roles,
-  };
-
   const accessToken = await reply.accessJwtSign(
     {
-      ...user,
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      roles: user.roles,
     },
     {
       jti: crypto.randomUUID(),
     },
   );
 
-  return { ...user, accessToken };
+  return { accessToken };
 };
 
 export const impersonateHandler = async (request: FastifyRequest, reply: FastifyReply) => {
   const { username } = request.body as { username: string };
-  const dbUser = await getUserByUsername(username);
+  const user = await getUserByUsername(username);
 
-  if (!dbUser) {
+  if (!user) {
     throw {
       message: `User does not exist`,
       error: 'Auth',
@@ -103,7 +99,7 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     };
   }
 
-  if (dbUser.blocked) {
+  if (user.blocked) {
     throw {
       message: `User is blocked`,
       error: 'Auth',
@@ -111,16 +107,12 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     };
   }
 
-  const user = {
-    id: dbUser.id,
-    name: dbUser.name,
-    username: dbUser.username,
-    roles: dbUser.roles,
-  };
-
   const accessToken = await reply.accessJwtSign(
     {
-      ...user,
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      roles: user.roles,
       impersonated: request.user.username,
     },
     {
@@ -138,5 +130,5 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     `impersonated user ${user.name}`,
   );
 
-  return { ...user, accessToken };
+  return { accessToken };
 };

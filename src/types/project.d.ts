@@ -4,12 +4,13 @@ import type { Config } from '../config.ts';
 
 declare module '@fastify/jwt' {
   interface FastifyJWT {
+    namespaces: 'access' | 'refresh';
     user: AccessToken;
   }
 }
 
 declare module 'fastify' {
-  interface FastifyInstance {
+  interface FastifyInstance extends FastifyJwtNamespace<{ namespace: 'access' | 'refresh' }> {
     microsoftOAuth2: OAuth2Namespace;
     config: Config;
   }
