@@ -24,7 +24,6 @@ export const subscribeServerEventsHandler = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  console.log(request.user);
   let id = request.user?.id || crypto.randomUUID();
   addServerEventClient({ id, reply });
 
@@ -32,7 +31,7 @@ export const subscribeServerEventsHandler = async (
     events: [event],
   } = await getServerEvents(ServerEventScope.GLOBAL);
   if (event) {
-    sendServerEventToClient(id, event.severity as ServerEventScope, event);
+    sendServerEventToClient(id, event.scope as ServerEventScope, event);
   } else {
     await reply.sse.send({ data: 'connected' });
   }
