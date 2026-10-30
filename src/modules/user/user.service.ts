@@ -77,6 +77,11 @@ export const getUsers = async (query: UserSearchQuery = {}) => {
 };
 
 export const createUser = async (user: CreateUser) => {
+  const [createdUser] = await db.insert(usersTable).values(user).returning();
+  return createdUser;
+};
+
+export const createOrUpdateUser = async (user: CreateUser) => {
   const [createdUser] = await db
     .insert(usersTable)
     .values(user)
@@ -107,7 +112,7 @@ export const getUserProfile = async (id: string) => {
     with: {
       apiKeys: {
         columns: {
-          jwt: false,
+          jti: false,
         },
       },
     },

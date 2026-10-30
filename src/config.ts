@@ -16,12 +16,12 @@ export const configSchema = Type.Object({
   MICROSOFT_CLIENT_SECRET: Type.String({ default: '' }),
   MICROSOFT_RESOURCE: Type.String({ default: '' }),
 
-  JWT_ACCESS_TOKEN_SECRET: Type.String({ minLength: 8 }),
-  JWT_REFRESH_TOKEN_SECRET: Type.String({ minLength: 8 }),
+  JWT_ACCESS_TOKEN_SECRET: Type.String({ minLength: 32 }),
+  JWT_REFRESH_TOKEN_SECRET: Type.String({ minLength: 32 }),
   JWT_ACCESS_TOKEN_EXPIRE: Type.String({ default: '15m' }),
   JWT_REFRESH_TOKEN_EXPIRE: Type.String({ default: '1d' }),
-  JWT_ISSUER: Type.Optional(Type.String()),
-  JWT_AUDIENCE: Type.Optional(Type.String()),
+  JWT_ISSUER: Type.String({ minLength: 1, default: 'skeleton-server' }),
+  JWT_AUDIENCE: Type.String({ minLength: 1, default: 'skeleton-server' }),
 
   COOKIE_REFRESH_NAME: Type.String({ default: 'refreshToken' }),
   COOKIE_REFRESH_EXPIRE: Type.Integer({ default: 24 * 60 * 1000 * 60 }), // 24 hours

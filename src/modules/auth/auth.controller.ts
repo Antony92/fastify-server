@@ -1,8 +1,9 @@
 import crypto from 'node:crypto';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { auditLogs } from '../audit-logs/audit-logs.service.js';
-import { createUser, getUserByUsername } from '../user/user.service.js';
+import { createOrUpdateUser, getUserByUsername } from '../user/user.service.js';
 import { AuditLogsAction, AuditLogsTarget } from '../audit-logs/audit-logs.type.js';
+import { Role } from '../user/user.type.js';
 
 export const loginCallbackHandler = async (request: FastifyRequest, reply: FastifyReply) => {
   const token =
@@ -13,7 +14,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
     Buffer.from(token.token.access_token.split('.')[1], 'base64').toString(),
   );
 
-  const user = await createUser({
+  const user = await createOrUpdateUser({
     username,
     name,
     active: true,
@@ -47,7 +48,12 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 };
 
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-  reply.clearCookie(request.server.config.COOKIE_REFRESH_NAME, { path: '/api/v1/auth/refresh' });
+  reply.clearCookie(request.server.config.COOKIE_REFRESH_NAME, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    path: '/api/v1/auth/refresh',
+  });
   return { message: 'Logout successful' };
 };
 
@@ -108,6 +114,14 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     };
   }
 
+  if (user.roles.includes(Role.ADMIN)) {
+    throw {
+      message: `Cannot impersonate admin user`,
+      error: 'Auth',
+      statusCode: 403,
+    };
+  }
+
   const accessToken = await reply.accessJwtSign(
     {
       id: user.id,
@@ -121,7 +135,12 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     },
   );
 
-  reply.clearCookie(request.server.config.COOKIE_REFRESH_NAME, { path: '/api/v1/auth/refresh' });
+  reply.clearCookie(request.server.config.COOKIE_REFRESH_NAME, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    path: '/api/v1/auth/refresh',
+  });
 
   await auditLogs(
     request.user,

@@ -37,7 +37,6 @@ export const apiKeysTable = pgTable('api_keys', {
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   jti: text().notNull().unique(),
-  jwt: text().notNull().unique(),
   created: timestamp().defaultNow(),
   userId: uuid('user_id')
     .notNull()

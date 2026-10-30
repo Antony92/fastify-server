@@ -78,6 +78,7 @@ export const updateServerEventHandler = async (
   const body = request.body;
   body.message = sanitizeHtml(body.message as string, {
     allowedTags: ['a'],
+    allowedSchemes: ['https'],
     allowedAttributes: {
       a: ['href', 'target'],
     },

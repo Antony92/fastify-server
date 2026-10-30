@@ -16,7 +16,7 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyWebsocket from '@fastify/websocket';
 import fastify, { LogController } from 'fastify';
-import { trustedAccessTokens } from './modules/auth/auth.guard.js';
+import { trustedAccessTokens, trustedRefreshTokens } from './modules/auth/auth.guard.js';
 import auditLogRoute from './modules/audit-logs/audit-logs.route.js';
 import authRoute from './modules/auth/auth.route.js';
 import feedbackRoute from './modules/feedback/feedback.route.js';
@@ -64,11 +64,18 @@ await server.register(fastifyJwt, {
   namespace: 'access',
   secret: server.config.JWT_ACCESS_TOKEN_SECRET,
   sign: {
+    algorithm: 'HS256',
+    header: { alg: 'HS256', typ: 'at+jwt' },
     iss: server.config.JWT_ISSUER,
+    aud: `${server.config.JWT_AUDIENCE}:access`,
     expiresIn: server.config.JWT_ACCESS_TOKEN_EXPIRE,
   },
   verify: {
+    algorithms: ['HS256'],
+    checkTyp: 'at+jwt',
     allowedIss: server.config.JWT_ISSUER,
+    allowedAud: `${server.config.JWT_AUDIENCE}:access`,
+    requiredClaims: ['iss', 'aud', 'exp'],
   },
   trusted: trustedAccessTokens,
 });
@@ -80,12 +87,25 @@ await server.register(fastifyJwt, {
     signed: false,
     cookieName: server.config.COOKIE_REFRESH_NAME,
   },
-  trusted: trustedAccessTokens,
+  sign: {
+    algorithm: 'HS256',
+    header: { alg: 'HS256', typ: 'rt+jwt' },
+    iss: server.config.JWT_ISSUER,
+    aud: `${server.config.JWT_AUDIENCE}:refresh`,
+    expiresIn: server.config.JWT_REFRESH_TOKEN_EXPIRE,
+  },
+  verify: {
+    algorithms: ['HS256'],
+    checkTyp: 'rt+jwt',
+    allowedIss: server.config.JWT_ISSUER,
+    allowedAud: `${server.config.JWT_AUDIENCE}:refresh`,
+    requiredClaims: ['iss', 'aud', 'exp'],
+  },
+  trusted: trustedRefreshTokens,
 });
 await server.register(fastifyOauth2, {
   name: 'microsoftOAuth2',
   scope: ['user.read'],
-  pkce: 'S256',
   credentials: {
     client: {
       id: server.config.MICROSOFT_CLIENT_ID,

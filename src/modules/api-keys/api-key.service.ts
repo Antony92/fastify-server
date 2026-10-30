@@ -13,7 +13,7 @@ export const createApiKey = async (apiKey: CreateApiKey) => {
 };
 
 export const deleteApiKeyByUserId = async (userId: string) => {
-  const { jwt: _jwt, ...columns } = getTableColumns(apiKeysTable);
+  const { jti: _jti, ...columns } = getTableColumns(apiKeysTable);
   const [deletedApiKey] = await db
     .delete(apiKeysTable)
     .where(eq(apiKeysTable.userId, userId))

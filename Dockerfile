@@ -39,6 +39,9 @@ COPY src/templates ./dist/templates
 COPY src/public ./dist/public
 COPY drizzle ./drizzle
 
+# Switch from root to the non-privileged node user
+USER node
+
 EXPOSE ${SERVER_PORT}
 
 # Runs the compiled entry point (matches "main": "dist/app.js")

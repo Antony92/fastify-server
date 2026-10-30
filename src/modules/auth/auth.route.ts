@@ -7,6 +7,7 @@ import {
   refreshHandler,
 } from './auth.controller.js';
 import { Role } from '../user/user.type.js';
+import { impersonateUserSchema } from './auth.schema.js';
 
 const authRoute: FastifyPluginAsync = async (server) => {
   server.post(
@@ -14,7 +15,7 @@ const authRoute: FastifyPluginAsync = async (server) => {
     { config: { rateLimit: { max: 10, timeWindow: '15 minutes' } }, schema: { hide: true } },
     logoutHandler,
   );
-  server.get(
+  server.post(
     '/auth/refresh',
     { config: { rateLimit: { max: 10, timeWindow: '15 minutes' } }, schema: { hide: true } },
     refreshHandler,
@@ -26,7 +27,7 @@ const authRoute: FastifyPluginAsync = async (server) => {
   );
   server.post(
     '/auth/impersonate',
-    { onRequest: server.auth([secured([Role.ADMIN])]), schema: { hide: true } },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: impersonateUserSchema },
     impersonateHandler,
   );
 };

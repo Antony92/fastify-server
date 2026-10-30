@@ -81,8 +81,7 @@ export const createUserApiKeyHandler = async (
       expiresIn: '360d',
     },
   );
-  const apiKey = await createApiKey({
-    jwt,
+  await createApiKey({
     jti,
     userId: user.id,
   });
@@ -90,10 +89,10 @@ export const createUserApiKeyHandler = async (
     request.user,
     AuditLogsAction.CREATE,
     AuditLogsTarget.USER,
-    { user, jti: apiKey.jti },
+    { user, jti },
     'create user api key',
   );
-  return { message: 'API key created', data: apiKey };
+  return { message: 'API key created', data: jwt };
 };
 
 export const deleteUserApiKeyHandler = async (request: FastifyRequest<{ Params: IdParam }>) => {
@@ -103,7 +102,7 @@ export const deleteUserApiKeyHandler = async (request: FastifyRequest<{ Params: 
     request.user,
     AuditLogsAction.DELETE,
     AuditLogsTarget.USER,
-    { jti: apiKey.jti },
+    { apiKey },
     'delete user api key',
   );
   return { message: 'API key deleted', data: apiKey.id };
@@ -123,8 +122,7 @@ export const createPersonalApiKeyHandler = async (request: FastifyRequest, reply
       expiresIn: '360d',
     },
   );
-  const apiKey = await createApiKey({
-    jwt,
+  await createApiKey({
     jti,
     userId: request.user.id,
   });
@@ -135,7 +133,7 @@ export const createPersonalApiKeyHandler = async (request: FastifyRequest, reply
     { jti },
     'create personal api key',
   );
-  return { message: 'API key created', data: apiKey };
+  return { message: 'API key created', data: jwt };
 };
 
 export const deletePersonalApiKeyHandler = async (request: FastifyRequest) => {
@@ -144,7 +142,7 @@ export const deletePersonalApiKeyHandler = async (request: FastifyRequest) => {
     request.user,
     AuditLogsAction.DELETE,
     AuditLogsTarget.USER,
-    { jti: apiKey.jti },
+    { apiKey },
     'delete personal api key',
   );
   return { message: 'API key deleted', data: apiKey.id };
