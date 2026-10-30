@@ -8,6 +8,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
   const token =
     await request.server.microsoftOAuth2.getAccessTokenFromAuthorizationCodeFlow(request);
 
+  // TODO get user from oauth2 with token
   const { upn: username, name } = JSON.parse(
     Buffer.from(token.token.access_token.split('.')[1], 'base64').toString(),
   );

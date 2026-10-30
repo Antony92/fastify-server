@@ -85,6 +85,7 @@ await server.register(fastifyJwt, {
 await server.register(fastifyOauth2, {
   name: 'microsoftOAuth2',
   scope: ['user.read'],
+  pkce: 'S256',
   credentials: {
     client: {
       id: server.config.MICROSOFT_CLIENT_ID,

@@ -69,9 +69,12 @@ export const createUserApiKeyHandler = async (
   const { id } = request.params;
   const user = await getUserById(id);
   const jti = crypto.randomUUID();
-  const jwt = await reply.jwtSign(
+  const jwt = await reply.accessJwtSign(
     {
-      user: { id: user.id, name: user.name, username: user.username, roles: user.roles },
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      roles: user.roles,
     },
     {
       jti,
@@ -108,9 +111,12 @@ export const deleteUserApiKeyHandler = async (request: FastifyRequest<{ Params: 
 
 export const createPersonalApiKeyHandler = async (request: FastifyRequest, reply: FastifyReply) => {
   const jti = crypto.randomUUID();
-  const jwt = await reply.jwtSign(
+  const jwt = await reply.accessJwtSign(
     {
-      user: request.user,
+      id: request.user.id,
+      name: request.user.name,
+      username: request.user.username,
+      roles: request.user.roles,
     },
     {
       jti,
