@@ -23,6 +23,7 @@ import feedbackRoute from './modules/feedback/feedback.route.js';
 import healthRoute from './modules/health/health.route.js';
 import serverEventsRoute from './modules/server-events/server-events.route.js';
 import userRoute from './modules/user/user.route.js';
+import apiKeyRoute from './modules/api-key/api-key.route.js';
 import websocketRoute from './modules/websocket/websocket.route.js';
 import swaggerOptions from './swagger.js';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
@@ -141,6 +142,7 @@ await server.register(authRoute, { prefix: '/api/v1' });
 await server.register(serverEventsRoute, { prefix: '/api/v1' });
 await server.register(auditLogRoute, { prefix: '/api/v1' });
 await server.register(userRoute, { prefix: '/api/v1' });
+await server.register(apiKeyRoute, { prefix: '/api/v1' });
 await server.register(websocketRoute, { prefix: '/api/v1' });
 await server.register(feedbackRoute, { prefix: '/api/v1' });
 

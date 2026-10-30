@@ -1,11 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { secured } from '../auth/auth.guard.js';
 import {
-  createPersonalApiKeyHandler,
-  createUserApiKeyHandler,
   createUserHandler,
-  deletePersonalApiKeyHandler,
-  deleteUserApiKeyHandler,
   deleteUserHandler,
   getRolesHandler,
   getUserHandler,
@@ -14,9 +10,7 @@ import {
   updateUserHandler,
 } from './user.controller.js';
 import {
-  createUserApiKeySchema,
   createUserSchema,
-  deleteUserApiKeySchema,
   deleteUserSchema,
   getRolesSchema,
   getUserSchema,
@@ -62,27 +56,7 @@ const userRoute: FastifyPluginAsync = async (server) => {
     { onRequest: server.auth([secured([Role.ADMIN])]), schema: deleteUserSchema },
     deleteUserHandler,
   );
-  server.post<{ Params: IdParam }>(
-    '/user/:id/api-key',
-    { onRequest: server.auth([secured([Role.ADMIN])]), schema: createUserApiKeySchema },
-    createUserApiKeyHandler,
-  );
-  server.delete<{ Params: IdParam }>(
-    '/user/:id/api-key',
-    { onRequest: server.auth([secured([Role.ADMIN])]), schema: deleteUserApiKeySchema },
-    deleteUserApiKeyHandler,
-  );
   server.get('/me', { onRequest: secured(), schema: { hide: true } }, getUserProfileHandler);
-  server.post(
-    '/me/api-key',
-    { onRequest: secured(), schema: { hide: true } },
-    createPersonalApiKeyHandler,
-  );
-  server.delete<{ Params: IdParam }>(
-    '/me/api-key',
-    { onRequest: secured(), schema: { hide: true } },
-    deletePersonalApiKeyHandler,
-  );
 };
 
 export default userRoute;
