@@ -12,3 +12,6 @@
 
 # agent
 /skills/system/
+
+# database
+*.db
