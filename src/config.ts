@@ -9,7 +9,7 @@ export const configSchema = Type.Object({
   SERVER_HOST: Type.Optional(Type.String()),
   SERVER_PORT: Type.Integer({ default: 8080 }),
   SERVER_RATE_LIMIT: Type.Integer({ default: 6000 }),
-  SERVER_URL: Type.String({ default: 'https://www.dns.com' }),
+  SERVER_URL: Type.String({ default: 'https://skeleton-server.com' }),
 
   MICROSOFT_CLIENT_ID: Type.String({ default: '' }),
   MICROSOFT_TENANT_ID: Type.String({ default: '' }),
@@ -27,7 +27,7 @@ export const configSchema = Type.Object({
   COOKIE_REFRESH_EXPIRE: Type.Integer({ default: 24 * 60 * 1000 * 60 }), // 24 hours
 
   LOGIN_CALLBACK_URL: Type.String({ default: 'http://localhost:8080/api/v1/auth/login/callback' }),
-  LOGIN_REDIRECT: Type.String({ default: 'http://localhost:5173' }),
+  LOGIN_REDIRECT: Type.String({ default: 'http://localhost:5173/login' }),
 });
 
 export type Config = Static<typeof configSchema>;
