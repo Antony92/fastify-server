@@ -26,7 +26,7 @@ const authRoute: FastifyPluginAsync = async (server) => {
   );
   server.post(
     '/auth/impersonate',
-    { onRequest: secured([Role.ADMIN]), schema: { hide: true } },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: { hide: true } },
     impersonateHandler,
   );
 };

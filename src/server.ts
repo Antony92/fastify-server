@@ -1,5 +1,6 @@
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import fastifyAuth from '@fastify/auth';
 import fastifyEnv from '@fastify/env';
 import fastifyCompress from '@fastify/compress';
 import fastifyCookie from '@fastify/cookie';
@@ -58,6 +59,7 @@ await server.register(fastifySwaggerUi, { routePrefix: '/swagger' });
 await server.register(fastifyWebsocket);
 await server.register(fastifySSE.default);
 await server.register(fastifySchedule);
+await server.register(fastifyAuth);
 await server.register(fastifyJwt, {
   namespace: 'access',
   secret: server.config.JWT_ACCESS_TOKEN_SECRET,

@@ -21,22 +21,22 @@ const serverEventsRoute: FastifyPluginAsync = async (server) => {
   server.get('/sse', { sse: true, schema: { hide: true } }, subscribeServerEventsHandler);
   server.get<{ Querystring: PaginationQuery }>(
     '/server-events',
-    { onRequest: secured([Role.ADMIN]), schema: getServerEventsSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: getServerEventsSchema },
     getServerEventsHandler,
   );
   server.post<{ Body: CreateServerEventBody }>(
     '/server-event',
-    { onRequest: secured([Role.ADMIN]), schema: createServerEventSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: createServerEventSchema },
     createServerEventHandler,
   );
   server.put<{ Params: IdParam; Body: UpdateServerEventBody }>(
     '/server-event/:id',
-    { onRequest: secured([Role.ADMIN]), schema: updateServerEventSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: updateServerEventSchema },
     updateServerEventHandler,
   );
   server.delete<{ Params: IdParam }>(
     '/server-event/:id',
-    { onRequest: secured([Role.ADMIN]), schema: deleteServerEventSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: deleteServerEventSchema },
     deleteServerEventHandler,
   );
 };

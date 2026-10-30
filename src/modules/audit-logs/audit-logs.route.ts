@@ -8,7 +8,7 @@ import { Role } from '../user/user.type.js';
 const auditLogRoute: FastifyPluginAsync = async (server) => {
   server.get<{ Querystring: AuditLogsSearchQuery }>(
     '/audit-logs',
-    { onRequest: secured([Role.ADMIN]), schema: getAuditLogsSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: getAuditLogsSchema },
     getAuditLogsHandler,
   );
 };

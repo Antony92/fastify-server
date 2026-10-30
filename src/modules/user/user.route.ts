@@ -39,37 +39,37 @@ const userRoute: FastifyPluginAsync = async (server) => {
   );
   server.get(
     '/roles',
-    { onRequest: secured([Role.ADMIN]), schema: getRolesSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: getRolesSchema },
     getRolesHandler,
   );
   server.get<{ Params: IdParam }>(
     '/user/:id',
-    { onRequest: secured([Role.ADMIN]), schema: getUserSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: getUserSchema },
     getUserHandler,
   );
   server.post<{ Body: CreateUserBody }>(
     '/user',
-    { onRequest: secured([Role.ADMIN]), schema: createUserSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: createUserSchema },
     createUserHandler,
   );
   server.put<{ Params: IdParam; Body: UpdateUserBody }>(
     '/user/:id',
-    { onRequest: secured([Role.ADMIN]), schema: updateUserSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: updateUserSchema },
     updateUserHandler,
   );
   server.delete<{ Params: IdParam }>(
     '/user/:id',
-    { onRequest: secured([Role.ADMIN]), schema: deleteUserSchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: deleteUserSchema },
     deleteUserHandler,
   );
   server.post<{ Params: IdParam }>(
     '/user/:id/api-key',
-    { onRequest: secured([Role.ADMIN]), schema: createUserApiKeySchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: createUserApiKeySchema },
     createUserApiKeyHandler,
   );
   server.delete<{ Params: IdParam }>(
     '/user/:id/api-key',
-    { onRequest: secured([Role.ADMIN]), schema: deleteUserApiKeySchema },
+    { onRequest: server.auth([secured([Role.ADMIN])]), schema: deleteUserApiKeySchema },
     deleteUserApiKeyHandler,
   );
   server.get('/me', { onRequest: secured(), schema: { hide: true } }, getUserProfileHandler);
