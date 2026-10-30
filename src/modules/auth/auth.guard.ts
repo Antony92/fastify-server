@@ -4,7 +4,7 @@ import type { AccessToken, RefreshToken } from '../../types/jwt.type.js';
 
 export const secured = (roles?: string[]) => {
   return async (request: FastifyRequest) => {
-    await request.jwtVerify();
+    await request.accessJwtVerify();
     const user = await getUserById(request.user.id);
     if (user.blocked) {
       throw {

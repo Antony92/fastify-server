@@ -24,7 +24,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
     return reply;
   }
 
-  const refreshToken = await reply.jwtSign(
+  const refreshToken = await reply.refreshJwtSign(
     {
       username,
     },
@@ -51,7 +51,7 @@ export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply
 };
 
 export const refreshHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-  await request.jwtVerify({ onlyCookie: true });
+  await request.refreshJwtVerify({ onlyCookie: true });
   const { username } = request.user;
 
   const dbUser = await getUserByUsername(username);
@@ -79,7 +79,7 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
     roles: dbUser.roles,
   };
 
-  const accessToken = await reply.jwtSign(
+  const accessToken = await reply.accessJwtSign(
     {
       ...user,
     },
@@ -118,7 +118,7 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     roles: dbUser.roles,
   };
 
-  const accessToken = await reply.jwtSign(
+  const accessToken = await reply.accessJwtSign(
     {
       ...user,
       impersonated: request.user.username,

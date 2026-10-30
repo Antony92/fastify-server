@@ -59,6 +59,7 @@ await server.register(fastifyWebsocket);
 await server.register(fastifySSE.default);
 await server.register(fastifySchedule);
 await server.register(fastifyJwt, {
+  namespace: 'access',
   secret: server.config.JWT_ACCESS_TOKEN_SECRET,
   sign: {
     iss: server.config.JWT_ISSUER,

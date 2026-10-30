@@ -13,4 +13,15 @@ declare module 'fastify' {
     microsoftOAuth2: OAuth2Namespace;
     config: Config;
   }
+
+  interface FastifyRequest {
+    accessJwtVerify: FastifyRequest['jwtVerify'];
+    refreshJwtVerify: FastifyRequest['jwtVerify'];
+    refreshToken: RefreshToken;
+  }
+
+  interface FastifyReply {
+    accessJwtSign: FastifyReply['jwtSign'];
+    refreshJwtSign: FastifyReply['jwtSign'];
+  }
 }
