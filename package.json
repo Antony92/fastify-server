@@ -8,7 +8,7 @@
   "main": "dist/app.js",
   "scripts": {
     "dev": "node --env-file=.env --watch-path ./src --import tsx ./src/app.ts",
-    "build": "tsc -p .",
+    "build": "tsc -p tsconfig.build.json",
     "lint": "tsc --noEmit && oxfmt --write && oxlint --fix",
     "test": "node --env-file=.env --import tsx --test",
     "test:main": "node --env-file=.env --import tsx ./src/tests/main.ts",
