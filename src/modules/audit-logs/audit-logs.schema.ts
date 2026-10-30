@@ -1,6 +1,6 @@
 import type { FastifySchema } from 'fastify';
 import { Type } from 'typebox';
-import { paginationQuerySchema } from '../../types/request.type.js';
+import { paginationQuerySchema } from '../../schemas/request.schema.js';
 
 export const auditLogsSearchQueryShema = Type.Intersect([
   paginationQuerySchema,

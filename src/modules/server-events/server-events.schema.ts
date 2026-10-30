@@ -1,5 +1,5 @@
 import type { FastifySchema } from 'fastify';
-import { idParamSchema, paginationQuerySchema } from '../../types/request.type.js';
+import { idParamSchema, paginationQuerySchema } from '../../schemas/request.schema.js';
 import { createInsertSchema, createUpdateSchema } from 'drizzle-orm/typebox';
 import Type from 'typebox';
 import { serverEventsTable } from '../../db/schema.js';

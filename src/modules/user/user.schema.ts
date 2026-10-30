@@ -1,7 +1,7 @@
 import { createInsertSchema, createUpdateSchema } from 'drizzle-orm/typebox';
 import Type from 'typebox';
 import { usersTable } from '../../db/schema.js';
-import { idParamSchema, paginationQuerySchema } from '../../types/request.type.js';
+import { idParamSchema, paginationQuerySchema } from '../../schemas/request.schema.js';
 import type { FastifySchema } from 'fastify';
 
 export const createUserBodySchema = Type.Pick(createInsertSchema(usersTable), [
