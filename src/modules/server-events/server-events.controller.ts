@@ -3,13 +3,9 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import sanitizeHtml from 'sanitize-html';
 import { auditLogs } from '../audit-logs/audit-logs.service.js';
 import {
-  addServerEventClient,
   createServerEvent,
   deleteServerEvent,
   getServerEvents,
-  removeServerEventClient,
-  sendServerEventToAllClients,
-  sendServerEventToClient,
   updateServerEvent,
 } from './server-events.service.js';
 import { AuditLogsAction, AuditLogsTarget } from '../audit-logs/audit-logs.type.js';
@@ -25,19 +21,19 @@ export const subscribeServerEventsHandler = async (
   reply: FastifyReply,
 ) => {
   let id = request.user?.id || crypto.randomUUID();
-  addServerEventClient({ id, reply });
+  request.server.sseClients.add(id, reply);
 
   const {
     events: [event],
   } = await getServerEvents(ServerEventScope.GLOBAL);
   if (event) {
-    sendServerEventToClient(id, event.scope as ServerEventScope, event);
+    request.server.sseClients.send(id, { event: event.scope, data: event });
   } else {
     await reply.sse.send({ data: 'connected' });
   }
 
   reply.sse.onClose(() => {
-    removeServerEventClient(id);
+    request.server.sseClients.remove(id);
   });
 };
 
@@ -60,7 +56,7 @@ export const createServerEventHandler = async (
     },
   });
   const event = await createServerEvent(body);
-  sendServerEventToAllClients(event.scope as ServerEventScope, event);
+  request.server.sseClients.sendAll({ event: event.scope, data: event });
   await auditLogs(
     request.user,
     AuditLogsAction.CREATE,
@@ -84,10 +80,7 @@ export const updateServerEventHandler = async (
     },
   });
   const event = await updateServerEvent({ id, ...body });
-  sendServerEventToAllClients(event.scope as ServerEventScope, {
-    severity: event.severity,
-    message: event.message,
-  });
+  request.server.sseClients.sendAll({ event: event.scope, data: event });
   await auditLogs(
     request.user,
     AuditLogsAction.UPDATE,

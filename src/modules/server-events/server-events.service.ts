@@ -3,47 +3,9 @@ import db from '../../db/index.js';
 import { serverEventsTable } from '../../db/schema.js';
 import type {
   CreateServerEvent,
-  ServerEventClient,
   ServerEventScope,
-  ServerEventSeverity,
   UpdateServerEvent,
 } from './server-events.type.js';
-
-const clients = new Map<string, ServerEventClient['reply']>();
-const retry = 10000;
-
-export const addServerEventClient = (client: ServerEventClient) => {
-  clients.set(client.id, client.reply);
-};
-
-export const removeServerEventClient = (clientId: string) => {
-  clients.delete(clientId);
-};
-
-export const sendServerEventToAllClients = (
-  scope: ServerEventScope,
-  event: { severity: ServerEventSeverity; message: string },
-) => {
-  clients.forEach((reply) => {
-    reply.sse.send({
-      event: scope,
-      data: event,
-      retry,
-    });
-  });
-};
-
-export const sendServerEventToClient = (
-  clientId: string,
-  scope: ServerEventScope,
-  event: { severity: ServerEventSeverity; message: string },
-) => {
-  clients.get(clientId)?.sse.send({
-    event: scope,
-    data: event,
-    retry,
-  });
-};
 
 export const getServerEvents = async (scope?: ServerEventScope, skip = 0, limit = 10) => {
   const conditions: (SQL | undefined)[] = [];

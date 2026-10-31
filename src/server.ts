@@ -29,6 +29,7 @@ import swaggerOptions from './swagger.js';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { configSchema } from './config.js';
 import authSessionPlugin from './modules/auth/auth-session.plugin.js';
+import serverEventsPlugin from './modules/server-events/server-events.plugin.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -139,6 +140,7 @@ server.setNotFoundHandler((request, reply) => {
 
 // custom plugins
 await server.register(authSessionPlugin);
+await server.register(serverEventsPlugin);
 
 // routes
 await server.register(healthRoute, { prefix: '/api/v1' });
