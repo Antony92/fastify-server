@@ -4,7 +4,7 @@ import { auditLogs } from '../audit-logs/audit-logs.service.js';
 import { createOrUpdateUser, getUserByUsername } from '../user/user.service.js';
 import { AuditLogsAction, AuditLogsTarget } from '../audit-logs/audit-logs.type.js';
 import { Role } from '../user/user.type.js';
-import { createSession, clearSession } from '../../sqlite/index.js';
+import { createSession, clearSession, clearExpiredSessions } from '../../sqlite/index.js';
 
 export const loginCallbackHandler = async (request: FastifyRequest, reply: FastifyReply) => {
   const token =
@@ -39,6 +39,7 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
     },
   );
 
+  clearExpiredSessions();
   createSession(jti, username, now + request.server.config.COOKIE_REFRESH_EXPIRE);
 
   reply.cookie(request.server.config.COOKIE_REFRESH_NAME, refreshToken, {

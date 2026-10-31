@@ -34,7 +34,6 @@ export const getSession = (jti: string) => {
 };
 
 export const createSession = (jti: string, username: string, expires_at: number) => {
-  clearExpiredSessions();
   return database
     .prepare(`
       INSERT INTO sessions (jti, username, created_at, expires_at)
