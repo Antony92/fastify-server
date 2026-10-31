@@ -1,11 +1,17 @@
 import type { OAuth2Namespace } from '@fastify/oauth2';
-import type { AccessToken, RefreshToken } from './jwt.type.ts';
+import type {
+  AccessToken,
+  RefreshToken,
+  AccessTokenPayload,
+  RefreshTokenPayload,
+} from './jwt.type.ts';
 import type { Config } from '../config.ts';
 
 declare module '@fastify/jwt' {
   interface FastifyJWT {
     namespaces: 'access' | 'refresh';
     user: AccessToken;
+    payload: AccessTokenPayload | RefreshTokenPayload;
   }
 }
 

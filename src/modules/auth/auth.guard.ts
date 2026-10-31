@@ -1,6 +1,8 @@
 import type { FastifyRequest } from 'fastify';
 import { getUserById } from '../user/user.service.js';
 import type { AccessToken, RefreshToken } from '../../types/jwt.type.js';
+import { getSession } from '../../sqlite/index.js';
+import { getApiKey } from '../api-key/api-key.service.js';
 
 export const secured = (roles?: string[]) => {
   return async (request: FastifyRequest) => {
@@ -25,14 +27,15 @@ export const secured = (roles?: string[]) => {
 
 export const trustedAccessTokens = async (request: FastifyRequest, decodedToken: unknown) => {
   const token = decodedToken as AccessToken;
-  return token;
-  // const allowed = ['token1', 'token2'];
-  // return allowed.includes(token.jti) ? decodedToken : false;
+  if (token.use === 'api') {
+    const apiKey = await getApiKey(token.jti);
+    return Boolean(apiKey);
+  }
+  return true;
 };
 
 export const trustedRefreshTokens = async (request: FastifyRequest, decodedToken: unknown) => {
   const token = decodedToken as RefreshToken;
-  return token;
-  // const allowed = ['token1', 'token2'];
-  // return allowed.includes(token.jti) ? decodedToken : false;
+  const session = getSession(token.jti);
+  return Boolean(session);
 };

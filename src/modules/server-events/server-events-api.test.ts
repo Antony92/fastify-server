@@ -8,6 +8,7 @@ const admin = {
   name: 'admin',
   username: 'admin@test.com',
   roles: [Role.ADMIN],
+  use: 'session' as const,
 };
 
 const jwt = server.jwt.access.sign({ ...admin });

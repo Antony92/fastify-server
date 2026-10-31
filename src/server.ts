@@ -76,7 +76,7 @@ await server.register(fastifyJwt, {
     checkTyp: 'at+jwt',
     allowedIss: server.config.JWT_ISSUER,
     allowedAud: `${server.config.JWT_AUDIENCE}:access`,
-    requiredClaims: ['iss', 'aud', 'exp'],
+    requiredClaims: ['iss', 'aud', 'exp', 'jti'],
   },
   trusted: trustedAccessTokens,
 });
@@ -100,7 +100,7 @@ await server.register(fastifyJwt, {
     checkTyp: 'rt+jwt',
     allowedIss: server.config.JWT_ISSUER,
     allowedAud: `${server.config.JWT_AUDIENCE}:refresh`,
-    requiredClaims: ['iss', 'aud', 'exp'],
+    requiredClaims: ['iss', 'aud', 'exp', 'jti'],
   },
   trusted: trustedRefreshTokens,
 });

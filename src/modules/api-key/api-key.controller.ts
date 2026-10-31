@@ -19,6 +19,7 @@ export const createUserApiKeyHandler = async (
       name: user.name,
       username: user.username,
       roles: user.roles,
+      use: 'api',
     },
     {
       jti,
@@ -60,6 +61,7 @@ export const createPersonalApiKeyHandler = async (request: FastifyRequest, reply
       name: request.user.name,
       username: request.user.username,
       roles: request.user.roles,
+      use: 'api',
     },
     {
       jti,

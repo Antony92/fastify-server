@@ -1,50 +1,54 @@
 import { DatabaseSync } from 'node:sqlite';
 
-// :memory: for in memory or ${import.meta.dirname}/sqlite.db for persistent storage
-const database = new DatabaseSync(`:memory:`);
+const database = new DatabaseSync(':memory:');
 
 export const initializeSQLite = () => {
   database.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      jti TEXT NOT NULL UNIQUE,
-      username TEXT NOT NULL UNIQUE,
-      created_at INTEGER NOT NULL
+    CREATE TABLE IF NOT EXISTS sessions (
+      jti TEXT PRIMARY KEY,
+      username TEXT NOT NULL,
+      created_at INTEGER NOT NULL,
+      expires_at INTEGER NOT NULL
     );
+    CREATE INDEX IF NOT EXISTS idx_sessions_username ON sessions (username);
+    CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions (expires_at);
   `);
 };
 
-export const getUserByUsername = (username: string) => {
+export const clearExpiredSessions = () => {
   return database
     .prepare(`
-    SELECT * FROM users WHERE username = ?
-  `)
-    .get(username);
+      DELETE FROM sessions WHERE expires_at <= ?
+    `)
+    .run(Date.now());
 };
 
-export const getUserByJTI = (jti: string) => {
+export const getSession = (jti: string) => {
   return database
     .prepare(`
-    SELECT * FROM users WHERE jti = ?
-  `)
-    .get(jti);
+      SELECT jti, username, created_at, expires_at
+      FROM sessions
+      WHERE jti = ? AND expires_at > ?
+    `)
+    .get(jti, Date.now());
 };
 
-export const createUser = (jti: string, username: string, created_at: number) => {
+export const createSession = (jti: string, username: string, expires_at: number) => {
+  clearExpiredSessions();
   return database
     .prepare(`
-    INSERT INTO users (jti, username, created_at)
-    VALUES (?, ?, ?)
-    RETURNING id, jti, username, created_at
-  `)
-    .get(jti, username, created_at);
+      INSERT INTO sessions (jti, username, created_at, expires_at)
+      VALUES (?, ?, ?, ?)
+      RETURNING jti, username, created_at, expires_at
+    `)
+    .get(jti, username, Date.now(), expires_at);
 };
 
-export const deleteUser = (jti: string) => {
+export const clearSession = (jti: string) => {
   return database
     .prepare(`
-    DELETE FROM users WHERE jti = ?
-  `)
+      DELETE FROM sessions WHERE jti = ?
+    `)
     .run(jti);
 };
 

@@ -20,3 +20,8 @@ export const deleteApiKeyByUserId = async (userId: string) => {
     .returning(columns);
   return deletedApiKey;
 };
+
+export const getApiKey = async (jti: string) => {
+  const [apiKey] = await db.select().from(apiKeysTable).where(eq(apiKeysTable.jti, jti));
+  return apiKey;
+};
