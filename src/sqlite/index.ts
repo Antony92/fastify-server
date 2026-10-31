@@ -44,12 +44,12 @@ export const createSession = (jti: string, username: string, expires_at: number)
     .get(jti, username, Date.now(), expires_at);
 };
 
-export const clearSession = (jti: string) => {
+export const clearSession = (identifier: string) => {
   return database
     .prepare(`
-      DELETE FROM sessions WHERE jti = ?
+      DELETE FROM sessions WHERE jti = :id OR username = :id
     `)
-    .run(jti);
+    .run({ id: identifier });
 };
 
 export default database;
