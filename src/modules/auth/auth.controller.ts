@@ -4,7 +4,6 @@ import { auditLogs } from '../audit-logs/audit-logs.service.js';
 import { createOrUpdateUser, getUserByUsername } from '../user/user.service.js';
 import { AuditLogsAction, AuditLogsTarget } from '../audit-logs/audit-logs.type.js';
 import { Role } from '../user/user.type.js';
-import { createSession, clearSession, clearExpiredSessions } from '../../sqlite/index.js';
 
 export const loginCallbackHandler = async (request: FastifyRequest, reply: FastifyReply) => {
   const token =
@@ -39,14 +38,18 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
     },
   );
 
-  clearExpiredSessions();
-  createSession(jti, username, now + request.server.config.COOKIE_REFRESH_EXPIRE);
+  request.server.authSession.clearExpiredSessions();
+  request.server.authSession.createSession(
+    jti,
+    username,
+    now + request.server.config.COOKIE_REFRESH_EXPIRE,
+  );
 
   reply.cookie(request.server.config.COOKIE_REFRESH_NAME, refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    path: '/api/v1/auth/refresh',
+    path: '/api/v1/auth',
     expires: new Date(now + request.server.config.COOKIE_REFRESH_EXPIRE),
   });
   reply.redirect(`${request.server.config.LOGIN_REDIRECT}`, 302);
@@ -56,12 +59,12 @@ export const loginCallbackHandler = async (request: FastifyRequest, reply: Fasti
 export const logoutHandler = async (request: FastifyRequest, reply: FastifyReply) => {
   await request.refreshJwtVerify({ onlyCookie: true });
   const { jti } = request.refreshToken;
-  clearSession(jti);
+  request.server.authSession.clearSession(jti);
   reply.clearCookie(request.server.config.COOKIE_REFRESH_NAME, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    path: '/api/v1/auth/refresh',
+    path: '/api/v1/auth',
   });
   return { message: 'Logout successful' };
 };
@@ -88,13 +91,16 @@ export const refreshHandler = async (request: FastifyRequest, reply: FastifyRepl
     };
   }
 
-  const accessToken = await reply.accessJwtSign({
-    id: user.id,
-    name: user.name,
-    username: user.username,
-    roles: user.roles,
-    use: 'session',
-  });
+  const accessToken = await reply.accessJwtSign(
+    {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      roles: user.roles,
+      use: 'session',
+    },
+    { jti: crypto.randomUUID() },
+  );
 
   return { accessToken };
 };
@@ -127,20 +133,23 @@ export const impersonateHandler = async (request: FastifyRequest, reply: Fastify
     };
   }
 
-  const accessToken = await reply.accessJwtSign({
-    id: user.id,
-    name: user.name,
-    username: user.username,
-    roles: user.roles,
-    impersonated: request.user.username,
-    use: 'session',
-  });
+  const accessToken = await reply.accessJwtSign(
+    {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      roles: user.roles,
+      impersonated: request.user.username,
+      use: 'session',
+    },
+    { jti: crypto.randomUUID() },
+  );
 
   reply.clearCookie(request.server.config.COOKIE_REFRESH_NAME, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    path: '/api/v1/auth/refresh',
+    path: '/api/v1/auth',
   });
 
   await auditLogs(

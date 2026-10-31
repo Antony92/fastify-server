@@ -2,6 +2,7 @@ import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import server from '../../server.js';
 import { Role } from '../user/user.type.js';
+import crypto from 'node:crypto';
 
 const admin = {
   id: 'admin',
@@ -11,7 +12,7 @@ const admin = {
   use: 'session' as const,
 };
 
-const jwt = server.jwt.access.sign({ ...admin });
+const jwt = server.jwt.access.sign({ ...admin }, { jti: crypto.randomUUID() });
 
 describe('Server events route', () => {
   describe('GET /api/v1/server-events', () => {

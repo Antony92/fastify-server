@@ -28,6 +28,7 @@ import websocketRoute from './modules/websocket/websocket.route.js';
 import swaggerOptions from './swagger.js';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { configSchema } from './config.js';
+import authSessionPlugin from './modules/auth/auth-session.plugin.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -135,6 +136,9 @@ server.setNotFoundHandler((request, reply) => {
     reply.sendFile('index.html');
   }
 });
+
+// custom plugins
+await server.register(authSessionPlugin);
 
 // routes
 await server.register(healthRoute, { prefix: '/api/v1' });
